@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "DevConnectionString": "Server=(localdb)\\MSSQLLocalDB;Database=MITS;Integrated Security=true;Trusted_Connection=True;MultipleActiveResultSets=true"
+  }
+}

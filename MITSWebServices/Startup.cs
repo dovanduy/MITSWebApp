@@ -39,7 +39,6 @@ namespace MITSWebServices
                 configuration.RootPath = "ClientApp/dist";
             });
 
-            services.AddScoped<DbContext, MITSContext>();
             services.AddScoped<IUserRepo, UserRepo>();
         }
 

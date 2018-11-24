@@ -8,5 +8,8 @@ namespace MITSBusinessLib.Repositories.Interfaces
     public interface IUserRepo
     {
         IEnumerable<Person> GetUsers();
+        Person GetUserById(int id);
+        void AddEntity(object model);
+        bool SaveAll();
     }
 }

@@ -19,6 +19,13 @@ namespace MITSWebServices
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                //.ConfigureAppConfiguration((context, config) =>
+                //{
+                //    config
+                //        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                //        .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", optional: false, reloadOnChange: true);
+                //    context.Configuration = config.Build();
+                //})
                 .ConfigureAppConfiguration(SetupConfiguration)
                 .UseStartup<Startup>();
 

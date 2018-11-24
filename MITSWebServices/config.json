@@ -1,5 +1,14 @@
 {
   "ConnectionStrings": {
     "DevConnectionString": "Server=(localdb)\\MSSQLLocalDB;Database=MITS;Integrated Security=true;Trusted_Connection=True;MultipleActiveResultSets=true"
+  },
+
+  //Change these log levels for production
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Micrsoft":  "Warning"
+
+    }
   }
 }

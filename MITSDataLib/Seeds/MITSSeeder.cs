@@ -1,8 +1,11 @@
-﻿using MITSDataLib.Contexts;
+﻿using Microsoft.AspNetCore.Identity;
+using MITSDataLib.Contexts;
+using MITSDataLib.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MITSDataLib.Seeds
 {
@@ -11,18 +14,22 @@ namespace MITSDataLib.Seeds
 
         private readonly MITSContext _context;
 
-        public MITSSeeder(MITSContext context) {
+        public MITSSeeder(MITSContext context ) {
             _context = context;
+
         }
 
-        public void Seed() {
-            _context.Database.EnsureCreated();
+        //public async Task SeedAsync() {
+        //    _context.Database.EnsureCreated();
 
-            if (!_context.Persons.Any())
-            {
-                //Need to create sample data
+        //    //// Seed the Main User
+            
+        //    //if (user == null)
+        //    //{
+                
+        //    //}
 
-            }
-        }
+        //    //_context.SaveChanges();
+        //}
     }
 }

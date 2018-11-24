@@ -56,7 +56,7 @@ namespace MITSWebServices
             services.AddAuthorization(options => {
                                 options.AddPolicy("Faculty", policy => policy.RequireClaim("Role", "Faculty"));
                 options.AddPolicy("Student", policy => policy.RequireClaim("Role", "Student"));
-                options.AddPolicy("Admin", policy => policy.RequireClaim("Role", "ISA"));
+                options.AddPolicy("Admin", policy => policy.RequireClaim("Role", "Admin"));
                
             });
 
@@ -105,7 +105,7 @@ namespace MITSWebServices
             )
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = "http://localhost:44374/";
+                    options.Authority = "http://localhost:50000/";
                     options.Audience = "mits_server";
                     options.RequireHttpsMetadata = false;
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -142,7 +142,7 @@ namespace MITSWebServices
 
             app.UseAuthentication();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
            

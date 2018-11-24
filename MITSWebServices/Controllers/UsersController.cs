@@ -15,7 +15,7 @@ namespace MITSWebServices.Controllers
     //[Route("api/[controller]/[action]")]
     [Route("api/[controller]")]
     [Authorize(Policy = "Admin")]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersController : Controller
     {
         private readonly IUserRepo _userRepo;
@@ -27,6 +27,7 @@ namespace MITSWebServices.Controllers
             _logger = logger;
         }
 
+        
         [HttpGet]
         public IActionResult Get()
         {

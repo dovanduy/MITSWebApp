@@ -57,10 +57,10 @@ namespace MITSWebServices.Controllers
                  new AuthenticationProperties(),
                  OpenIdConnectServerDefaults.AuthenticationScheme);
 
-            // ... add other claims, if necessary.
-            
+            ticket.SetResources("mits_server");
+
             // Ask OpenIddict to generate a new token and return an OAuth2 token response.
-            return SignIn(principal, OpenIddictServerDefaults.AuthenticationScheme);
+            return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
         }
     }
 }

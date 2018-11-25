@@ -8,7 +8,9 @@ using AspNet.Security.OpenIdConnect.Primitives;
 using AspNet.Security.OpenIdConnect.Server;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MITSDataLib.Models;
 using OpenIddict.Server;
 
 namespace MITSWebServices.Controllers
@@ -17,9 +19,20 @@ namespace MITSWebServices.Controllers
     [ApiController]
     public class AuthorizationController : Controller
     {
-        [HttpPost("~/connect/token"), Produces("application/json")]
-        public IActionResult Exchange(OpenIdConnectRequest request)
+        private readonly UserManager<User> _userManager;
+
+        public AuthorizationController(UserManager<User> userManager)
         {
+            _userManager = userManager;
+        }
+
+        [HttpPost("~/connect/token"), Produces("application/json")]
+        public async Task<IActionResult> Exchange(OpenIdConnectRequest request)
+        {
+
+            
+
+                        
             if (!request.IsPasswordGrantType())
             {
                 return BadRequest(new OpenIdConnectResponse
@@ -29,10 +42,26 @@ namespace MITSWebServices.Controllers
                 });
             }
 
-            if (request.Username != "enderjs@gmail.com" ||
-                request.Password != "password")
+            var user = await _userManager.FindByNameAsync(request.Username);
+
+            if (user == null)
             {
-                return Forbid(OpenIddictServerDefaults.AuthenticationScheme);
+                return BadRequest(new OpenIdConnectResponse
+                {
+                    Error = OpenIdConnectConstants.Errors.InvalidGrant,
+                    ErrorDescription = "The username/password couple is invalid."
+                });
+            }
+
+            var result = await _userManager.CheckPasswordAsync(user, request.Password);
+
+            if (!result)
+            {
+                return BadRequest(new OpenIdConnectResponse
+                {
+                    Error = OpenIdConnectConstants.Errors.InvalidGrant,
+                    ErrorDescription = "The username/password couple is invalid."
+                });
             }
 
             var identity = new ClaimsIdentity(
@@ -48,7 +77,10 @@ namespace MITSWebServices.Controllers
                 OpenIdConnectConstants.Destinations.AccessToken);
             identity.AddClaim("Name", "Alice",
                 OpenIdConnectConstants.Destinations.IdentityToken);
-            identity.AddClaim(OpenIdConnectConstants.Claims.Role, "Admin", OpenIdConnectConstants.Destinations.AccessToken);
+
+            string role = _userManager.GetRolesAsync(user).Result.SingleOrDefault();
+            
+            identity.AddClaim(OpenIdConnectConstants.Claims.Role, role, OpenIdConnectConstants.Destinations.AccessToken);
 
             var principal = new ClaimsPrincipal(identity);
 

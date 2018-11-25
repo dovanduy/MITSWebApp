@@ -7,7 +7,7 @@ using System.Text;
 
 namespace MITSDataLib.Contexts
 {
-    public class MITSContext : DbContext
+    public class MITSContext : IdentityDbContext<User>
     {
 
         public MITSContext(DbContextOptions<MITSContext> options): base(options)

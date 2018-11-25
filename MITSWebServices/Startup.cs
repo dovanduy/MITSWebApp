@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +16,8 @@ using Microsoft.IdentityModel.Tokens;
 using MITSBusinessLib.Repositories;
 using MITSBusinessLib.Repositories.Interfaces;
 using MITSDataLib.Contexts;
+using MITSDataLib.Models;
+using MITSDataLib.Seeds;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using OpenIddict.Validation;
@@ -45,16 +49,22 @@ namespace MITSWebServices
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 });
-
-                     
+     
             services.AddDbContext<MITSContext>(options => {
                 options.UseSqlServer(_config.GetConnectionString("DevConnectionString"));
                 options.UseOpenIddict();
 
             });
 
+            services.AddIdentity<User, IdentityRole>(option =>
+            {
+                option.User.RequireUniqueEmail = true;
+            })
+            .AddEntityFrameworkStores<MITSContext>();
+
+           
             services.AddAuthorization(options => {
-                                options.AddPolicy("Faculty", policy => policy.RequireClaim("Role", "Faculty"));
+                options.AddPolicy("Faculty", policy => policy.RequireClaim("Role", "Faculty"));
                 options.AddPolicy("Student", policy => policy.RequireClaim("Role", "Student"));
                 options.AddPolicy("Admin", policy => policy.RequireClaim("Role", "Admin"));
                
@@ -100,8 +110,8 @@ namespace MITSWebServices
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
 
-            services.AddAuthentication(
-                
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme
+
             )
                 .AddJwtBearer(options =>
                 {
@@ -123,6 +133,8 @@ namespace MITSWebServices
             });
 
             services.AddScoped<IUserRepo, UserRepo>();
+            services.AddTransient<MITSSeeder>();
+            
 
             
         }

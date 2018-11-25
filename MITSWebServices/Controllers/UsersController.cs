@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MITSBusinessLib.Repositories;
@@ -20,13 +21,14 @@ namespace MITSWebServices.Controllers
     {
         private readonly IUserRepo _userRepo;
         private readonly ILogger<UsersController> _logger;
+       
 
         public UsersController(IUserRepo userRepo, ILogger<UsersController> logger)
         {
             _userRepo = userRepo;
             _logger = logger;
+            
         }
-
         
         [HttpGet]
         public IActionResult Get()
@@ -41,8 +43,6 @@ namespace MITSWebServices.Controllers
                 _logger.LogError($"Failed to get products: {ex}");
                 return BadRequest("Failed to get products");
             }
-
-
         }
 
         [HttpGet("{id:int}")]

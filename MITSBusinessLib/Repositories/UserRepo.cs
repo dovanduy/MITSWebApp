@@ -29,7 +29,7 @@ namespace MITSBusinessLib.Repositories
 
         public Person GetUserById(int id)
         {
-            return _context.Persons.Where(person => person.Id == id).FirstOrDefault();
+            return _context.People.Where(person => person.Id == id).FirstOrDefault();
         }
 
         [Authorize]
@@ -38,7 +38,7 @@ namespace MITSBusinessLib.Repositories
             try
             {
                 _logger.LogInformation("get All products was called");
-                return _context.Persons.ToList();
+                return _context.People.ToList();
             }
 
             catch (Exception ex) {

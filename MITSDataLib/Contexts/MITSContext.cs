@@ -14,7 +14,15 @@ namespace MITSDataLib.Contexts
         {
         }
 
-        public DbSet<Person> Persons { get; set; }
+        
+        public DbSet<WildApricotEvent> WaEvents { get; set; }
+        public DbSet<WildApricotRegistrationType> WaRegistrationTypes { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<Speaker> Speakers { get; set; }
+        public DbSet<Section> Sections { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<Day> Days { get; set; }
+        public DbSet<Person> People { get; set; }
 
        
     }

@@ -129,6 +129,34 @@ namespace MITSDataLib.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("MITSDataLib.Models.Day", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("AgendaDay");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Days");
+                });
+
+            modelBuilder.Entity("MITSDataLib.Models.Event", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("WaEventId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WaEventId");
+
+                    b.ToTable("Events");
+                });
+
             modelBuilder.Entity("MITSDataLib.Models.Person", b =>
                 {
                     b.Property<int>("Id")
@@ -149,7 +177,66 @@ namespace MITSDataLib.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Persons");
+                    b.ToTable("People");
+                });
+
+            modelBuilder.Entity("MITSDataLib.Models.Section", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("DayId");
+
+                    b.Property<string>("Description");
+
+                    b.Property<DateTime>("EndDate");
+
+                    b.Property<string>("Name");
+
+                    b.Property<bool>("RestrictSlide");
+
+                    b.Property<string>("SlideUrl");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DayId");
+
+                    b.ToTable("Sections");
+                });
+
+            modelBuilder.Entity("MITSDataLib.Models.Speaker", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Bio");
+
+                    b.Property<Guid>("ImageName");
+
+                    b.Property<int?>("SectionId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SectionId");
+
+                    b.ToTable("Speakers");
+                });
+
+            modelBuilder.Entity("MITSDataLib.Models.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("MITSDataLib.Models.User", b =>
@@ -205,6 +292,65 @@ namespace MITSDataLib.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("MITSDataLib.Models.WildApricotEvent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description");
+
+                    b.Property<DateTime>("EndDate");
+
+                    b.Property<bool>("IsEnabled");
+
+                    b.Property<string>("Location");
+
+                    b.Property<string>("Name");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.Property<int>("WaId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WaEvents");
+                });
+
+            modelBuilder.Entity("MITSDataLib.Models.WildApricotRegistrationType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("AvailableFrom");
+
+                    b.Property<DateTime>("AvailableThrough");
+
+                    b.Property<decimal>("BasePrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("CodeRequired");
+
+                    b.Property<string>("Description");
+
+                    b.Property<bool>("IsEnabled");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("RegistrationCode");
+
+                    b.Property<int?>("WaEventId");
+
+                    b.Property<int>("WaId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WaEventId");
+
+                    b.ToTable("WaRegistrationTypes");
                 });
 
             modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictApplication", b =>
@@ -401,6 +547,35 @@ namespace MITSDataLib.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MITSDataLib.Models.Event", b =>
+                {
+                    b.HasOne("MITSDataLib.Models.WildApricotEvent", "WaEvent")
+                        .WithMany()
+                        .HasForeignKey("WaEventId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MITSDataLib.Models.Section", b =>
+                {
+                    b.HasOne("MITSDataLib.Models.Day", "Day")
+                        .WithMany("Sections")
+                        .HasForeignKey("DayId");
+                });
+
+            modelBuilder.Entity("MITSDataLib.Models.Speaker", b =>
+                {
+                    b.HasOne("MITSDataLib.Models.Section")
+                        .WithMany("Speakers")
+                        .HasForeignKey("SectionId");
+                });
+
+            modelBuilder.Entity("MITSDataLib.Models.WildApricotRegistrationType", b =>
+                {
+                    b.HasOne("MITSDataLib.Models.WildApricotEvent", "WaEvent")
+                        .WithMany("WaRegistrationTypes")
+                        .HasForeignKey("WaEventId");
                 });
 
             modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictAuthorization", b =>

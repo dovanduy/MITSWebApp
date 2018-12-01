@@ -48,6 +48,7 @@ namespace MITSWebServices
                 {
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
                 });
      
             services.AddDbContext<MITSContext>(options => {
@@ -133,10 +134,19 @@ namespace MITSWebServices
             });
 
             services.AddScoped<IUserRepo, UserRepo>();
+            services.AddScoped<IEventOrganizerRepo, EventOrganizerRepo>();
             services.AddTransient<MITSSeeder>();
-            
 
-            
+            //TODO: Only for development
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                                       .AllowAnyMethod()
+                                       .AllowAnyHeader()
+                                       .AllowCredentials());
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -179,6 +189,10 @@ namespace MITSWebServices
                     spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                 }
             });
+
+            //Only for development
+            //Todo: Remove for production
+            app.UseCors("CorsPolicy");
         }
     }
 }

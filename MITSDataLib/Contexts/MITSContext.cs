@@ -12,9 +12,9 @@ namespace MITSDataLib.Contexts
 
         public MITSContext(DbContextOptions<MITSContext> options): base(options)
         {
-        }
 
-        
+        }
+                
         public DbSet<WildApricotEvent> WaEvents { get; set; }
         public DbSet<WildApricotRegistrationType> WaRegistrationTypes { get; set; }
         public DbSet<Tag> Tags { get; set; }
@@ -24,6 +24,6 @@ namespace MITSDataLib.Contexts
         public DbSet<Day> Days { get; set; }
         public DbSet<Person> People { get; set; }
 
-       
+        
     }
 }

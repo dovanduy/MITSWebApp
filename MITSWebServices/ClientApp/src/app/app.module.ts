@@ -5,6 +5,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PagesModule } from './pages/pages.module';
+import { OrganizerModule } from './organizer/organizer.module';
+import { CheckinModule } from './checkin/checkin.module';
+import { CoreModule } from './core/core.module';
 
 
 @NgModule({
@@ -16,6 +19,9 @@ import { PagesModule } from './pages/pages.module';
     BrowserAnimationsModule,
     AppRoutingModule,
     PagesModule,
+    OrganizerModule,
+    CheckinModule,
+    CoreModule,
    
   ],
   providers: [],

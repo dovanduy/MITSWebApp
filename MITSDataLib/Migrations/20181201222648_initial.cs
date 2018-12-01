@@ -358,7 +358,9 @@ namespace MITSDataLib.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Bio = table.Column<string>(nullable: true),
+                    FirstName = table.Column<string>(nullable: false),
+                    LastName = table.Column<string>(nullable: false),
+                    Bio = table.Column<string>(nullable: false),
                     ImageName = table.Column<Guid>(nullable: false),
                     SectionId = table.Column<int>(nullable: true)
                 },

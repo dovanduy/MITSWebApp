@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MITSDataLib.Migrations
 {
     [DbContext(typeof(MITSContext))]
-    [Migration("20181128004557_initial")]
+    [Migration("20181201222648_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -215,9 +215,16 @@ namespace MITSDataLib.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Bio");
+                    b.Property<string>("Bio")
+                        .IsRequired();
+
+                    b.Property<string>("FirstName")
+                        .IsRequired();
 
                     b.Property<Guid>("ImageName");
+
+                    b.Property<string>("LastName")
+                        .IsRequired();
 
                     b.Property<int?>("SectionId");
 

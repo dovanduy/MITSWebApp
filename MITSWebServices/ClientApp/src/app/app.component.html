@@ -1,11 +1,12 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
+<mat-toolbar class="mat-elevation-z1" color="primary">
+  <span>{{title}}</span>
+  <span fxFlex></span>
+  <a class="nav" routerLink="/">Home</a>
+  <a class="nav" routerLink="/agenda">Agenda</a>
+  <a class="nav" routerLink="/admin/dashboard">Admin</a>
+</mat-toolbar>
 
-  <a routerLink="/">Home</a>
-  <a routerLink="/agenda">Agenda</a>
-  <a routerLink="/admin/dashboard">Admin</a>
+  
 
 <router-outlet></router-outlet>

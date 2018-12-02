@@ -1,0 +1,14 @@
+.admin-sidenav{
+    padding-top: 0px;
+    background-color: #37434e;
+    height: 100vh;
+    position: fixed;
+    width: 200px;
+   a {
+       color: white;
+   }
+
+    mat-icon {
+        padding-right: 5px;
+    }
+}

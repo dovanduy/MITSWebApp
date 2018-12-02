@@ -14,7 +14,15 @@ namespace MITSDataLib.Contexts
         {
 
         }
-                
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<SectionSpeaker>().HasKey(key => new { key.SectionId, key.SpeakerId });
+
+            base.OnModelCreating(modelBuilder);
+        }
+
+
         public DbSet<WildApricotEvent> WaEvents { get; set; }
         public DbSet<WildApricotRegistrationType> WaRegistrationTypes { get; set; }
         public DbSet<Tag> Tags { get; set; }
@@ -22,7 +30,6 @@ namespace MITSDataLib.Contexts
         public DbSet<Section> Sections { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Day> Days { get; set; }
-        public DbSet<Person> People { get; set; }
 
         
     }

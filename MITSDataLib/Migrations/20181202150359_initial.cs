@@ -101,21 +101,19 @@ namespace MITSDataLib.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "People",
+                name: "Speakers",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    LastName = table.Column<string>(nullable: true),
-                    FirstName = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    Role = table.Column<string>(nullable: true),
-                    ModifiedById = table.Column<int>(nullable: true),
-                    ModifiedDate = table.Column<DateTime>(nullable: true)
+                    FirstName = table.Column<string>(nullable: false),
+                    LastName = table.Column<string>(nullable: false),
+                    Bio = table.Column<string>(nullable: false),
+                    ImageName = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_People", x => x.Id);
+                    table.PrimaryKey("PK_Speakers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -353,26 +351,27 @@ namespace MITSDataLib.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Speakers",
+                name: "SectionSpeaker",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    FirstName = table.Column<string>(nullable: false),
-                    LastName = table.Column<string>(nullable: false),
-                    Bio = table.Column<string>(nullable: false),
-                    ImageName = table.Column<Guid>(nullable: false),
-                    SectionId = table.Column<int>(nullable: true)
+                    SectionId = table.Column<int>(nullable: false),
+                    SpeakerId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Speakers", x => x.Id);
+                    table.PrimaryKey("PK_SectionSpeaker", x => new { x.SectionId, x.SpeakerId });
                     table.ForeignKey(
-                        name: "FK_Speakers_Sections_SectionId",
+                        name: "FK_SectionSpeaker_Sections_SectionId",
                         column: x => x.SectionId,
                         principalTable: "Sections",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SectionSpeaker_Speakers_SpeakerId",
+                        column: x => x.SpeakerId,
+                        principalTable: "Speakers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -493,9 +492,9 @@ namespace MITSDataLib.Migrations
                 column: "DayId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Speakers_SectionId",
-                table: "Speakers",
-                column: "SectionId");
+                name: "IX_SectionSpeaker_SpeakerId",
+                table: "SectionSpeaker",
+                column: "SpeakerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WaRegistrationTypes_WaEventId",
@@ -530,10 +529,7 @@ namespace MITSDataLib.Migrations
                 name: "OpenIddictTokens");
 
             migrationBuilder.DropTable(
-                name: "People");
-
-            migrationBuilder.DropTable(
-                name: "Speakers");
+                name: "SectionSpeaker");
 
             migrationBuilder.DropTable(
                 name: "Tags");
@@ -552,6 +548,9 @@ namespace MITSDataLib.Migrations
 
             migrationBuilder.DropTable(
                 name: "Sections");
+
+            migrationBuilder.DropTable(
+                name: "Speakers");
 
             migrationBuilder.DropTable(
                 name: "WaEvents");

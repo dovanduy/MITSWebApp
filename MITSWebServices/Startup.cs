@@ -133,8 +133,7 @@ namespace MITSWebServices
                 configuration.RootPath = "ClientApp/dist";
             });
 
-            services.AddScoped<IUserRepo, UserRepo>();
-            services.AddScoped<IEventOrganizerRepo, EventOrganizerRepo>();
+            services.AddScoped<IOrganizerRepo, OrganizerRepo>();
             services.AddTransient<MITSSeeder>();
 
             //TODO: Only for development

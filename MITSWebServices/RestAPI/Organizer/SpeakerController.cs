@@ -15,10 +15,10 @@ namespace MITSWebServices.Controllers
     [Route("api/[controller]")]
     public class SpeakerController : ControllerBase
     {
-        private readonly IEventOrganizerRepo _evRepo;
+        private readonly IOrganizerRepo _evRepo;
         private readonly ILogger<SpeakerController> _logger;
 
-        public SpeakerController(IEventOrganizerRepo evRepo, ILogger<SpeakerController> logger)
+        public SpeakerController(IOrganizerRepo evRepo, ILogger<SpeakerController> logger)
         {
             _evRepo = evRepo;
             _logger = logger;

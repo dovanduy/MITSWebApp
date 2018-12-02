@@ -6,6 +6,12 @@ namespace MITSDataLib.Models
 {
     public class Section
     {
+        public Section()
+        {
+            //This makes it so you don't have to instantiate the list when you want to add items. 
+            SectionSpeakers = new List<SectionSpeaker>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -13,8 +19,8 @@ namespace MITSDataLib.Models
         public bool RestrictSlide { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public ICollection<Speaker> Speakers { get; set; }
         public Day Day { get; set; }
+        public ICollection<SectionSpeaker> SectionSpeakers { get; set; } 
 
     }
 }

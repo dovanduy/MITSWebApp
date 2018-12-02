@@ -157,29 +157,6 @@ namespace MITSDataLib.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("MITSDataLib.Models.Person", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Email");
-
-                    b.Property<string>("FirstName");
-
-                    b.Property<string>("LastName");
-
-                    b.Property<int?>("ModifiedById");
-
-                    b.Property<DateTime?>("ModifiedDate");
-
-                    b.Property<string>("Role");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("People");
-                });
-
             modelBuilder.Entity("MITSDataLib.Models.Section", b =>
                 {
                     b.Property<int>("Id")
@@ -207,6 +184,19 @@ namespace MITSDataLib.Migrations
                     b.ToTable("Sections");
                 });
 
+            modelBuilder.Entity("MITSDataLib.Models.SectionSpeaker", b =>
+                {
+                    b.Property<int>("SectionId");
+
+                    b.Property<int>("SpeakerId");
+
+                    b.HasKey("SectionId", "SpeakerId");
+
+                    b.HasIndex("SpeakerId");
+
+                    b.ToTable("SectionSpeaker");
+                });
+
             modelBuilder.Entity("MITSDataLib.Models.Speaker", b =>
                 {
                     b.Property<int>("Id")
@@ -224,11 +214,7 @@ namespace MITSDataLib.Migrations
                     b.Property<string>("LastName")
                         .IsRequired();
 
-                    b.Property<int?>("SectionId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("SectionId");
 
                     b.ToTable("Speakers");
                 });
@@ -571,11 +557,17 @@ namespace MITSDataLib.Migrations
                         .HasForeignKey("DayId");
                 });
 
-            modelBuilder.Entity("MITSDataLib.Models.Speaker", b =>
+            modelBuilder.Entity("MITSDataLib.Models.SectionSpeaker", b =>
                 {
-                    b.HasOne("MITSDataLib.Models.Section")
-                        .WithMany("Speakers")
-                        .HasForeignKey("SectionId");
+                    b.HasOne("MITSDataLib.Models.Section", "Section")
+                        .WithMany("SectionSpeakers")
+                        .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MITSDataLib.Models.Speaker", "Speaker")
+                        .WithMany("SpeakerSections")
+                        .HasForeignKey("SpeakerId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MITSDataLib.Models.WildApricotRegistrationType", b =>

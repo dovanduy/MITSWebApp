@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MITSBusinessLib.Repositories.Interfaces
 {
-    public interface IEventOrganizerRepo
+    public interface IOrganizerRepo
     {
         Task<List<Speaker>> GetSpeakers();
         Task<Speaker> GetSpeakers(int id);

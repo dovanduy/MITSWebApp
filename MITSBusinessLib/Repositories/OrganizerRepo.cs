@@ -11,12 +11,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MITSBusinessLib.Repositories
 {
-   public  class EventOrganizerRepo : IEventOrganizerRepo
+   public  class OrganizerRepo : IOrganizerRepo
     {
         private readonly MITSContext _ctx;
-        private readonly ILogger<EventOrganizerRepo> _logger;
+        private readonly ILogger<OrganizerRepo> _logger;
 
-        public EventOrganizerRepo(MITSContext context, ILogger<EventOrganizerRepo> logger)
+        public OrganizerRepo(MITSContext context, ILogger<OrganizerRepo> logger)
         {
            
             _ctx = context;

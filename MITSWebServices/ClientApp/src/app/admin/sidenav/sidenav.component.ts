@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-interface Nav {
-  link: string,
-  name: string,
-  icon: string
-}
+import { Nav } from "../models";
+
 
 @Component({
   selector: 'sidenav',
@@ -17,15 +14,35 @@ export class SidenavComponent implements OnInit {
 
   navs: Nav[] = [
     {
-      link: '/',
-      name: 'Home',
-      icon: 'done'
+      link: '/admin/dashboard',
+      name: 'Dashboard',
+      icon: 'dashboard',
 
     },
     {
-      link: '/',
+      link: '/admin/checkin',
+      name: 'Check-in',
+      icon: 'how_to_reg'
+    },
+    {
+      link: '/admin/days',
+      name: 'Days',
+      icon: 'calendar_view_day'
+    },
+    {
+      link: '/admin/sections',
+      name: 'Sections',
+      icon: 'view_headline'
+    },
+    {
+      link: '/admin/speakers',
       name: 'Speakers',
-      icon: 'feedback'
+      icon: 'person_add'
+    },
+    {
+      link: '/admin/event',
+      name: 'Wild Apricot Event',
+      icon: 'event'
     },
   ]
 

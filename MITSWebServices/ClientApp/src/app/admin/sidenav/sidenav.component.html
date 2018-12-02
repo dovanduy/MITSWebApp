@@ -1,5 +1,5 @@
 <mat-nav-list class="admin-sidenav">
-  <a mat-list-item href="nav.link" *ngFor="let nav of navs">
+  <a mat-list-item [href]="nav.link" *ngFor="let nav of navs">
     <mat-icon>{{nav.icon}}</mat-icon> {{ nav.name }}
   </a>
 </mat-nav-list>

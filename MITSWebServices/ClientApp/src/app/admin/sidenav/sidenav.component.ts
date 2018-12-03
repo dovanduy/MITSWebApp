@@ -41,8 +41,13 @@ export class SidenavComponent implements OnInit {
     },
     {
       link: '/admin/event',
-      name: 'Wild Apricot Event',
+      name: 'Events',
       icon: 'event'
+    },
+    {
+      link: '/admin/sponsors',
+      name: 'Sponsors',
+      icon: 'spa'
     },
   ]
 

@@ -17,6 +17,7 @@ namespace MITSDataLib.Models
         public string Description { get; set; }
         public string SlideUrl { get; set; }
         public bool RestrictSlide { get; set; }
+        public bool IsPanel { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public Day Day { get; set; }

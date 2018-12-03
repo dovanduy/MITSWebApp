@@ -14,6 +14,8 @@ namespace MITSDataLib.Models
             SpeakerSections = new List<SectionSpeaker>();
         }
 
+        //Update with speaker is a panel member or not
+
         public int Id { get; set; }
         [Required]
         public string FirstName { get; set; }
@@ -22,6 +24,7 @@ namespace MITSDataLib.Models
         [Required]
         public string Bio { get; set; }
         public Guid ImageName { get; set; }
+        public bool IsPanelist { get; set; }
         public ICollection<SectionSpeaker> SpeakerSections { get; set; } 
 
     }

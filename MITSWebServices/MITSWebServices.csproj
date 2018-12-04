@@ -34,7 +34,7 @@
   <ItemGroup>
     <Folder Include="ClientApp\" />
     <Folder Include="Controllers\" />
-    <Folder Include="RestAPI\CheckInAttendant\" />
+    <Folder Include="RestAPI\CheckIn\" />
   </ItemGroup>
 
   <ItemGroup>

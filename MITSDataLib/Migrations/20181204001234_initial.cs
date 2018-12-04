@@ -41,8 +41,8 @@ namespace MITSDataLib.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true)
+                    FirstName = table.Column<string>(maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -106,10 +106,11 @@ namespace MITSDataLib.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    FirstName = table.Column<string>(nullable: false),
-                    LastName = table.Column<string>(nullable: false),
-                    Bio = table.Column<string>(nullable: false),
-                    ImageName = table.Column<Guid>(nullable: false)
+                    FirstName = table.Column<string>(maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(maxLength: 50, nullable: false),
+                    Bio = table.Column<string>(maxLength: 500, nullable: false),
+                    ImageName = table.Column<Guid>(nullable: false),
+                    IsPanelist = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -122,7 +123,7 @@ namespace MITSDataLib.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    name = table.Column<string>(nullable: true)
+                    name = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -260,10 +261,11 @@ namespace MITSDataLib.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 50, nullable: false),
+                    Description = table.Column<string>(maxLength: 500, nullable: false),
                     SlideUrl = table.Column<string>(nullable: true),
                     RestrictSlide = table.Column<bool>(nullable: false),
+                    IsPanel = table.Column<bool>(nullable: false),
                     StartDate = table.Column<DateTime>(nullable: false),
                     EndDate = table.Column<DateTime>(nullable: false),
                     DayId = table.Column<int>(nullable: true)
@@ -309,7 +311,8 @@ namespace MITSDataLib.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    WaEventId = table.Column<int>(nullable: false)
+                    WaEventId = table.Column<int>(nullable: false),
+                    IsSponsor = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

@@ -148,6 +148,8 @@ namespace MITSDataLib.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("IsSponsor");
+
                     b.Property<int>("WaEventId");
 
                     b.HasKey("Id");
@@ -165,11 +167,17 @@ namespace MITSDataLib.Migrations
 
                     b.Property<int?>("DayId");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500);
 
                     b.Property<DateTime>("EndDate");
 
-                    b.Property<string>("Name");
+                    b.Property<bool>("IsPanel");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<bool>("RestrictSlide");
 
@@ -204,15 +212,20 @@ namespace MITSDataLib.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Bio")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(500);
 
                     b.Property<string>("FirstName")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<Guid>("ImageName");
 
+                    b.Property<bool>("IsPanelist");
+
                     b.Property<string>("LastName")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 
@@ -225,7 +238,9 @@ namespace MITSDataLib.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("name");
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 
@@ -247,9 +262,13 @@ namespace MITSDataLib.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<bool>("LockoutEnabled");
 

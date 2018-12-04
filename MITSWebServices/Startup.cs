@@ -13,8 +13,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using MITSBusinessLib.Repositories;
-using MITSBusinessLib.Repositories.Interfaces;
 using MITSDataLib.Contexts;
 using MITSDataLib.Models;
 using MITSDataLib.Seeds;
@@ -133,7 +131,6 @@ namespace MITSWebServices
                 configuration.RootPath = "ClientApp/dist";
             });
 
-            services.AddScoped<IOrganizerRepo, OrganizerRepo>();
             services.AddTransient<MITSSeeder>();
 
             //TODO: Only for development

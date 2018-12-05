@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MITSDataLib.Migrations
 {
     [DbContext(typeof(MITSContext))]
-    [Migration("20181204001234_initial")]
-    partial class initial
+    [Migration("20181205193513_test")]
+    partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -150,9 +150,11 @@ namespace MITSDataLib.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("EventId");
+
                     b.Property<bool>("IsSponsor");
 
-                    b.Property<int>("WaEventId");
+                    b.Property<int?>("WaEventId");
 
                     b.HasKey("Id");
 
@@ -567,8 +569,7 @@ namespace MITSDataLib.Migrations
                 {
                     b.HasOne("MITSDataLib.Models.WildApricotEvent", "WaEvent")
                         .WithMany()
-                        .HasForeignKey("WaEventId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("WaEventId");
                 });
 
             modelBuilder.Entity("MITSDataLib.Models.Section", b =>

@@ -4,14 +4,16 @@ using MITSDataLib.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MITSDataLib.Migrations
 {
     [DbContext(typeof(MITSContext))]
-    partial class MITSContextModelSnapshot : ModelSnapshot
+    [Migration("20181205193222_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,7 +154,7 @@ namespace MITSDataLib.Migrations
 
                     b.Property<bool>("IsSponsor");
 
-                    b.Property<int?>("WaEventId");
+                    b.Property<int>("WaEventId");
 
                     b.HasKey("Id");
 
@@ -567,7 +569,8 @@ namespace MITSDataLib.Migrations
                 {
                     b.HasOne("MITSDataLib.Models.WildApricotEvent", "WaEvent")
                         .WithMany()
-                        .HasForeignKey("WaEventId");
+                        .HasForeignKey("WaEventId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MITSDataLib.Models.Section", b =>

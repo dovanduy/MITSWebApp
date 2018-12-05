@@ -15,6 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MITSDataLib.Contexts;
 using MITSDataLib.Models;
+using MITSDataLib.Models.GraphQL;
+using MITSDataLib.Repositories;
 using MITSDataLib.Seeds;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -24,6 +26,15 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using GraphQL;
+using GraphQL.Http;
+using GraphQL.Server;
+using GraphQL.Server.Transports.AspNetCore;
+using GraphQL.Server.Ui.Playground;
+using GraphQL.Types;
+using GraphiQl;
+using MITSDataLib.Repositories.Interfaces;
+using MITSDataLib.Models.GraphQL.Types;
 
 namespace MITSWebServices
 {
@@ -49,6 +60,7 @@ namespace MITSWebServices
 
                 });
      
+            //Setup up database and use OpenIddict
             services.AddDbContext<MITSContext>(options => {
                 options.UseSqlServer(_config.GetConnectionString("DevConnectionString"));
                 options.UseOpenIddict();
@@ -131,7 +143,7 @@ namespace MITSWebServices
                 configuration.RootPath = "ClientApp/dist";
             });
 
-            services.AddTransient<MITSSeeder>();
+            
 
             //TODO: Only for development
             services.AddCors(options =>
@@ -142,6 +154,20 @@ namespace MITSWebServices
                                        .AllowAnyHeader()
                                        .AllowCredentials());
             });
+
+
+            services.AddTransient<MITSSeeder>();
+            //What does this do?
+            services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
+            services.AddTransient<IEventsRepository, EventsRepository>();
+            services.AddSingleton<MITSQuery>();
+            services.AddSingleton<MITSMutation>();
+            services.AddSingleton<EventType>();
+            services.AddSingleton<EventInputType>();
+
+            var sp = services.BuildServiceProvider();
+            services.AddSingleton<ISchema>(new MITSSchema(new FuncDependencyResolver(type => sp.GetService(type))));
+
 
         }
 
@@ -163,8 +189,9 @@ namespace MITSWebServices
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-           
-        
+
+            app.UseGraphiQl();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

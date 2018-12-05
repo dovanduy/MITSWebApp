@@ -311,8 +311,9 @@ namespace MITSDataLib.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    WaEventId = table.Column<int>(nullable: false),
-                    IsSponsor = table.Column<bool>(nullable: false)
+                    IsSponsor = table.Column<bool>(nullable: false),
+                    EventId = table.Column<int>(nullable: false),
+                    WaEventId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

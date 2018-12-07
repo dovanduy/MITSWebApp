@@ -11,6 +11,6 @@ namespace MITSDataLib.Models
 
         [Required]
         public DateTime AgendaDay { get; set; }
-        public ICollection<Section> Sections { get; set; }
+        public List<Section> Sections { get; set; }
     }
 }

@@ -37,8 +37,11 @@ namespace MITSDataLib.Models
 
         [Required]
         public DateTime EndDate { get; set; }
+
+        public int DayId { get; set; }
         public Day Day { get; set; }
-        public ICollection<SectionSpeaker> SectionSpeakers { get; set; } 
+
+        public List<SectionSpeaker> SectionSpeakers { get; set; } 
 
     }
 }

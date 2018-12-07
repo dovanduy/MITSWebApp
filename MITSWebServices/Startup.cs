@@ -88,6 +88,7 @@ namespace MITSWebServices
                 {
                     options.UseEntityFrameworkCore().UseDbContext<MITSContext>();
                 })
+                
                 .AddServer(options =>
                 {
                     // Register the ASP.NET Core MVC binder used by OpenIddict.

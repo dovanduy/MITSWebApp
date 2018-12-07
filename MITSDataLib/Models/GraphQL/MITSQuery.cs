@@ -10,19 +10,27 @@ namespace MITSDataLib.Models
 {
     public class MITSQuery : ObjectGraphType
     {
-        public MITSQuery(IEventsRepository eventRepo)
+        public MITSQuery(IEventsRepository eventsRepo, IDaysRepository daysRepo)
         {
             Field<EventType>(
                 "event",
                 arguments: new QueryArguments(new QueryArgument<IntGraphType> { Name = "id"}),
-                resolve: context => eventRepo.GetEvent(context.GetArgument<int>("id"))
+                resolve: context => eventsRepo.GetEvent(context.GetArgument<int>("id"))
 
                 );
 
             Field<ListGraphType<EventType>>(
                 "events",
-                resolve: context => eventRepo.GetEvents()
-                ); 
+                resolve: context => eventsRepo.GetEvents()
+                );
+
+
+            Field<ListGraphType<DayType>, List<Day>>()
+                .Name("Days")
+                .ResolveAsync(context =>
+                {
+                    return daysRepo.GetDays();
+                });
             
         }
 

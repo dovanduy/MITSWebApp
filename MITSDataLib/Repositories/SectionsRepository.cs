@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MITSDataLib.Repositories
 {
-    class SectionsRepository : ISectionsRepository
+    public class SectionsRepository : ISectionsRepository
     {
         private readonly MITSContext context;
 

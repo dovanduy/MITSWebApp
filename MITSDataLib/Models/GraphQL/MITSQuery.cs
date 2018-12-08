@@ -1,4 +1,5 @@
-﻿using GraphQL.Types;
+﻿using GraphQL.Authorization;
+using GraphQL.Types;
 using MITSDataLib.Models.GraphQL.Types;
 using MITSDataLib.Repositories.Interfaces;
 using System;
@@ -8,8 +9,10 @@ using System.Text;
 
 namespace MITSDataLib.Models
 {
+    
     public class MITSQuery : ObjectGraphType
     {
+        
         public MITSQuery(IEventsRepository eventsRepo, IDaysRepository daysRepo)
         {
             Field<EventType>(
@@ -19,6 +22,7 @@ namespace MITSDataLib.Models
 
                 );
 
+            this.AuthorizeWith("AdminPolicy");
             Field<ListGraphType<EventType>>(
                 "events",
                 resolve: context => eventsRepo.GetEvents()

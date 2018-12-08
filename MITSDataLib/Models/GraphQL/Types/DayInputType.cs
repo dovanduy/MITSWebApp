@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MITSDataLib.Models.GraphQL.Types
 {
-    class DayInputType : InputObjectGraphType
+    public class DayInputType : InputObjectGraphType
     {
         public DayInputType()
         {

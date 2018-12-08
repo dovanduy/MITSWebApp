@@ -9,21 +9,24 @@ using GraphQL.Types;
 using MITSDataLib.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using GraphQL.Validation;
 
 namespace MITSWebServices.Controllers
 {
     //[Authorize(Policy = "Admin")]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("[controller]")]
     public class GraphQLController : ControllerBase
     {
         private readonly IDocumentExecuter _documentExecuter;
+        private readonly IEnumerable<IValidationRule> _validationRules;
         private readonly ISchema _schema;
 
-        public GraphQLController(ISchema schema, IDocumentExecuter documentExecuter)
+        public GraphQLController(ISchema schema, IDocumentExecuter documentExecuter, IEnumerable<IValidationRule> validationRules)
         {
             _schema = schema;
             _documentExecuter = documentExecuter;
+            _validationRules = validationRules;
         }
 
         [HttpPost]
@@ -35,7 +38,9 @@ namespace MITSWebServices.Controllers
             {
                 Schema = _schema,
                 Query = query.Query,
-                Inputs = inputs
+                Inputs = inputs,
+                ValidationRules = _validationRules
+                
             };
 
             var result = await _documentExecuter.ExecuteAsync(executionOptions).ConfigureAwait(false);

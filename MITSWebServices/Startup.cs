@@ -35,6 +35,8 @@ using GraphQL.Types;
 using GraphiQl;
 using MITSDataLib.Repositories.Interfaces;
 using MITSDataLib.Models.GraphQL.Types;
+using static MITSWebServices.GraphQL;
+using GraphQL.Validation;
 
 namespace MITSWebServices
 {
@@ -64,7 +66,7 @@ namespace MITSWebServices
             services.AddDbContext<MITSContext>(options => {
                 options.UseSqlServer(_config.GetConnectionString("DevConnectionString"));
                 options.UseOpenIddict();
-                options.EnableSensitiveDataLogging();
+                //options.EnableSensitiveDataLogging();
             });
 
             services.AddIdentity<User, IdentityRole>(option =>
@@ -73,13 +75,23 @@ namespace MITSWebServices
             })
             .AddEntityFrameworkStores<MITSContext>();
 
-           
-            services.AddAuthorization(options => {
-                options.AddPolicy("Faculty", policy => policy.RequireClaim("Role", "Faculty"));
-                options.AddPolicy("Student", policy => policy.RequireClaim("Role", "Student"));
-                options.AddPolicy("Admin", policy => policy.RequireClaim("Role", "Admin"));
-               
+
+            //services.AddAuthorization(options => {
+            //    options.AddPolicy("Faculty", policy => policy.RequireClaim("Role", "Faculty"));
+            //    options.AddPolicy("Student", policy => policy.RequireClaim("Role", "Student"));
+            //    options.AddPolicy("Admin", policy => policy.RequireClaim("Role", "Admin"));
+
+            //});
+
+            services.AddGraphQLAuth(options =>
+            {
+                options.AddPolicy("AdminPolicy", policy => policy.RequireClaim("role", "Admin"));
             });
+
+            services.AddGraphQL(options =>
+            {
+                options.ExposeExceptions = true;
+            }).AddUserContextBuilder(context => new GraphQLUserContext { User = context.User });
 
 
             services.AddOpenIddict()
@@ -122,9 +134,11 @@ namespace MITSWebServices
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme
-
-            )
+            services.AddAuthentication(options => 
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
                 .AddJwtBearer(options =>
                 {
                     options.Authority = "http://localhost:50000/";
@@ -160,12 +174,20 @@ namespace MITSWebServices
             services.AddTransient<MITSSeeder>();
             //What does this do?
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
+            services.AddSingleton<IDocumentWriter, DocumentWriter>();
+            services.AddSingleton<ISchema, MITSSchema>();
             services.AddTransient<IEventsRepository, EventsRepository>();
             services.AddTransient<IDaysRepository, DaysRepository>();
+            services.AddTransient<ISectionsRepository, SectionsRepository>();
             services.AddSingleton<MITSQuery>();
             services.AddSingleton<MITSMutation>();
             services.AddSingleton<EventType>();
             services.AddSingleton<EventInputType>();
+            services.AddSingleton<DayType>();
+            services.AddSingleton<DayInputType>();
+            services.AddSingleton<SectionType>();
+            
+
 
             var sp = services.BuildServiceProvider();
             services.AddSingleton<ISchema>(new MITSSchema(new FuncDependencyResolver(type => sp.GetService(type))));
@@ -192,14 +214,19 @@ namespace MITSWebServices
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
+            var validationRules = app.ApplicationServices.GetService<IValidationRule>();
+            app.UseGraphQL<ISchema>("/graphql");
+
             app.UseGraphiQl();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
-            });
+            app.UseMvc(
+            //routes =>
+            //{
+            //    routes.MapRoute(
+            //        name: "default",
+            //        template: "{controller}/{action=Index}/{id?}");
+            //}
+            );
 
             app.UseSpa(spa =>
             {

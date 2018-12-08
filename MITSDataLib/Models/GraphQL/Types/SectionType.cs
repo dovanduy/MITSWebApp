@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MITSDataLib.Models.GraphQL.Types
 {
-    class SectionType : ObjectGraphType<Section>
+    public class SectionType : ObjectGraphType<Section>
     {
         public SectionType()
         {

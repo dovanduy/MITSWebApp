@@ -94,6 +94,7 @@ namespace MITSDataLib.Seeds
 
             var day1Sections = new List<Section>();
             var day2Sections = new List<Section>();
+            var allSections = new List<Section>();
                       
 
             if (!_context.Sections.Any())
@@ -267,6 +268,8 @@ namespace MITSDataLib.Seeds
               
                 day1Sections.AddRange(section1);
                 day2Sections.AddRange(section2);
+                allSections.AddRange(day1Sections);
+                allSections.AddRange(day2Sections);
 
                 _context.Sections.AddRange(day1Sections);
                 _context.Sections.AddRange(day2Sections);
@@ -283,15 +286,226 @@ namespace MITSDataLib.Seeds
             {
                 var newSpeakers = new List<Speaker>
                 {
-                    new Speaker { }
+                    new Speaker
+                    {
+                        FirstName = "Bob",
+                        LastName = "Anderson",
+                        Bio = "I have worked on anguler stuff for exactly one week",
+                        ImageName = Guid.NewGuid(),
+                        IsPanelist = false
+                    },
+                    new Speaker
+                    {
+                        FirstName = "Jane",
+                        LastName = "Smith",
+                        Bio = "I have worked on anguler stuff for exactly two week",
+                        ImageName = Guid.NewGuid(),
+                        IsPanelist = false
+                    },
+                    new Speaker
+                    {
+                        FirstName = "Andrew",
+                        LastName = "Shroble",
+                        Bio = "I have worked on anguler stuff for exactly three week",
+                        ImageName = Guid.NewGuid(),
+                        IsPanelist = false
+                    },
+                    new Speaker
+                    {
+                        FirstName = "Pete",
+                        LastName = "Jacboson",
+                        Bio = "I have worked on anguler stuff for exactly Four week",
+                        ImageName = Guid.NewGuid(),
+                        IsPanelist = false
+                    },
+                    new Speaker
+                    {
+                        FirstName = "John",
+                        LastName = "Silvers",
+                        Bio = "I have worked on anguler stuff for exactly one week",
+                        ImageName = Guid.NewGuid(),
+                        IsPanelist = false
+                    },
+                    new Speaker
+                    {
+                        FirstName = "Jennifer",
+                        LastName = "Silvers",
+                        Bio = "I have worked on anguler stuff for exactly one week",
+                        ImageName = Guid.NewGuid(),
+                        IsPanelist = false
+                    },
+                    new Speaker
+                    {
+                        FirstName = "Frank",
+                        LastName = "Mileto",
+                        Bio = "I have worked on anguler stuff for exactly one week",
+                        ImageName = Guid.NewGuid(),
+                        IsPanelist = false
+                    },
+                    new Speaker
+                    {
+                        FirstName = "Christoper",
+                        LastName = "Logsdon",
+                        Bio = "I have worked on anguler stuff for exactly one week",
+                        ImageName = Guid.NewGuid(),
+                        IsPanelist = false
+                    },
+                    new Speaker
+                    {
+                        FirstName = "Richard",
+                        LastName = "Chauvin",
+                        Bio = "I have worked on anguler stuff for exactly one week",
+                        ImageName = Guid.NewGuid(),
+                        IsPanelist = false
+                    },
+                    new Speaker
+                    {
+                        FirstName = "Brandy",
+                        LastName = "Silvers",
+                        Bio = "I have worked on anguler stuff for exactly one week",
+                        ImageName = Guid.NewGuid(),
+                        IsPanelist = false
+                    },
+                    new Speaker
+                    {
+                        FirstName = "Jason",
+                        LastName = "Silvers",
+                        Bio = "I have worked on anguler stuff for exactly one week",
+                        ImageName = Guid.NewGuid(),
+                        IsPanelist = false
+                    },
+                    new Speaker
+                    {
+                        FirstName = "Shane",
+                        LastName = "Zondor",
+                        Bio = "I have worked on anguler stuff for exactly one week",
+                        ImageName = Guid.NewGuid(),
+                        IsPanelist = false
+                    },
+                    new Speaker
+                    {
+                        FirstName = "Markiesha",
+                        LastName = "Crawford",
+                        Bio = "I have worked on anguler stuff for exactly one week",
+                        ImageName = Guid.NewGuid(),
+                        IsPanelist = false
+                    },
+                    new Speaker
+                    {
+                        FirstName = "Brian",
+                        LastName = "Peters",
+                        Bio = "I have worked on anguler stuff for exactly one week",
+                        ImageName = Guid.NewGuid(),
+                        IsPanelist = false
+                    },
                 };
+
+                speakers.AddRange(newSpeakers);
+                _context.Speakers.AddRange(speakers);
+                _context.SaveChanges();
             }
 
 
             #endregion
 
+            var sectionSpeakers = new List<SectionSpeaker>();
+
+            #region SpeakerSection
+            allSections.ForEach(section =>
+            {
+                var assignedSpeaker = speakers.First();
+                speakers.Remove(assignedSpeaker);
+                var newSectionSpeaker = new SectionSpeaker { Section = section, Speaker = assignedSpeaker };
+                sectionSpeakers.Add(newSectionSpeaker);
+
+            });
+
+            _context.SectionsSpeakers.AddRange(sectionSpeakers);
+            _context.SaveChanges();
+
+            #endregion
+
+            #region Tag
+
+            var tags = new List<Tag>();
+
+            if (!_context.Tags.Any())
+            {
+                var newTags = new List<Tag>
+                {
+                    new Tag {name = "Security" },
+                    new Tag {name = "Angular"},
+                    new Tag {name = "SaaS"},
+                    new Tag {name = "Cloud"},
+                    new Tag {name = "Testing"}
+
+                };
+
+                tags.AddRange(newTags);
+                _context.Tags.AddRange(tags);
+                _context.SaveChanges();
+            }
+
+            #endregion
+
+
+
+            #region SectionTag
+
+            if (!_context.SectionsTags.Any())
+            {
+
+                var allSectionTags = new List<SectionTag>();
+
+                allSections.ForEach(section =>
+                {
+                    Random random = new Random();
+                    int numOfTags = random.Next(1, 3);
+
+                    if (numOfTags == 1)
+                    {
+                        var index = random.Next(1, tags.Count);
+                        var newSectionTag = new SectionTag { SectionId = section.Id, TagId = tags[index].Id };
+
+                        allSectionTags.Add(newSectionTag);
+                    }
+
+                    if (numOfTags == 2)
+                    {
+
+                        var index1 = random.Next(1, tags.Count);
+                        var index2 = random.Next(1, tags.Count);
+
+                        while (index1 == index2)
+                        {
+                            index2 = random.Next(1, tags.Count);
+                        }
+
+
+                        var newSectionTag1 = new SectionTag { SectionId = section.Id, TagId = tags[index1].Id };
+                        var newSectionTag2 = new SectionTag { SectionId = section.Id, TagId = tags[index2].Id };
+
+                        allSectionTags.Add(newSectionTag1);
+                        allSectionTags.Add(newSectionTag2);
+                    }
+
+
+
+                });
+
+                _context.SectionsTags.AddRange(allSectionTags);
+                _context.SaveChanges();
+            }
+
+
+
+            #endregion
 
 
         }
     }
+
+    
 }
+
+

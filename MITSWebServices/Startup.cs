@@ -64,7 +64,7 @@ namespace MITSWebServices
             services.AddDbContext<MITSContext>(options => {
                 options.UseSqlServer(_config.GetConnectionString("DevConnectionString"));
                 options.UseOpenIddict();
-
+                options.EnableSensitiveDataLogging();
             });
 
             services.AddIdentity<User, IdentityRole>(option =>
@@ -161,6 +161,7 @@ namespace MITSWebServices
             //What does this do?
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
             services.AddTransient<IEventsRepository, EventsRepository>();
+            services.AddTransient<IDaysRepository, DaysRepository>();
             services.AddSingleton<MITSQuery>();
             services.AddSingleton<MITSMutation>();
             services.AddSingleton<EventType>();

@@ -4,14 +4,16 @@ using MITSDataLib.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MITSDataLib.Migrations
 {
     [DbContext(typeof(MITSContext))]
-    partial class MITSContextModelSnapshot : ModelSnapshot
+    [Migration("20181208025919_sectionspeaker")]
+    partial class sectionspeaker
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -204,20 +206,7 @@ namespace MITSDataLib.Migrations
 
                     b.HasIndex("SpeakerId");
 
-                    b.ToTable("SectionsSpeakers");
-                });
-
-            modelBuilder.Entity("MITSDataLib.Models.SectionTag", b =>
-                {
-                    b.Property<int>("SectionId");
-
-                    b.Property<int>("TagId");
-
-                    b.HasKey("SectionId", "TagId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("SectionsTags");
+                    b.ToTable("SectionSpeaker");
                 });
 
             modelBuilder.Entity("MITSDataLib.Models.Speaker", b =>
@@ -601,19 +590,6 @@ namespace MITSDataLib.Migrations
                     b.HasOne("MITSDataLib.Models.Speaker", "Speaker")
                         .WithMany("SpeakerSections")
                         .HasForeignKey("SpeakerId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MITSDataLib.Models.SectionTag", b =>
-                {
-                    b.HasOne("MITSDataLib.Models.Section", "Section")
-                        .WithMany("SectionTags")
-                        .HasForeignKey("SectionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MITSDataLib.Models.Tag", "Tag")
-                        .WithMany("TagSections")
-                        .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

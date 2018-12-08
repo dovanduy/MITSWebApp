@@ -34,7 +34,8 @@ namespace MITSDataLib.Models
 
         [Required]
         public bool IsPanelist { get; set; }
-        public ICollection<SectionSpeaker> SpeakerSections { get; set; } 
+
+        public List<SectionSpeaker> SpeakerSections { get; set; } 
 
     }
 }

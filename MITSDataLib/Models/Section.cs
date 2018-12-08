@@ -11,6 +11,7 @@ namespace MITSDataLib.Models
         {
             //This makes it so you don't have to instantiate the list when you want to add items. 
             SectionSpeakers = new List<SectionSpeaker>();
+            SectionTags = new List<SectionTag>();
         }
 
         public int Id { get; set; }
@@ -41,6 +42,7 @@ namespace MITSDataLib.Models
         public int DayId { get; set; }
         public Day Day { get; set; }
 
+        public List<SectionTag> SectionTags { get; set; }
         public List<SectionSpeaker> SectionSpeakers { get; set; } 
 
     }

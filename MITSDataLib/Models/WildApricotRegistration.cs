@@ -5,10 +5,9 @@ using System.Text;
 
 namespace MITSDataLib.Models
 {
-    public class WildApricotRegistrationType
+    public class WildApricotRegistration
     {
         public int Id { get; set; }
-        public int WaId { get; set; }
         public bool IsEnabled { get; set; }
         public string Description { get; set; }
         [Column(TypeName = "decimal(18,2)")]
@@ -19,6 +18,8 @@ namespace MITSDataLib.Models
         public DateTime AvailableFrom { get; set; }
         public DateTime AvailableThrough { get; set; }
         public string Name { get; set; }
+
+        public int WaEventId { get; set; }
         public WildApricotEvent WaEvent { get; set; }
 
     }

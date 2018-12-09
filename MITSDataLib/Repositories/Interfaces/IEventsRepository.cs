@@ -11,5 +11,7 @@ namespace MITSDataLib.Repositories.Interfaces
         Task<Event> GetEvent(int id);
         Task<List<Event>> GetEvents();
         Task<Event> AddEvent(Event newEvent);
+        Task<List<WildApricotEvent>> GetWaEventByEventId(int id);
+        Task<List<WildApricotRegistration>> GetWaRegistrationTypesByWaEventId(int id);
     }
 }

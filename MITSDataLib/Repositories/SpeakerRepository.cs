@@ -11,23 +11,23 @@ namespace MITSDataLib.Repositories.Interfaces
 {
     public class SpeakerRepository : ISpeakerRepository
     {
-        private readonly MITSContext context;
+        private readonly MITSContext _context;
 
         public SpeakerRepository(MITSContext context)
         {
-            this.context = context;
+            this._context = context;
         }
 
         public async Task<List<Speaker>> GetSpeakersAsync()
         {
-            return await context.Speakers
+            return await _context.Speakers
                 .AsNoTracking()
                 .ToListAsync();
         }
 
         public async Task<List<Speaker>> GetSpeakersBySectionIdAsync(int id)
         {
-            return await context.SectionsSpeakers
+            return await _context.SectionsSpeakers
                 .Where(ss => ss.SectionId == id)
                 .Select(ss => ss.Speaker)
                 .ToListAsync();

@@ -14,10 +14,7 @@ namespace MITSDataLib.Models.GraphQL.Types
             Field(d => d.AgendaDay);
             Field<ListGraphType<SectionType>, List<Section>>()
                 .Name("Sections")
-                .ResolveAsync(context =>
-                {
-                    return sectionsRepo.getSectionsByDayId(context.Source.Id);
-                });
+                .ResolveAsync(context => sectionsRepo.getSectionsByDayId(context.Source.Id));
         }
     }
 }

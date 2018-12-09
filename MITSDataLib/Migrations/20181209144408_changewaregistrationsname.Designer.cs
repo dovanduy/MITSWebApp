@@ -4,14 +4,16 @@ using MITSDataLib.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MITSDataLib.Migrations
 {
     [DbContext(typeof(MITSContext))]
-    partial class MITSContextModelSnapshot : ModelSnapshot
+    [Migration("20181209144408_changewaregistrationsname")]
+    partial class changewaregistrationsname
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -369,6 +371,8 @@ namespace MITSDataLib.Migrations
                     b.Property<string>("RegistrationCode");
 
                     b.Property<int>("WaEventId");
+
+                    b.Property<int>("WaId");
 
                     b.HasKey("Id");
 

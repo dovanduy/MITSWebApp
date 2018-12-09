@@ -16,7 +16,7 @@ namespace MITSDataLib.Models
 
         [Required]
         [StringLength(50, ErrorMessage = "Tag cannot be longer than 50 characters.")]
-        public string name { get; set; }
+        public string Name { get; set; }
 
         public List<SectionTag> TagSections { get; set; }
     }

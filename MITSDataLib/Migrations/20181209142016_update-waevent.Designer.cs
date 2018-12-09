@@ -4,14 +4,16 @@ using MITSDataLib.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MITSDataLib.Migrations
 {
     [DbContext(typeof(MITSContext))]
-    partial class MITSContextModelSnapshot : ModelSnapshot
+    [Migration("20181209142016_update-waevent")]
+    partial class updatewaevent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,11 +150,15 @@ namespace MITSDataLib.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("EventId");
+
                     b.Property<bool>("IsSponsor");
 
-                    b.Property<int>("MainEventId");
+                    b.Property<int>("WaEventId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("WaEventId");
 
                     b.ToTable("Events");
                 });
@@ -327,8 +333,6 @@ namespace MITSDataLib.Migrations
 
                     b.Property<DateTime>("EndDate");
 
-                    b.Property<int>("EventId");
-
                     b.Property<bool>("IsEnabled");
 
                     b.Property<string>("Location");
@@ -337,15 +341,14 @@ namespace MITSDataLib.Migrations
 
                     b.Property<DateTime>("StartDate");
 
-                    b.HasKey("Id");
+                    b.Property<int>("WaId");
 
-                    b.HasIndex("EventId")
-                        .IsUnique();
+                    b.HasKey("Id");
 
                     b.ToTable("WaEvents");
                 });
 
-            modelBuilder.Entity("MITSDataLib.Models.WildApricotRegistration", b =>
+            modelBuilder.Entity("MITSDataLib.Models.WildApricotRegistrationType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -370,11 +373,13 @@ namespace MITSDataLib.Migrations
 
                     b.Property<int>("WaEventId");
 
+                    b.Property<int>("WaId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("WaEventId");
 
-                    b.ToTable("WaRegistrations");
+                    b.ToTable("WaRegistrationTypes");
                 });
 
             modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictApplication", b =>
@@ -573,6 +578,14 @@ namespace MITSDataLib.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("MITSDataLib.Models.Event", b =>
+                {
+                    b.HasOne("MITSDataLib.Models.WildApricotEvent", "WaEvent")
+                        .WithMany()
+                        .HasForeignKey("WaEventId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("MITSDataLib.Models.Section", b =>
                 {
                     b.HasOne("MITSDataLib.Models.Day", "Day")
@@ -607,15 +620,7 @@ namespace MITSDataLib.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MITSDataLib.Models.WildApricotEvent", b =>
-                {
-                    b.HasOne("MITSDataLib.Models.Event", "Event")
-                        .WithOne("WaEvent")
-                        .HasForeignKey("MITSDataLib.Models.WildApricotEvent", "EventId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MITSDataLib.Models.WildApricotRegistration", b =>
+            modelBuilder.Entity("MITSDataLib.Models.WildApricotRegistrationType", b =>
                 {
                     b.HasOne("MITSDataLib.Models.WildApricotEvent", "WaEvent")
                         .WithMany("WaRegistrationTypes")

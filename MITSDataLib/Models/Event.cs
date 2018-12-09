@@ -13,7 +13,7 @@ namespace MITSDataLib.Models
         public bool IsSponsor { get; set; }
 
         [Required]
-        public int EventId { get; set; }
+        public int MainEventId { get; set; }
 
         public WildApricotEvent WaEvent { get; set; }
 

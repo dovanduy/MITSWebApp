@@ -1,19 +1,15 @@
-﻿using GraphQL.Authorization;
+﻿using System.Collections.Generic;
 using GraphQL.Types;
 using MITSDataLib.Models.GraphQL.Types;
 using MITSDataLib.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-
-namespace MITSDataLib.Models
+namespace MITSDataLib.Models.GraphQL
 {
     
     public class MITSQuery : ObjectGraphType
     {
         
-        public MITSQuery(IEventsRepository eventsRepo, IDaysRepository daysRepo, ISpeakerRepository speakerRepo)
+        public MITSQuery(IEventsRepository eventsRepo, IDaysRepository daysRepo, ISpeakerRepository speakerRepo, ITagsRepository tagRepo)
         {
             Name = "query";
 
@@ -57,6 +53,14 @@ namespace MITSDataLib.Models
             Field<ListGraphType<SpeakerType>, List<Speaker>>()
                 .Name("speakers")
                 .ResolveAsync(context => speakerRepo.GetSpeakersAsync() );
+
+            #endregion
+
+            #region Tag
+
+            Field<ListGraphType<TagType>, List<Tag>>()
+                .Name("tags")
+                .ResolveAsync(context => tagRepo.GetTagsAsync());
 
             #endregion
 

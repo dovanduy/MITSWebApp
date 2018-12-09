@@ -38,12 +38,13 @@ namespace MITSDataLib.Contexts
                 .WithMany(tag => tag.TagSections)
                 .HasForeignKey(st => st.TagId);
 
+       
             base.OnModelCreating(modelBuilder);
         }
 
 
         public DbSet<WildApricotEvent> WaEvents { get; set; }
-        public DbSet<WildApricotRegistrationType> WaRegistrationTypes { get; set; }
+        public DbSet<WildApricotRegistration> WaRegistrations { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<SectionSpeaker> SectionsSpeakers { get; set; }
         public DbSet<SectionTag> SectionsTags { get; set; }

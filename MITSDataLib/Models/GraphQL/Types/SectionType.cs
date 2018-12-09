@@ -8,7 +8,7 @@ namespace MITSDataLib.Models.GraphQL.Types
 {
     public class SectionType : ObjectGraphType<Section>
     {
-        public SectionType(ISpeakerRepository speakerRepo)
+        public SectionType(ISpeakerRepository speakerRepo, ITagsRepository tagsRepo)
         {
             Field(s => s.Id);
             Field(s => s.Name);
@@ -20,10 +20,10 @@ namespace MITSDataLib.Models.GraphQL.Types
             Field(s => s.EndDate);
             Field<ListGraphType<SpeakerType>, List<Speaker>>()
                 .Name("speakers")
-                .ResolveAsync(context => 
-                {
-                    return speakerRepo.GetSpeakersBySectionIdAsync(context.Source.Id);
-                } );
+                .ResolveAsync(context => speakerRepo.GetSpeakersBySectionIdAsync(context.Source.Id));
+            Field<ListGraphType<TagType>, List<Tag>>()
+                .Name("tags")
+                .ResolveAsync(context => tagsRepo.GetTagsBySectionIdAsync(context.Source.Id));
 
         }
     }

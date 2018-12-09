@@ -433,11 +433,11 @@ namespace MITSDataLib.Seeds
             {
                 var newTags = new List<Tag>
                 {
-                    new Tag {name = "Security" },
-                    new Tag {name = "Angular"},
-                    new Tag {name = "SaaS"},
-                    new Tag {name = "Cloud"},
-                    new Tag {name = "Testing"}
+                    new Tag {Name = "Security" },
+                    new Tag {Name = "Angular"},
+                    new Tag {Name = "SaaS"},
+                    new Tag {Name = "Cloud"},
+                    new Tag {Name = "Testing"}
 
                 };
 

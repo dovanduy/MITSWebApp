@@ -4,14 +4,16 @@ using MITSDataLib.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MITSDataLib.Migrations
 {
     [DbContext(typeof(MITSContext))]
-    partial class MITSContextModelSnapshot : ModelSnapshot
+    [Migration("20181209143543_removewaidfromwaevent")]
+    partial class removewaidfromwaevent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -345,7 +347,7 @@ namespace MITSDataLib.Migrations
                     b.ToTable("WaEvents");
                 });
 
-            modelBuilder.Entity("MITSDataLib.Models.WildApricotRegistration", b =>
+            modelBuilder.Entity("MITSDataLib.Models.WildApricotRegistrationType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -370,11 +372,13 @@ namespace MITSDataLib.Migrations
 
                     b.Property<int>("WaEventId");
 
+                    b.Property<int>("WaId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("WaEventId");
 
-                    b.ToTable("WaRegistrations");
+                    b.ToTable("WaRegistrationTypes");
                 });
 
             modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictApplication", b =>
@@ -615,7 +619,7 @@ namespace MITSDataLib.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MITSDataLib.Models.WildApricotRegistration", b =>
+            modelBuilder.Entity("MITSDataLib.Models.WildApricotRegistrationType", b =>
                 {
                     b.HasOne("MITSDataLib.Models.WildApricotEvent", "WaEvent")
                         .WithMany("WaRegistrationTypes")

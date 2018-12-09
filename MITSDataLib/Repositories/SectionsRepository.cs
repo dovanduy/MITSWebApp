@@ -12,19 +12,27 @@ namespace MITSDataLib.Repositories
 {
     public class SectionsRepository : ISectionsRepository
     {
-        private readonly MITSContext context;
+        private readonly MITSContext _context;
 
         public SectionsRepository(MITSContext context)
         {
-            this.context = context;
+            _context = context;
         }
 
         public async Task<List<Section>> getSectionsByDayId(int id)
         {
-            return await context.Sections
+            return await _context.Sections
                 .Where(section => section.DayId == id)
                 .ToListAsync();
     
+        }
+
+        public async Task<List<Section>> getSectionsByTagId(int id)
+        {
+            return await _context.SectionsTags
+                .Where(st => st.TagId == id)
+                .Select(st => st.Section)
+                .ToListAsync();
         }
     }
 }

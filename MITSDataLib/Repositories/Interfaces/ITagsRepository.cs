@@ -6,9 +6,9 @@ using MITSDataLib.Models;
 
 namespace MITSDataLib.Repositories.Interfaces
 {
-    public interface ISectionsRepository
+    public interface ITagsRepository
     {
-        Task<List<Section>> getSectionsByDayId(int id);
-        Task<List<Section>> getSectionsByTagId(int id);
+        Task<List<Tag>> GetTagsAsync();
+        Task<List<Tag>> GetTagsBySectionIdAsync(int id);
     }
 }

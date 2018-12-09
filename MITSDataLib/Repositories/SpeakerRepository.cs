@@ -20,9 +20,11 @@ namespace MITSDataLib.Repositories.Interfaces
 
         public async Task<List<Speaker>> GetSpeakersAsync()
         {
-            return await _context.Speakers
+            var speakers = await _context.Speakers
                 .AsNoTracking()
                 .ToListAsync();
+
+            return speakers;
         }
 
         public async Task<List<Speaker>> GetSpeakersBySectionIdAsync(int id)

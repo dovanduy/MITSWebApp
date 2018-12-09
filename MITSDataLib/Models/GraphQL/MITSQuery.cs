@@ -9,7 +9,7 @@ namespace MITSDataLib.Models.GraphQL
     public class MITSQuery : ObjectGraphType
     {
         
-        public MITSQuery(IEventsRepository eventsRepo, IDaysRepository daysRepo, ISpeakerRepository speakerRepo, ITagsRepository tagRepo)
+        public MITSQuery(IEventsRepository eventsRepo, IDaysRepository daysRepo, ISpeakerRepository speakerRepo, ITagsRepository tagRepo, IUserRepository userRepo)
         {
             Name = "query";
 
@@ -61,6 +61,14 @@ namespace MITSDataLib.Models.GraphQL
             Field<ListGraphType<TagType>, List<Tag>>()
                 .Name("tags")
                 .ResolveAsync(context => tagRepo.GetTagsAsync());
+
+            #endregion
+
+            #region User
+
+            Field<ListGraphType<UserType>, List<User>>()
+                .Name("users")
+                .ResolveAsync(context => userRepo.GetUsersAsync());
 
             #endregion
 

@@ -181,20 +181,20 @@ namespace MITSWebServices
             services.AddTransient<ISectionsRepository, SectionsRepository>();
             services.AddTransient<ISpeakerRepository, SpeakerRepository>();
             services.AddTransient<ITagsRepository, TagsRepository>();
-            services.AddSingleton<MITSQuery>();
-            services.AddSingleton<MITSMutation>();
-            services.AddSingleton<EventType>();
-            services.AddSingleton<EventInputType>();
-            services.AddSingleton<DayType>();
-            services.AddSingleton<DayInputType>();
-            services.AddSingleton<SectionType>();
-            services.AddSingleton<SpeakerType>();
-            services.AddSingleton<TagType>();
-            services.AddSingleton<WaEventType>();
-            services.AddSingleton<WaRegistrationType>();
-
-
-
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddScoped<MITSQuery>();
+            services.AddScoped<MITSMutation>();
+            services.AddScoped<EventType>();
+            services.AddScoped<EventInputType>();
+            services.AddScoped<DayType>();
+            services.AddScoped<DayInputType>();
+            services.AddScoped<SectionType>();
+            services.AddScoped<SpeakerType>();
+            services.AddScoped<TagType>();
+            services.AddScoped<WaEventType>();
+            services.AddScoped<WaRegistrationType>();
+            services.AddScoped<UserType>();
+            services.AddScoped<UserRoleType>();
 
             var sp = services.BuildServiceProvider();
             services.AddSingleton<ISchema>(new MITSSchema(new FuncDependencyResolver(type => sp.GetService(type))));

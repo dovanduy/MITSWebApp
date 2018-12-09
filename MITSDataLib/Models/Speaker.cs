@@ -30,6 +30,7 @@ namespace MITSDataLib.Models
         [StringLength(500, ErrorMessage = "Section Description cannot be longer than 500 characters.")]
         public string Bio { get; set; }
 
+        [Required]
         public Guid ImageName { get; set; }
 
         [Required]

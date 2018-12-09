@@ -14,7 +14,9 @@ namespace MITSDataLib.Models.GraphQL.Types
             Field(s => s.LastName);
             Field(s => s.Bio);
             Field(s => s.IsPanelist);
-            //Field(s => s.ImageName, type: typeof (GuidGraphType));
+            //Field<GuidGraphType>("imageName", resolve: context => context.Source.ImageName);
+            //Remember to mutate back to a guid type to store in the database.
+            Field(s => s.ImageName, type: typeof (StringGraphType));
         }
     }
 }

@@ -179,6 +179,7 @@ namespace MITSWebServices
             services.AddTransient<IEventsRepository, EventsRepository>();
             services.AddTransient<IDaysRepository, DaysRepository>();
             services.AddTransient<ISectionsRepository, SectionsRepository>();
+            services.AddTransient<ISpeakerRepository, SpeakerRepository>();
             services.AddSingleton<MITSQuery>();
             services.AddSingleton<MITSMutation>();
             services.AddSingleton<EventType>();
@@ -186,6 +187,7 @@ namespace MITSWebServices
             services.AddSingleton<DayType>();
             services.AddSingleton<DayInputType>();
             services.AddSingleton<SectionType>();
+            services.AddSingleton<SpeakerType>();
             
 
 

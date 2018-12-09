@@ -13,9 +13,11 @@ namespace MITSDataLib.Models
     public class MITSQuery : ObjectGraphType
     {
         
-        public MITSQuery(IEventsRepository eventsRepo, IDaysRepository daysRepo)
+        public MITSQuery(IEventsRepository eventsRepo, IDaysRepository daysRepo, ISpeakerRepository speakerRepo)
         {
             Name = "query";
+
+            #region Event
 
             Field<EventType>(
                 "event",
@@ -32,6 +34,9 @@ namespace MITSDataLib.Models
                 //.AuthorizeWith("AdminPolicy")
                 ;
 
+            #endregion
+
+            #region Day
             //Field<ListGraphType<DayType>>(
             //    "days",
             //    resolve: context => daysRepo.GetDays()
@@ -45,9 +50,19 @@ namespace MITSDataLib.Models
                     return daysRepo.GetDays();
                 });
 
+            #endregion
+
+            #region Speaker
+
+            Field<ListGraphType<SpeakerType>, List<Speaker>>()
+                .Name("speakers")
+                .ResolveAsync(context => speakerRepo.GetSpeakersAsync() );
+
+            #endregion
+
         }
 
-       
-       
+
+
     }
 }

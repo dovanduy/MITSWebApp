@@ -20,9 +20,11 @@ namespace MITSDataLib.Repositories
 
         public async Task<List<Day>> GetDays()
         {
-            return await context.Days
+            var days = await context.Days
                 .AsNoTracking()
                 .ToListAsync();
+
+            return days;
         }
     }
 }

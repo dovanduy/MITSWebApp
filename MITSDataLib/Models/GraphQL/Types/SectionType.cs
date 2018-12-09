@@ -9,6 +9,7 @@ namespace MITSDataLib.Models.GraphQL.Types
     {
         public SectionType()
         {
+            Field(s => s.Id);
             Field(s => s.Name);
             Field(s => s.Description);
             Field(s => s.SlideUrl);

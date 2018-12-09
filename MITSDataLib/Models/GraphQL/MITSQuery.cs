@@ -15,6 +15,8 @@ namespace MITSDataLib.Models
         
         public MITSQuery(IEventsRepository eventsRepo, IDaysRepository daysRepo)
         {
+            Name = "query";
+
             Field<EventType>(
                 "event",
                 arguments: new QueryArguments(new QueryArgument<IntGraphType> { Name = "id"}),
@@ -22,20 +24,27 @@ namespace MITSDataLib.Models
 
                 );
 
-            this.AuthorizeWith("AdminPolicy");
+            //this.AuthorizeWith("AdminPolicy");
             Field<ListGraphType<EventType>>(
                 "events",
                 resolve: context => eventsRepo.GetEvents()
-                );
+                )
+                //.AuthorizeWith("AdminPolicy")
+                ;
+
+            //Field<ListGraphType<DayType>>(
+            //    "days",
+            //    resolve: context => daysRepo.GetDays()
+            //    );
 
 
             Field<ListGraphType<DayType>, List<Day>>()
-                .Name("Days")
+                .Name("days")
                 .ResolveAsync(context =>
                 {
                     return daysRepo.GetDays();
                 });
-            
+
         }
 
        

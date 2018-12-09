@@ -14,7 +14,7 @@ using GraphQL.Validation;
 namespace MITSWebServices.Controllers
 {
     //[Authorize(Policy = "Admin")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("[controller]")]
     public class GraphQLController : ControllerBase
     {

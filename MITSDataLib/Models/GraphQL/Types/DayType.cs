@@ -10,6 +10,7 @@ namespace MITSDataLib.Models.GraphQL.Types
     {
         public DayType(ISectionsRepository sectionsRepo)
         {
+            Field(d => d.Id);
             Field(d => d.AgendaDay);
             Field<ListGraphType<SectionType>, List<Section>>()
                 .Name("Sections")

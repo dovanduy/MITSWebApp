@@ -215,7 +215,7 @@ namespace MITSWebServices
             app.UseSpaStaticFiles();
 
             var validationRules = app.ApplicationServices.GetService<IValidationRule>();
-            app.UseGraphQL<ISchema>("/graphql");
+            //app.UseGraphQL<ISchema>("/graphql");
 
             app.UseGraphiQl();
 

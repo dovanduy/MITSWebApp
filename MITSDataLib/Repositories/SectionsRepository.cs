@@ -19,7 +19,14 @@ namespace MITSDataLib.Repositories
             _context = context;
         }
 
-        public async Task<List<Section>> getSectionsByDayId(int id)
+        public async Task<List<Section>> GetSectionsAsync()
+        {
+            return await _context.Sections
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        public async Task<List<Section>> GetSectionsByDayIdAsync(int id)
         {
             return await _context.Sections
                 .Where(section => section.DayId == id)
@@ -27,7 +34,7 @@ namespace MITSDataLib.Repositories
     
         }
 
-        public async Task<List<Section>> getSectionsByTagId(int id)
+        public async Task<List<Section>> GetSectionsByTagIdAsync(int id)
         {
             return await _context.SectionsTags
                 .Where(st => st.TagId == id)

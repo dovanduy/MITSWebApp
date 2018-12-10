@@ -29,23 +29,20 @@ namespace MITSDataLib.Repositories
         public async Task<List<Day>> DeleteDayAsync(int dayId)
         {
 
-            var entries = _context.ChangeTracker.Entries();
-
             var dayToDelete = await _context.Days
                 .AsNoTracking()
                 .SingleOrDefaultAsync(day => day.Id == dayId);
             
             if (dayToDelete == null)
             {
-                throw new ExecutionError("Use could not be found");
-                
+                throw new ExecutionError("Use could not be found");             
             }
 
             try
             {
                 _context.Days.Remove(dayToDelete);
                 await _context.SaveChangesAsync();
-                return await GetDays();
+                return await GetDaysAsync();
 
             }
             catch (Exception e)
@@ -55,7 +52,7 @@ namespace MITSDataLib.Repositories
 
         }
 
-        public async Task<List<Day>> GetDays()
+        public async Task<List<Day>> GetDaysAsync()
         {
             var days = await _context.Days
                 .AsNoTracking()

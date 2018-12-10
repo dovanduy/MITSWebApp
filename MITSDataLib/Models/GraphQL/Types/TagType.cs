@@ -14,7 +14,7 @@ namespace MITSDataLib.Models.GraphQL.Types
             Field(t => t.Name);
             Field<ListGraphType<SectionType>, List<Section>>()
                 .Name("Sections")
-                .ResolveAsync(context => sectionRepo.getSectionsByTagId(context.Source.Id));
+                .ResolveAsync(context => sectionRepo.GetSectionsByTagIdAsync(context.Source.Id));
         }
     }
 }

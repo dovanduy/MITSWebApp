@@ -10,5 +10,6 @@ namespace MITSDataLib.Repositories.Interfaces
     {
         Task<List<Speaker>> GetSpeakersAsync();
         Task<List<Speaker>> GetSpeakersBySectionIdAsync(int id);
+        Task<Speaker> GetSpeakerByIdAsync(int speakerId);
     }
 }

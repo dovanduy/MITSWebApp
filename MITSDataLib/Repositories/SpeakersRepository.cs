@@ -36,5 +36,14 @@ namespace MITSDataLib.Repositories.Interfaces
                 
                 
         }
+
+        public async Task<Speaker> GetSpeakerByIdAsync(int speakerId)
+        {
+            return await _context.Speakers
+                .AsNoTracking()
+                .FirstOrDefaultAsync(speaker => speaker.Id == speakerId);
+
+           
+        }
     }
 }

@@ -8,7 +8,8 @@ namespace MITSDataLib.Repositories.Interfaces
 {
     public interface ISectionsRepository
     {
-        Task<List<Section>> getSectionsByDayId(int id);
-        Task<List<Section>> getSectionsByTagId(int id);
+        Task<List<Section>> GetSectionsByDayIdAsync(int id);
+        Task<List<Section>> GetSectionsByTagIdAsync(int id);
+        Task<List<Section>> GetSectionsAsync();
     }
 }

@@ -19,7 +19,7 @@ namespace MITSDataLib.Repositories
             this._context = context;
         }
 
-        public async Task<Event> GetEvent(int id)
+        public async Task<Event> GetEventByIdAsync(int id)
         {
            return await _context.Events
                 .AsNoTracking()
@@ -27,7 +27,7 @@ namespace MITSDataLib.Repositories
         }
 
         
-        public async Task<List<Event>> GetEvents()
+        public async Task<List<Event>> GetEventsAsync()
         {
             return await _context.Events
                 .AsNoTracking()

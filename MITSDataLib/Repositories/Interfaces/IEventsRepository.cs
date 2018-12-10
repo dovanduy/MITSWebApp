@@ -8,8 +8,8 @@ namespace MITSDataLib.Repositories.Interfaces
 {
     public interface IEventsRepository
     {
-        Task<Event> GetEvent(int id);
-        Task<List<Event>> GetEvents();
+        Task<Event> GetEventByIdAsync(int id);
+        Task<List<Event>> GetEventsAsync();
         Task<Event> CreateEvent(Event newEvent);
         Task<List<WildApricotEvent>> GetWaEventByEventId(int id);
         Task<List<WildApricotRegistration>> GetWaRegistrationTypesByWaEventId(int id);

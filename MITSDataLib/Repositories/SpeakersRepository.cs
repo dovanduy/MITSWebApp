@@ -9,11 +9,11 @@ using MITSDataLib.Models;
 
 namespace MITSDataLib.Repositories.Interfaces
 {
-    public class SpeakerRepository : ISpeakerRepository
+    public class SpeakersRepository : ISpeakersRepository
     {
         private readonly MITSContext _context;
 
-        public SpeakerRepository(MITSContext context)
+        public SpeakersRepository(MITSContext context)
         {
             this._context = context;
         }

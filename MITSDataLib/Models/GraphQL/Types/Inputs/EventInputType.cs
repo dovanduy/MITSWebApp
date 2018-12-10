@@ -10,7 +10,7 @@ namespace MITSDataLib.Models.GraphQL.Types
         public EventInputType()
         {
             Name = "EventInput";
-            Field<NonNullGraphType<IntGraphType>>("eventId");
+            Field<NonNullGraphType<IntGraphType>>("mainEventId");
             Field<NonNullGraphType<BooleanGraphType>>("isSponsor");
         }
     }

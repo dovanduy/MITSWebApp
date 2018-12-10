@@ -10,7 +10,7 @@ namespace MITSDataLib.Models.GraphQL.Types
         public DayInputType()
         {
             Name = "DayInput";
-            Field<NonNullGraphType<DateTimeGraphType>>("AgendaDay");
+            Field<NonNullGraphType<DateTimeGraphType>>("agendaDay");
 
         }
     }

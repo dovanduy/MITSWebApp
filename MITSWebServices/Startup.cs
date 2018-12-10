@@ -65,9 +65,10 @@ namespace MITSWebServices
             //Setup up database and use OpenIddict
             services.AddDbContext<MITSContext>(options => {
                 options.UseSqlServer(_config.GetConnectionString("DevConnectionString"));
+                
                 options.UseOpenIddict();
                 //options.EnableSensitiveDataLogging();
-            });
+            }, ServiceLifetime.Scoped);
 
             services.AddIdentity<User, IdentityRole>(option =>
             {
@@ -173,15 +174,16 @@ namespace MITSWebServices
 
             services.AddTransient<MITSSeeder>();
             //What does this do?
+            services.AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
             services.AddSingleton<IDocumentWriter, DocumentWriter>();
-            services.AddSingleton<ISchema, MITSSchema>();
-            services.AddTransient<IEventsRepository, EventsRepository>();
-            services.AddTransient<IDaysRepository, DaysRepository>();
-            services.AddTransient<ISectionsRepository, SectionsRepository>();
-            services.AddTransient<ISpeakerRepository, SpeakerRepository>();
-            services.AddTransient<ITagsRepository, TagsRepository>();
-            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddScoped<ISchema, MITSSchema>();
+            services.AddScoped<IEventsRepository, EventsRepository>();
+            services.AddScoped<IDaysRepository, DaysRepository>();
+            services.AddScoped<ISectionsRepository, SectionsRepository>();
+            services.AddScoped<ISpeakersRepository, SpeakersRepository>();
+            services.AddScoped<ITagsRepository, TagsRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<MITSQuery>();
             services.AddScoped<MITSMutation>();
             services.AddScoped<EventType>();
@@ -196,8 +198,8 @@ namespace MITSWebServices
             services.AddScoped<UserType>();
             services.AddScoped<UserRoleType>();
 
-            var sp = services.BuildServiceProvider();
-            services.AddSingleton<ISchema>(new MITSSchema(new FuncDependencyResolver(type => sp.GetService(type))));
+            //var sp = services.BuildServiceProvider();
+            //services.AddSingleton<ISchema>(new MITSSchema(new FuncDependencyResolver(type => sp.GetService(type))));
 
 
         }

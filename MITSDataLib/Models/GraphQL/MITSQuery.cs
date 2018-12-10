@@ -9,7 +9,7 @@ namespace MITSDataLib.Models.GraphQL
     public class MITSQuery : ObjectGraphType
     {
         
-        public MITSQuery(IEventsRepository eventsRepo, IDaysRepository daysRepo, ISpeakerRepository speakerRepo, ITagsRepository tagRepo, IUserRepository userRepo)
+        public MITSQuery(IEventsRepository eventsRepo, IDaysRepository daysRepo, ISpeakersRepository speakerRepo, ITagsRepository tagRepo, IUserRepository userRepo)
         {
             Name = "query";
 

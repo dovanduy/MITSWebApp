@@ -6,7 +6,7 @@ using MITSDataLib.Models;
 
 namespace MITSDataLib.Repositories.Interfaces
 {
-    public interface ISpeakerRepository
+    public interface ISpeakersRepository
     {
         Task<List<Speaker>> GetSpeakersAsync();
         Task<List<Speaker>> GetSpeakersBySectionIdAsync(int id);

@@ -9,5 +9,7 @@ namespace MITSDataLib.Repositories.Interfaces
     public interface IDaysRepository
     {
         Task<List<Day>> GetDays();
+        Task<Day> CreateDayAsync(Day newDay);
+        Task<List<Day>> DeleteDayAsync(int dayId);
     }
 }

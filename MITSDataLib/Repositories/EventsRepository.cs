@@ -34,7 +34,7 @@ namespace MITSDataLib.Repositories
                 .ToListAsync();
         }
 
-        public async Task<Event> AddEvent(Event newEvent)
+        public async Task<Event> CreateEvent(Event newEvent)
         {
             await _context.AddAsync(newEvent);
             await _context.SaveChangesAsync();

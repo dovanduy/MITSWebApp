@@ -8,7 +8,7 @@ namespace MITSDataLib.Models.GraphQL.Types
 {
     public class SectionType : ObjectGraphType<Section>
     {
-        public SectionType(ISpeakerRepository speakerRepo, ITagsRepository tagsRepo)
+        public SectionType(ISpeakersRepository speakerRepo, ITagsRepository tagsRepo)
         {
             Field(s => s.Id);
             Field(s => s.Name);

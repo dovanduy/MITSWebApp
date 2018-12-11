@@ -1,0 +1,55 @@
+.container {
+  margin: auto;
+  max-width: 1100px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 70px;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 12px;
+  font-size: 40px;
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 600;
+  display: block;
+  border-bottom: 1px solid white;
+  border-left: 1px solid white;
+}
+
+.highlight {
+  font-size: 24px;
+  font-weight: 200;
+  padding-bottom: 10px;
+}
+
+.mat-tab-label {
+  color: #ffffff;
+  background-color: #4f512b;
+}
+
+.speaker-tab {
+  padding-top: 10px;
+}
+
+.speaker-parent {
+  display: flex;
+  height: 72px;
+  flex-direction: column;
+}
+
+h1 {
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 500;
+  font-size: 40px;
+}
+
+h3 {
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 300;
+    font-size: 30px;
+    font-style: italic;
+}

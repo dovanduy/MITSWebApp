@@ -1,0 +1,66 @@
+<!-- The content below is only a placeholder and can be replaced. -->
+<div class="header__content_lg" fxHide fxShow.gt-md>
+    <mat-toolbar class="mat-elevation-z12" flexLayout="row">
+      <mat-toolbar-row>
+        <a class="nav" routerLink="/"
+          ><img src="./assets/MITS-gif.gif" height="130px"
+        /></a>
+        <div fxLayoutGap="20px" class="leftside">
+          <a class="nav" routerLink="/agenda">Agenda</a>
+          <a class="nav" routerLink="/speakers">Speakers</a>
+          <a class="nav" routerLink="/sponsors">Sponsors</a></div>
+         <div class="spacer"></div>
+          
+         <div class="rightside"><button mat-raised-button class="large" color="primary" routerLink="/register">Register</button>
+          <!-- <a class="nav" routerLink="/admin/dashboard">Admin</a>- -->
+        </div>
+        
+      </mat-toolbar-row>
+      
+    </mat-toolbar>
+    
+  </div>
+  
+  <div class="header__content_md" fxHide fxShow.md>
+   <mat-toolbar class="mat-elevation-z12" flexLayout="row">
+      <mat-toolbar-row>
+        <a class="nav" routerLink="/"
+          ><img src="./assets/MITS-gif.gif" height="110px"
+        /></a>
+        <div fxLayoutGap="2px" class="leftside">
+          <a class="nav" routerLink="/agenda">Agenda</a>
+          <a class="nav" routerLink="/speakers">Speakers</a>
+          <a class="nav" routerLink="/sponsors">Sponsors</a></div>
+         <div class="spacer"></div>
+          
+         <div class="rightside"><button mat-raised-button class="large" color="primary" routerLink="/register">Register</button>
+          <!-- <a class="nav" routerLink="/admin/dashboard">Admin</a>- -->
+        </div>
+        
+      </mat-toolbar-row>
+      
+    </mat-toolbar>
+  </div> 
+
+
+  
+  <div class="header__content_xs" fxHide fxShow.xs fxShow.sm>
+    <mat-toolbar class="toolbar_xs" class="mat-elevation-z1">
+      <mat-toolbar-row>
+        <a class="nav" routerLink="/"
+          ><img src="./assets/MITS-gif.gif" height="90px"/></a
+      ></mat-toolbar-row>
+      <mat-toolbar-row></mat-toolbar-row>
+      <mat-toolbar-row>
+        <div>
+          <a class="nav-xs" routerLink="/agenda">Agenda</a>
+          <a class="nav-xs" routerLink="/speakers">Speakers</a>
+          <a class="nav-xs" routerLink="/sponsors">Sponsors</a>
+          <a class="register-xs" routerLink="/register" >Register</a>
+          <!-- <a class="nav" routerLink="/admin/dashboard">Admin</a> -->
+        </div>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </div>
+
+ 

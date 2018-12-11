@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+
 
 @Component({
   selector: 'app-speakers',
   templateUrl: './speakers.component.html',
-  styleUrls: ['./speakers.component.scss']
+  styleUrls: ['./speakers.component.scss'],
+  
 })
 export class SpeakersComponent implements OnInit {
 
@@ -12,4 +14,5 @@ export class SpeakersComponent implements OnInit {
   ngOnInit() {
   }
 
+ 
 }

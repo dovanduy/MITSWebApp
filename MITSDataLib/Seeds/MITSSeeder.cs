@@ -291,7 +291,7 @@ namespace MITSDataLib.Seeds
                         FirstName = "Bob",
                         LastName = "Anderson",
                         Bio = "I have worked on anguler stuff for exactly one week",
-                        ImageName = Guid.NewGuid(),
+                        Title = "VP Boeing",
                         IsPanelist = false
                     },
                     new Speaker
@@ -299,7 +299,7 @@ namespace MITSDataLib.Seeds
                         FirstName = "Jane",
                         LastName = "Smith",
                         Bio = "I have worked on anguler stuff for exactly two week",
-                        ImageName = Guid.NewGuid(),
+                        Title = "VP Boeing",
                         IsPanelist = false
                     },
                     new Speaker
@@ -307,7 +307,7 @@ namespace MITSDataLib.Seeds
                         FirstName = "Andrew",
                         LastName = "Shroble",
                         Bio = "I have worked on anguler stuff for exactly three week",
-                        ImageName = Guid.NewGuid(),
+                        Title = "VP Boeing",
                         IsPanelist = false
                     },
                     new Speaker
@@ -315,7 +315,7 @@ namespace MITSDataLib.Seeds
                         FirstName = "Pete",
                         LastName = "Jacboson",
                         Bio = "I have worked on anguler stuff for exactly Four week",
-                        ImageName = Guid.NewGuid(),
+                        Title = "VP Boeing",
                         IsPanelist = false
                     },
                     new Speaker
@@ -323,7 +323,7 @@ namespace MITSDataLib.Seeds
                         FirstName = "John",
                         LastName = "Silvers",
                         Bio = "I have worked on anguler stuff for exactly one week",
-                        ImageName = Guid.NewGuid(),
+                        Title = "VP Boeing",
                         IsPanelist = false
                     },
                     new Speaker
@@ -331,7 +331,7 @@ namespace MITSDataLib.Seeds
                         FirstName = "Jennifer",
                         LastName = "Silvers",
                         Bio = "I have worked on anguler stuff for exactly one week",
-                        ImageName = Guid.NewGuid(),
+                        Title = "VP Boeing",
                         IsPanelist = false
                     },
                     new Speaker
@@ -339,7 +339,7 @@ namespace MITSDataLib.Seeds
                         FirstName = "Frank",
                         LastName = "Mileto",
                         Bio = "I have worked on anguler stuff for exactly one week",
-                        ImageName = Guid.NewGuid(),
+                        Title = "VP Boeing",
                         IsPanelist = false
                     },
                     new Speaker
@@ -347,7 +347,7 @@ namespace MITSDataLib.Seeds
                         FirstName = "Christoper",
                         LastName = "Logsdon",
                         Bio = "I have worked on anguler stuff for exactly one week",
-                        ImageName = Guid.NewGuid(),
+                        Title = "VP Boeing",
                         IsPanelist = false
                     },
                     new Speaker
@@ -355,7 +355,7 @@ namespace MITSDataLib.Seeds
                         FirstName = "Richard",
                         LastName = "Chauvin",
                         Bio = "I have worked on anguler stuff for exactly one week",
-                        ImageName = Guid.NewGuid(),
+                        Title = "VP Boeing",
                         IsPanelist = false
                     },
                     new Speaker
@@ -363,7 +363,7 @@ namespace MITSDataLib.Seeds
                         FirstName = "Brandy",
                         LastName = "Silvers",
                         Bio = "I have worked on anguler stuff for exactly one week",
-                        ImageName = Guid.NewGuid(),
+                        Title = "VP Boeing",
                         IsPanelist = false
                     },
                     new Speaker
@@ -371,7 +371,7 @@ namespace MITSDataLib.Seeds
                         FirstName = "Jason",
                         LastName = "Silvers",
                         Bio = "I have worked on anguler stuff for exactly one week",
-                        ImageName = Guid.NewGuid(),
+                        Title = "VP Boeing",
                         IsPanelist = false
                     },
                     new Speaker
@@ -379,7 +379,7 @@ namespace MITSDataLib.Seeds
                         FirstName = "Shane",
                         LastName = "Zondor",
                         Bio = "I have worked on anguler stuff for exactly one week",
-                        ImageName = Guid.NewGuid(),
+                        Title = "VP Boeing",
                         IsPanelist = false
                     },
                     new Speaker
@@ -387,7 +387,7 @@ namespace MITSDataLib.Seeds
                         FirstName = "Markiesha",
                         LastName = "Crawford",
                         Bio = "I have worked on anguler stuff for exactly one week",
-                        ImageName = Guid.NewGuid(),
+                        Title = "VP Boeing",
                         IsPanelist = false
                     },
                     new Speaker
@@ -395,7 +395,7 @@ namespace MITSDataLib.Seeds
                         FirstName = "Brian",
                         LastName = "Peters",
                         Bio = "I have worked on anguler stuff for exactly one week",
-                        ImageName = Guid.NewGuid(),
+                        Title = "VP Boeing",
                         IsPanelist = false
                     },
                 };

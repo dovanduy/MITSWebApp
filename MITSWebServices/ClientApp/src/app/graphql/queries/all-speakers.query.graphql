@@ -1,0 +1,10 @@
+query AllSpeakers{
+  speakers {
+    id
+    firstName
+    lastName
+    bio
+    isPanelist
+    title
+  }
+}

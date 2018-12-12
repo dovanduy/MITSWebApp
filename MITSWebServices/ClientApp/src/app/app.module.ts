@@ -10,6 +10,8 @@ import { PagesModule } from './pages/pages.module';
 import { OrganizerModule } from './organizer/organizer.module';
 import { CheckinModule } from './checkin/checkin.module';
 import { CoreModule } from './core/core.module';
+import { GraphQLModule } from './graphql/graphql.module';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -27,6 +29,8 @@ import { CoreModule } from './core/core.module';
     MatToolbarModule,
     FlexLayoutModule,
     MatButtonModule,
+    GraphQLModule,
+    HttpClientModule
    
   ],
   providers: [],

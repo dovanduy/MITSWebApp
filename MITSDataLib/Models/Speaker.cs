@@ -19,19 +19,21 @@ namespace MITSDataLib.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50, ErrorMessage = "First name cannot be longer than 50 characters.")]
+        [StringLength(100, ErrorMessage = "First name cannot be longer than 100 characters.")]
         public string FirstName { get; set; }
 
         [Required]
-        [StringLength(50, ErrorMessage = "Last name cannot be longer than 50 characters.")]
+        [StringLength(100, ErrorMessage = "Last name cannot be longer than 100 characters.")]
         public string LastName { get; set; }
 
         [Required]
-        [StringLength(500, ErrorMessage = "Section Description cannot be longer than 500 characters.")]
+        [StringLength(1000, ErrorMessage = "Section Description cannot be longer than 1000 characters.")]
         public string Bio { get; set; }
 
-        [Required]
-        public Guid ImageName { get; set; }
+        public string Title { get; set; }
+
+        //[Required]
+        //public Guid ImageName { get; set; }
 
         [Required]
         public bool IsPanelist { get; set; }

@@ -1,5 +1,23 @@
 <div class="dashboard" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
-    <mat-card fxFlex>Place number of registrations? By Type?</mat-card>
-    <mat-card fxFlex>Place number of sponsors by type?</mat-card>
+    <mat-card fxFlex><ul>
+        <li *ngFor="let speaker of speakers | async">
+          {{speaker.firstName}}
+          {{speaker.lastName}}
+          {{speaker.id}}
+      
+          {{speaker.title}}
+      
+        </li>
+      </ul></mat-card>
+    <mat-card fxFlex><ul>
+        <li *ngFor="let section of sections | async">
+          {{section.id}}
+          {{section.name}}
+        </li>
+      </ul></mat-card>
     <mat-card fxFlex>Embed Google Analytics Page views?</mat-card>
 </div>
+
+
+  
+  

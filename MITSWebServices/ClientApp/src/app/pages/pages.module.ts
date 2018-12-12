@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 import { SharedModule } from './../shared/shared.module';
 import { AgendaComponent } from './agenda/agenda.component';
@@ -13,7 +14,8 @@ import { HeadernavComponent } from './utility/headernav/headernav.component';
   declarations: [AgendaComponent, DetailsComponent, SpeakersComponent, SponsorsComponent, RegisterComponent, HeadernavComponent],
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    RouterModule
   ],
   exports: [
     HeadernavComponent,

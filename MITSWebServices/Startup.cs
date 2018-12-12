@@ -54,6 +54,17 @@ namespace MITSWebServices
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            //TODO: Only for development
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(options => 
                 {
@@ -161,15 +172,7 @@ namespace MITSWebServices
 
             
 
-            //TODO: Only for development
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
-                                       .AllowAnyMethod()
-                                       .AllowAnyHeader()
-                                       .AllowCredentials());
-            });
+            
 
 
             services.AddTransient<MITSSeeder>();
@@ -224,9 +227,13 @@ namespace MITSWebServices
             app.UseSpaStaticFiles();
 
             var validationRules = app.ApplicationServices.GetService<IValidationRule>();
-            //app.UseGraphQL<ISchema>("/graphql");
+            app.UseGraphQL<ISchema>("/graphql");
 
-            app.UseGraphiQl();
+            //app.UseGraphiQl();
+
+            //Only for development
+            //Todo: Remove for production
+            app.UseCors("CorsPolicy");
 
             app.UseMvc(
             //routes =>
@@ -251,9 +258,7 @@ namespace MITSWebServices
                 }
             });
 
-            //Only for development
-            //Todo: Remove for production
-            app.UseCors("CorsPolicy");
+            
         }
     }
 }

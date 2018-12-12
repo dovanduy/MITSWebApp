@@ -1,0 +1,13 @@
+query AllSections {
+    sections {
+        id
+        name
+        description
+        slideUrl
+        restrictSlide
+        isPanel
+        startDate
+        endDate
+    }
+    
+}

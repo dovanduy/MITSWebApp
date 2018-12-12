@@ -1,0 +1,16 @@
+schema:
+  - "http://localhost:50000/graphql"
+documents:
+  - "src/app/graphql/queries/*.graphql"
+  - "src/app/graphql/mutations/*.graphql"
+config: {
+
+}
+generates:
+  src/app/graphql/generated/graphql.ts:
+    config: {}
+    plugins:
+      - "typescript-common"
+      - "typescript-client"
+      - "typescript-apollo-angular"
+require: []

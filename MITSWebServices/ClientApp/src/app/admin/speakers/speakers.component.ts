@@ -15,6 +15,7 @@ export class SpeakersComponent implements OnInit {
   constructor(private adminData: AdminDataService, private allSpeakersGQL: AllSpeakersGQL) { }
   
   speakers: Observable<AllSpeakers.Speakers[]>
+  isOverSpeaker: number;
 
   ngOnInit() {
     this.adminData.pageTitle('Speakers');

@@ -288,10 +288,10 @@ namespace MITSDataLib.Seeds
                 {
                     new Speaker
                     {
-                        FirstName = "Bob",
+                        FirstName = "Matthew Haynes",
                         LastName = "Anderson",
                         Bio = "I have worked on anguler stuff for exactly one week",
-                        Title = "VP Boeing",
+                        Title = "President Boeing",
                         IsPanelist = false
                     },
                     new Speaker

@@ -1,9 +1,24 @@
-<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
-  <mat-action-list>
-    <mat-list-item *ngFor="let speaker of speakers | async">
-      <mat-icon mat-list-icon>folder</mat-icon>
-      <h4 mat-line>{{speaker.firstName}} {{speaker.lastName}}</h4>
-      <p mat-line> {{speaker.bio}} </p>
-    </mat-list-item>
-  </mat-action-list>
+<div class="whitebg" fxLayout="row" fxLayoutAlign="start start">
+  <div style="padding-bottom: 5px;" class="fullwidth" fxFlex="40">
+    <div>
+      <mat-form-field class="fullwidth">
+        <input matInput placeholder="Search Speakers" value="" />
+      </mat-form-field>
+    </div>
+    <div>
+    <div
+      style="padding-left: 5px; padding-top:10px; margin-bottom: 0px;"
+      [ngClass]="{'mat-elevation-z2 over' : isOverSpeaker == speaker.id}"
+      (mouseover)="isOverSpeaker = speaker.id"
+      (mouseleave)="isOverSpeaker = null"
+      matRipple
+      class="border"
+      *ngFor="let speaker of speakers | async"
+    >
+      <h3 style="margin-bottom: 6px;">{{ speaker.firstName }} {{ speaker.lastName }} - {{ speaker.title }} </h3>
+    </div>
+  </div>
+  </div>
+
+  <div fxFlex="60"><h1>Test</h1></div>
 </div>

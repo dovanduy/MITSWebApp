@@ -40,7 +40,7 @@ export class SidenavComponent implements OnInit {
       icon: 'person_add'
     },
     {
-      link: '/admin/event',
+      link: '/admin/events',
       name: 'Events',
       icon: 'event'
     },

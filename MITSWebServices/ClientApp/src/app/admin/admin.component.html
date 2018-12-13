@@ -1,8 +1,15 @@
+<mat-toolbar>
+    <mat-toolbar-row fxLayout="row">
+        <h1>Admin / {{pageTitle$ | async}}</h1>
+        <div fxFlex></div>
+        <a routerLink="/">Home</a>
+    </mat-toolbar-row>
+</mat-toolbar>
 <div fxLayout="row">
     <div fxFlex="200px">
         <sidenav></sidenav>
     </div>
-    <div fxFlex>
-        <router-outlet></router-outlet>
+    <div class="padding10" fxFlex>
+        <router-outlet ></router-outlet>
     </div>
 </div>

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { AllSpeakers, AllSpeakersGQL, AllSections, AllSectionsGQL } from '../../graphql/generated/graphql'
+import { AdminDataService } from '../services/admin-data.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,19 +12,19 @@ import { AllSpeakers, AllSpeakersGQL, AllSections, AllSectionsGQL } from '../../
 })
 export class DashboardComponent implements OnInit {
 
-  speakers: Observable<AllSpeakers.Speakers[]>
+  
   sections: Observable<AllSections.Sections[]>
 
-  constructor(private allSpeakersGQL: AllSpeakersGQL, private allSectionsGQL: AllSectionsGQL) { }
+
+
+  constructor(private allSpeakersGQL: AllSpeakersGQL, private allSectionsGQL: AllSectionsGQL, private adminData: AdminDataService) { }
 
   ngOnInit() {
+
+    this.adminData.pageTitle('Dashboard');
+
     console.log('It is in the detials on init');
-    this.speakers = this.allSpeakersGQL
-    .watch()
-    .valueChanges.pipe(map(result => {
-      console.log(result.data.speakers)
-      return result.data.speakers
-    }));
+    
 
     this.sections = this.allSectionsGQL
     .watch()

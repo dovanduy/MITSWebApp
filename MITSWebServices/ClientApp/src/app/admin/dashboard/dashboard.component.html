@@ -1,14 +1,4 @@
-<div class="dashboard" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
-    <mat-card fxFlex><ul>
-        <li *ngFor="let speaker of speakers | async">
-          {{speaker.firstName}}
-          {{speaker.lastName}}
-          {{speaker.id}}
-      
-          {{speaker.title}}
-      
-        </li>
-      </ul></mat-card>
+<div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
     <mat-card fxFlex><ul>
         <li *ngFor="let section of sections | async">
           {{section.id}}

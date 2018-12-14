@@ -1,24 +1,10 @@
 <div class="whitebg" fxLayout="row" fxLayoutAlign="start start">
   <div style="padding-bottom: 5px;" class="fullwidth" fxFlex="40">
-    <div>
-      <mat-form-field class="fullwidth">
-        <input matInput placeholder="Search Speakers" value="" />
-      </mat-form-field>
-    </div>
-    <div>
-    <div
-      style="padding-left: 5px; padding-top:10px; margin-bottom: 0px;"
-      [ngClass]="{'mat-elevation-z2 over' : isOverSpeaker == speaker.id}"
-      (mouseover)="isOverSpeaker = speaker.id"
-      (mouseleave)="isOverSpeaker = null"
-      matRipple
-      class="border"
-      *ngFor="let speaker of speakers | async"
-    >
-      <h3 style="margin-bottom: 6px;">{{ speaker.firstName }} {{ speaker.lastName }} - {{ speaker.title }} </h3>
-    </div>
-  </div>
+    <speakers-list [speakers]="speakers" (edit)="editing($event)"></speakers-list>
   </div>
 
-  <div fxFlex="60"><h1>Test</h1></div>
+  <div fxFlex="60">
+    <speaker-add *ngIf="!editingSpeaker"></speaker-add>
+    <speaker-edit *ngIf="editingSpeaker" [speaker]="editingSpeaker" (close)="closing($event)"></speaker-edit>
+  </div>
 </div>

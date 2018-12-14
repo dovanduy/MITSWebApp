@@ -1,0 +1,16 @@
+<button *ngIf="addingSpeaker" mat-raised-button (click)="close()">Close</button>
+
+<div *ngIf="!addingSpeaker">
+  <h1>Speakers</h1>
+  <h2>12</h2>
+
+  <h1>Speakers not assigned to section</h1>
+  <h3>Bob Anderson</h3>
+  <h3>Andrew Shroble</h3>
+  <button mat-raised-button (click)="addSpeaker()">Add new speaker</button>
+</div>
+
+<div *ngIf="addingSpeaker">
+  <h1>Add new Speaker</h1>
+
+</div>

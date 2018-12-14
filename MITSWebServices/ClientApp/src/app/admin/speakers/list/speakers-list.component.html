@@ -13,7 +13,7 @@
     (mouseleave)="isOverSpeaker = null"
     matRipple
     class="border"
-    *ngFor="let speaker of (speakers | async)"
+    *ngFor="let speaker of speakers"
   >
     <h3 style="margin-bottom: 6px;">
       {{ speaker.firstName }} {{ speaker.lastName }} - {{ speaker.title }}

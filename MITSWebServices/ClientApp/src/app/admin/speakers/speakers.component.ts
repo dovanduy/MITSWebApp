@@ -14,19 +14,25 @@ export class SpeakersComponent implements OnInit {
 
   constructor(private adminData: AdminDataService, private allSpeakersGQL: AllSpeakersGQL) { }
 
-  speakers: Observable<AllSpeakers.Speakers[]>
+  // speakers: Observable<AllSpeakers.Speakers[]>
+  speakers: AllSpeakers.Speakers[];
   isOverSpeaker: number;
   editingSpeaker: AllSpeakers.Speakers;
 
   ngOnInit() {
     this.adminData.pageTitle('Speakers');
 
-    this.speakers = this.allSpeakersGQL
-    .watch()
-    .valueChanges.pipe(map(result => {
-      console.log(result.data.speakers)
-      return result.data.speakers
-    }));
+    // this.speakers = this.allSpeakersGQL
+    // .watch()
+    // .valueChanges.pipe(map(result => {
+    //   console.log(result.data.speakers)
+    //   return result.data.speakers
+    // }));
+
+    this.allSpeakersGQL
+    .watch().valueChanges.subscribe(result => {
+      this.speakers = result.data.speakers;
+    })
 
   }
 

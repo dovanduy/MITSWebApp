@@ -4,7 +4,7 @@
   </div>
 
   <div fxFlex="60">
-    <speaker-add *ngIf="!editingSpeaker"></speaker-add>
+    <speaker-add [speakers]="speakers" *ngIf="!editingSpeaker"></speaker-add>
     <speaker-edit *ngIf="editingSpeaker" [speaker]="editingSpeaker" (close)="closing($event)"></speaker-edit>
   </div>
 </div>

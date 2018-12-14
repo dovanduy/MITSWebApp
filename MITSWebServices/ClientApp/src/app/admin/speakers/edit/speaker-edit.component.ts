@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 
 import { AllSpeakers } from '../../../graphql/generated/graphql'
 import { AdminDataService } from '../../services/admin-data.service';
@@ -14,6 +15,12 @@ export class SpeakerEditComponent implements OnInit {
 
   @Input() speaker: AllSpeakers.Speakers;
   @Output() close = new EventEmitter<boolean>();
+  editSpeakerForm = new FormGroup({
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    title: new FormControl(''),
+    bio: new FormControl(''),
+  });
 
   ngOnInit() {
   }

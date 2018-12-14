@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+
+import { AllSpeakers } from '../../../graphql/generated/graphql'
 
 @Component({
   selector: 'speaker-add',
@@ -9,9 +11,11 @@ export class SpeakerAddComponent implements OnInit {
 
   constructor() { }
 
+  @Input() speakers: AllSpeakers.Speakers[];
   addingSpeaker: boolean = false;
 
   ngOnInit() {
+
   }
 
   close(): void {

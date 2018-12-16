@@ -16,13 +16,13 @@ namespace MITSWebServices.Controllers
     //[Authorize(Policy = "Admin")]
     //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("[controller]")]
-    public class GraphiQLController : ControllerBase
+    public class GraphQLController : ControllerBase
     {
         private readonly IDocumentExecuter _documentExecuter;
         private readonly IEnumerable<IValidationRule> _validationRules;
         private readonly ISchema _schema;
 
-        public GraphiQLController(ISchema schema, IDocumentExecuter documentExecuter, IEnumerable<IValidationRule> validationRules)
+        public GraphQLController(ISchema schema, IDocumentExecuter documentExecuter, IEnumerable<IValidationRule> validationRules)
         {
             _schema = schema;
             _documentExecuter = documentExecuter;

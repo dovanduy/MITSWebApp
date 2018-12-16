@@ -35,7 +35,7 @@ namespace MITSDataLib.Repositories
             
             if (dayToDelete == null)
             {
-                throw new ExecutionError("Use could not be found");             
+                throw new ExecutionError("Day could not be found");             
             }
 
             try

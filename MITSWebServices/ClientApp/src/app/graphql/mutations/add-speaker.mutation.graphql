@@ -1,0 +1,13 @@
+mutation CreateSpeaker ($speaker: SpeakerInput!)  {
+  createSpeaker(speaker:$speaker){
+    id
+    firstName
+    lastName
+    bio
+    title
+    sections {
+      id
+      name
+    }
+  }
+}

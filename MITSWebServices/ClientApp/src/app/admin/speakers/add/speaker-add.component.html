@@ -1,16 +1,43 @@
-<button *ngIf="addingSpeaker" mat-raised-button (click)="close()">Close</button>
+<button *ngIf="showForm" mat-raised-button (click)="close()">Close</button>
 
-<div *ngIf="!addingSpeaker">
+<div *ngIf="!showForm">
   <h1>Speakers</h1>
   <h2>{{speakers?.length}}</h2>
 
   <h1>Speakers not assigned to section</h1>
   <h3>Bob Anderson</h3>
   <h3>Andrew Shroble</h3>
-  <button mat-raised-button (click)="addSpeaker()">Add new speaker</button>
+  <button mat-raised-button (click)="showAddSpeakerForm()">Add new speaker</button>
 </div>
 
-<div *ngIf="addingSpeaker">
+<div *ngIf="showForm">
   <h1>Add new Speaker</h1>
+  
+  <form [formGroup]="addSpeakerForm" (ngSubmit)="submitHandler()">
+      <hr />
+      <div fxLayout="column" fxLayoutGap="5px">
+        <mat-form-field>
+          <h3>First Name</h3>
+          <input matInput formControlName="firstName" />
+        </mat-form-field>
+        <mat-form-field>
+          <h3>Last Name</h3>
+          <input matInput formControlName="lastName" />
+        </mat-form-field>
+        <mat-form-field>
+          <h3>Title</h3>
+          <input matInput formControlName="title" />
+        </mat-form-field>
+        <mat-form-field>
+          <h3>Bio</h3>
+          <textarea matInput formControlName="bio" ></textarea> 
+        </mat-form-field>
+      </div>
+
+      <button mat-raised-button>Add Speaker</button>
+    </form>
+
 
 </div>
+
+

@@ -26,6 +26,14 @@ namespace MITSDataLib.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<Section>> GetSectionsBySpeakerIdAsync(int id)
+        {
+            return await _context.SectionsSpeakers
+                .Where(ss => ss.SectionId == id)
+                .Select(st => st.Section)
+                .ToListAsync();
+        }
+
         public async Task<List<Section>> GetSectionsByDayIdAsync(int id)
         {
             return await _context.Sections

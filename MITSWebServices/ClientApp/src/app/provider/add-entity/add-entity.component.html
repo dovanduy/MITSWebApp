@@ -1,0 +1,19 @@
+<div *ngIf="!showAddForm"><ng-content></ng-content></div>
+
+<button *ngIf="showAddForm" mat-raised-button (click)="close()">Close</button>
+
+<div *ngIf="showAddForm">
+  <h1>Add {{ title }}</h1>
+
+  <form [formGroup]="addForm" (ngSubmit)="submitHandler()">
+    <hr />
+    <div fxLayout="column" fxLayoutGap="5px">
+      <mat-form-field *ngFor="let formField of formFields">
+        <h3>{{ formField?.name }}</h3>
+        <input matInput [formControlName]="formField?.formControlName" />
+      </mat-form-field>
+    </div>
+
+    <button mat-raised-button>Add Speaker</button>
+  </form>
+</div>

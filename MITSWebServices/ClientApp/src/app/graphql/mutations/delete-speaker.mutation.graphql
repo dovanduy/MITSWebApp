@@ -1,0 +1,3 @@
+mutation DeleteSpeaker($speakerId: Int!){
+  deleteSpeaker(speakerId: $speakerId)
+}

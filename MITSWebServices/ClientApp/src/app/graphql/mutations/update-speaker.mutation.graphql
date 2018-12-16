@@ -1,0 +1,9 @@
+mutation UpdateSpeaker ($speaker: SpeakerInput!)  {
+  updateSpeaker(speaker:$speaker){
+    id
+    firstName
+    lastName
+    bio
+    title
+  }
+}

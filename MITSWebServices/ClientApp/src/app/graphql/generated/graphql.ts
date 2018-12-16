@@ -8,6 +8,18 @@ export interface EventInput {
   isSponsor: boolean;
 }
 
+export interface SpeakerInput {
+  id?: number | null;
+
+  firstName: string;
+
+  lastName: string;
+
+  bio: string;
+
+  title: string;
+}
+
 /** The `Date` scalar type represents a year, month and day in accordance with the[ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard. */
 export type Date = any;
 
@@ -59,6 +71,42 @@ export namespace AllSections {
   };
 }
 
+export namespace AllSpeakersSections {
+  export type Variables = {};
+
+  export type Query = {
+    __typename?: "Query";
+
+    speakers: (Speakers | null)[] | null;
+  };
+
+  export type Speakers = {
+    __typename?: "SpeakerType";
+
+    id: number;
+
+    firstName: string;
+
+    lastName: string;
+
+    bio: string;
+
+    isPanelist: boolean;
+
+    title: string;
+
+    sections: (Sections | null)[] | null;
+  };
+
+  export type Sections = {
+    __typename?: "SectionType";
+
+    id: number;
+
+    name: string;
+  };
+}
+
 export namespace AllSpeakers {
   export type Variables = {};
 
@@ -80,6 +128,80 @@ export namespace AllSpeakers {
     bio: string;
 
     isPanelist: boolean;
+
+    title: string;
+  };
+}
+
+export namespace CreateSpeaker {
+  export type Variables = {
+    speaker: SpeakerInput;
+  };
+
+  export type Mutation = {
+    __typename?: "Mutation";
+
+    createSpeaker: CreateSpeaker | null;
+  };
+
+  export type CreateSpeaker = {
+    __typename?: "SpeakerType";
+
+    id: number;
+
+    firstName: string;
+
+    lastName: string;
+
+    bio: string;
+
+    title: string;
+
+    sections: (Sections | null)[] | null;
+  };
+
+  export type Sections = {
+    __typename?: "SectionType";
+
+    id: number;
+
+    name: string;
+  };
+}
+
+export namespace DeleteSpeaker {
+  export type Variables = {
+    speakerId: number;
+  };
+
+  export type Mutation = {
+    __typename?: "Mutation";
+
+    deleteSpeaker: number | null;
+  };
+}
+
+export namespace UpdateSpeaker {
+  export type Variables = {
+    speaker: SpeakerInput;
+  };
+
+  export type Mutation = {
+    __typename?: "Mutation";
+
+    updateSpeaker: UpdateSpeaker | null;
+  };
+
+  export type UpdateSpeaker = {
+    __typename?: "SpeakerType";
+
+    id: number;
+
+    firstName: string;
+
+    lastName: string;
+
+    bio: string;
 
     title: string;
   };
@@ -123,6 +245,30 @@ export class AllSectionsGQL extends Apollo.Query<
 @Injectable({
   providedIn: "root"
 })
+export class AllSpeakersSectionsGQL extends Apollo.Query<
+  AllSpeakersSections.Query,
+  AllSpeakersSections.Variables
+> {
+  document: any = gql`
+    query AllSpeakersSections {
+      speakers {
+        id
+        firstName
+        lastName
+        bio
+        isPanelist
+        title
+        sections {
+          id
+          name
+        }
+      }
+    }
+  `;
+}
+@Injectable({
+  providedIn: "root"
+})
 export class AllSpeakersGQL extends Apollo.Query<
   AllSpeakers.Query,
   AllSpeakers.Variables
@@ -135,6 +281,61 @@ export class AllSpeakersGQL extends Apollo.Query<
         lastName
         bio
         isPanelist
+        title
+      }
+    }
+  `;
+}
+@Injectable({
+  providedIn: "root"
+})
+export class CreateSpeakerGQL extends Apollo.Mutation<
+  CreateSpeaker.Mutation,
+  CreateSpeaker.Variables
+> {
+  document: any = gql`
+    mutation CreateSpeaker($speaker: SpeakerInput!) {
+      createSpeaker(speaker: $speaker) {
+        id
+        firstName
+        lastName
+        bio
+        title
+        sections {
+          id
+          name
+        }
+      }
+    }
+  `;
+}
+@Injectable({
+  providedIn: "root"
+})
+export class DeleteSpeakerGQL extends Apollo.Mutation<
+  DeleteSpeaker.Mutation,
+  DeleteSpeaker.Variables
+> {
+  document: any = gql`
+    mutation DeleteSpeaker($speakerId: Int!) {
+      deleteSpeaker(speakerId: $speakerId)
+    }
+  `;
+}
+@Injectable({
+  providedIn: "root"
+})
+export class UpdateSpeakerGQL extends Apollo.Mutation<
+  UpdateSpeaker.Mutation,
+  UpdateSpeaker.Variables
+> {
+  document: any = gql`
+    mutation UpdateSpeaker($speaker: SpeakerInput!) {
+      updateSpeaker(speaker: $speaker) {
+        id
+        firstName
+        lastName
+        bio
         title
       }
     }

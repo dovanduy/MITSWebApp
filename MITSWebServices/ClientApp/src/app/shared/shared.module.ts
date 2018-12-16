@@ -9,6 +9,9 @@ import {
   MatTabsModule, MatSidenavModule, MatTooltipModule, MatCheckboxModule, MatRadioModule, MatGridListModule,
   MatProgressBarModule, MatSliderModule, MatChipsModule, MatRippleModule, MatExpansionModule, MatTableModule,
 } from '@angular/material';
+
+import {ScrollDispatchModule} from '@angular/cdk/scrolling';
+
 import { FlexLayoutModule } from "@angular/flex-layout";
 
 
@@ -43,6 +46,7 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     MatRippleModule,
     MatExpansionModule,
    MatTableModule,
+   ScrollDispatchModule,
   ],
   exports: [
     CommonModule,
@@ -73,6 +77,7 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     MatRippleModule,
     MatExpansionModule,
     MatTableModule,
+    ScrollDispatchModule,
   ]
 })
 export class SharedModule { }

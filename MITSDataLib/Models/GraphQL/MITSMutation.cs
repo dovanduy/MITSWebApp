@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using GraphQL;
+using MITSDataLib.Models.GraphQL.Types.Inputs;
 
 namespace MITSDataLib.Models.GraphQL
 {
@@ -13,6 +14,70 @@ namespace MITSDataLib.Models.GraphQL
         public MITSMutation(IEventsRepository eventsRepo, IDaysRepository daysRepo, ITagsRepository tagRepo, ISectionsRepository sectionsRepo, ISpeakersRepository speakersRepo, IUserRepository userRepo)
         {
             Name = "Mutation";
+
+            #region Speaker
+
+            Field<SpeakerType>(
+                "createSpeaker",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<SpeakerInputType>> { Name = "speaker" }
+                ),
+                resolve: context =>
+                {
+                    try
+                    {
+                        var newSpeaker = context.GetArgument<Speaker>("speaker");
+                        return speakersRepo.CreateSpeakerAsync(newSpeaker);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        throw;
+                    }
+
+
+                });
+
+            Field<SpeakerType>(
+                "updateSpeaker",
+
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<SpeakerInputType>> { Name = "speaker" }
+                ),
+                resolve: context =>
+                {
+                    try
+                    {
+                        var newSpeakerValues = context.GetArgument<Speaker>("speaker");
+                        return speakersRepo.UpdateSpeakerAsync(newSpeakerValues);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        throw;
+                    }
+
+
+                });
+
+            Field<IntGraphType, int>()
+                .Name("deleteSpeaker")
+                .Argument<NonNullGraphType<IntGraphType>>("speakerId", "Id of Speaker to delete")
+                .ResolveAsync(context =>
+                {
+                    try
+                    {
+                        return speakersRepo.DeleteSpeakerAsync(context.GetArgument<int>("speakerId"));
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        context.Errors.Add(new ExecutionError(e.Message));
+                        return null;
+                    }
+                });
+
+            #endregion
 
             #region Event                   
 

@@ -37,6 +37,7 @@ using MITSDataLib.Repositories.Interfaces;
 using MITSDataLib.Models.GraphQL.Types;
 using static MITSWebServices.GraphQL;
 using GraphQL.Validation;
+using MITSDataLib.Models.GraphQL.Types.Inputs;
 
 namespace MITSWebServices
 {
@@ -195,6 +196,7 @@ namespace MITSWebServices
             services.AddScoped<DayInputType>();
             services.AddScoped<SectionType>();
             services.AddScoped<SpeakerType>();
+            services.AddScoped<SpeakerInputType>();
             services.AddScoped<TagType>();
             services.AddScoped<WaEventType>();
             services.AddScoped<WaRegistrationType>();
@@ -229,7 +231,7 @@ namespace MITSWebServices
             var validationRules = app.ApplicationServices.GetService<IValidationRule>();
             app.UseGraphQL<ISchema>("/graphql");
 
-            //app.UseGraphiQl();
+            app.UseGraphiQl("/graphiql");
 
             //Only for development
             //Todo: Remove for production
@@ -251,11 +253,11 @@ namespace MITSWebServices
 
                 spa.Options.SourcePath = "ClientApp";
 
-                if (env.IsDevelopment())
-                {
-                    //spa.UseAngularCliServer(npmScript: "start");
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
-                }
+                //if (env.IsDevelopment())
+                //{
+                //    //spa.UseAngularCliServer(npmScript: "start");
+                //    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                //}
             });
 
             

@@ -1,0 +1,14 @@
+query AllSpeakersSections{
+  speakers {
+    id
+    firstName
+    lastName
+    bio
+    isPanelist
+    title
+    sections {
+      id
+      name
+    }
+  }
+}

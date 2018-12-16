@@ -4,19 +4,41 @@
   </mat-form-field>
 </div>
 <div>
-  <div
-    style="padding-left: 5px; padding-top:10px; margin-bottom: 0px;"
-    [class.active]="editingSpeaker?.id == speaker.id"
-    [ngClass]="{ 'mat-elevation-z2 over': isOverSpeaker == speaker.id }"
-    (click)="editing(speaker)"
-    (mouseover)="isOverSpeaker = speaker.id"
-    (mouseleave)="isOverSpeaker = null"
-    matRipple
-    class="border"
-    *ngFor="let speaker of speakers"
-  >
-    <h3 style="margin-bottom: 6px;">
-      {{ speaker.firstName }} {{ speaker.lastName }} - {{ speaker.title }}
-    </h3>
+  <!--
+    <cdk-virtual-scroll-viewport itemSize="50" class="viewport">
+      <div
+        style="padding-left: 5px; padding-top:10px; margin-bottom: 0px;"
+        [class.active]="editingSpeaker?.id == speaker.id"
+        [ngClass]="{ 'mat-elevation-z2 over': isOverSpeaker == speaker.id }"
+        (click)="editing(speaker)"
+        (mouseover)="isOverSpeaker = speaker.id"
+        (mouseleave)="isOverSpeaker = null"
+        matRipple
+        class="border"
+        *cdkVirtualFor="let speaker of speakers"
+      >
+        <h3 style="margin-bottom: 6px;">
+          {{ speaker.firstName }} {{ speaker.lastName }} - {{ speaker.title }}
+        </h3>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  -->
+
+  <div>
+    <div
+      style="padding-left: 5px; padding-top:10px; margin-bottom: 0px;"
+      [class.active]="editingSpeaker?.id == speaker.id"
+      [ngClass]="{ 'mat-elevation-z2 over': isOverSpeaker == speaker.id }"
+      (click)="editing(speaker)"
+      (mouseover)="isOverSpeaker = speaker.id"
+      (mouseleave)="isOverSpeaker = null"
+      matRipple
+      class="border"
+      *ngFor="let speaker of speakers"
+    >
+      <h3 style="margin-bottom: 6px;">
+        {{ speaker.firstName }} {{ speaker.lastName }} - {{ speaker.title }}
+      </h3>
+    </div>
   </div>
 </div>

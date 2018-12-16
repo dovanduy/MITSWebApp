@@ -11,5 +11,6 @@ namespace MITSDataLib.Repositories.Interfaces
         Task<List<Section>> GetSectionsByDayIdAsync(int id);
         Task<List<Section>> GetSectionsByTagIdAsync(int id);
         Task<List<Section>> GetSectionsAsync();
+        Task<List<Section>> GetSectionsBySpeakerIdAsync(int id);
     }
 }

@@ -1,10 +1,44 @@
 <div class="whitebg" fxLayout="row" fxLayoutAlign="start start">
   <div style="padding-bottom: 5px;" class="fullwidth" fxFlex="40">
-    <speakers-list [speakers]="speakers" (edit)="editing($event)"></speakers-list>
+    <speakers-list
+      [speakers]="speakers"
+      (edit)="editing($event)"
+    ></speakers-list>
   </div>
 
   <div fxFlex="60">
-    <speaker-add [speakers]="speakers" *ngIf="!editingSpeaker"></speaker-add>
-    <speaker-edit *ngIf="editingSpeaker" [speaker]="editingSpeaker" (close)="closing($event)"></speaker-edit>
+    <!--
+      <speaker-add
+        [speakers]="speakers"
+        (onAdd)="addSpeaker($event)"
+        *ngIf="!editingSpeaker"
+      ></speaker-add>
+    -->
+    <add-entity
+      *ngIf="!editingSpeaker"
+      [addForm]="addSpeakerForm"
+      title="Speaker"
+      [formFields]="addSpeakerFormFields"
+      [showAddForm]="showAddForm"
+      (onAdd)="addSpeaker($event)"
+      (onClose)="closeAddForm($event)"
+    >
+      <h1>Speakers</h1>
+      <h2>{{ speakers?.length }}</h2>
+
+      <h1>Speakers not assigned to section</h1>
+      <h3>Bob Anderson</h3>
+      <h3>Andrew Shroble</h3>
+      <button mat-raised-button (click)="showAddSpeakerForm()">
+        Add new speaker
+      </button>
+    </add-entity>
+    <speaker-edit
+      *ngIf="editingSpeaker"
+      [speaker]="editingSpeaker"
+      (onClose)="close($event)"
+      (onEdit)="editSpeaker($event)"
+      (onDelete)="deleteSpeaker($event)"
+    ></speaker-edit>
   </div>
 </div>

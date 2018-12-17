@@ -11,7 +11,7 @@ export class AddEntityComponent {
 
   @Input() addForm: FormGroup;
   @Input() title;
-  @Input() formFields;
+  @Input() addFormFields;
   @Input() showAddForm: boolean;
 
   @Output() onAdd = new EventEmitter<any>();

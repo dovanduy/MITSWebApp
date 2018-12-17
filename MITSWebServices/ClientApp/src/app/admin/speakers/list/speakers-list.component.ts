@@ -12,18 +12,18 @@ export class SpeakersListComponent implements OnInit {
   constructor(private adminData: AdminDataService) {}
 
   @Input() speakers: AllSpeakers.Speakers[];
-  @Output() edit = new EventEmitter<AllSpeakers.Speakers>();
-  editingSpeaker: AllSpeakers.Speakers;
+  @Output() onEdit = new EventEmitter<AllSpeakers.Speakers>();
+  activeSpeaker: AllSpeakers.Speakers;
 
   ngOnInit() {
     
     this.adminData.removeActiveFromSpeakerList$.subscribe(value => {
-      this.editingSpeaker = null;
+      this.activeSpeaker = null;
     });
   }
 
   editing(speaker: AllSpeakers.Speakers) {
-    this.editingSpeaker = speaker;
-    this.edit.emit(speaker);
+    this.activeSpeaker = speaker;
+    this.onEdit.emit(speaker);
   }
 }

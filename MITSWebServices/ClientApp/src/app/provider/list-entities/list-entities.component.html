@@ -1,0 +1,23 @@
+<div>
+  <mat-form-field class="fullwidth">
+    <input matInput placeholder="Search {{title}}" value="" />
+  </mat-form-field>
+</div>
+
+<div>
+  <div
+    style="padding-left: 5px; padding-top:10px; margin-bottom: 0px;"
+    [class.active]="activeEntity?.id == entity.id"
+    [ngClass]="{ 'mat-elevation-z2 over': isOverSpeaker == speaker.id }"
+    (click)="editEntity(entity)"
+    (mouseover)="isOverSpeaker = entity.id"
+    (mouseleave)="isOverSpeaker = null"
+    matRipple
+    class="border"
+    *ngFor="let entity of entities"
+  >
+    <h3 style="margin-bottom: 6px;">
+      {{ entity.firstName }} {{ entity.lastName }} - {{ entity.title }}
+    </h3>
+  </div>
+</div>

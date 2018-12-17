@@ -15,13 +15,13 @@ import { SpeakersComponent } from "./speakers/speakers.component";
 import { EventsComponent } from "./events/events.component";
 import { SponsorsComponent } from "./sponsors/sponsors.component";
 import { SpeakersListComponent } from "./speakers/list/speakers-list.component";
-import { SpeakerEditComponent } from "./speakers/edit/speaker-edit.component";
-import { SpeakerAddComponent } from "./speakers/add/speaker-add.component";
 import { EventAddComponent } from "./events/add/event-add.component";
 import { EventDeleteComponent } from "./events/delete/event-delete.component";
 import { EventEditComponent } from "./events/edit/event-edit.component";
 import { EventsListComponent } from "./events/list/events-list.component";
 import { AddEntityComponent } from "../provider/add-entity/add-entity.component";
+import { ListEntitiesComponent } from '../provider/list-entities/list-entities.component';
+import { EditEntityComponent } from '../provider/edit-entity/edit-entity.component';
 
 @NgModule({
   declarations: [
@@ -35,14 +35,14 @@ import { AddEntityComponent } from "../provider/add-entity/add-entity.component"
     EventsComponent,
     SponsorsComponent,
     SpeakersListComponent,
-    SpeakerEditComponent,
-    SpeakerAddComponent,
     EventsListComponent,
     EventAddComponent,
     EventDeleteComponent,
     EventEditComponent,
     EventsListComponent,
     AddEntityComponent,
+    ListEntitiesComponent,
+    EditEntityComponent,
   ],
   imports: [
     CommonModule,

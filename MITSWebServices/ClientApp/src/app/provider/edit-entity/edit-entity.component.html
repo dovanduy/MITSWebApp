@@ -1,0 +1,16 @@
+<div class="main">
+  <button mat-raised-button (click)="close()">Close</button>
+  <button mat-raised-button (click)="reset()">Reset</button>
+  <button mat-raised-button (click)="delete()">Delete</button>
+
+  <form [formGroup]="editForm" (ngSubmit)="submitHandler()">
+    <hr />
+    <div fxLayout="column" fxLayoutGap="5px">
+      <mat-form-field *ngFor="let formField of editFormFields">
+        <h3>{{ formField?.name }}</h3>
+        <input matInput [formControlName]="formField?.formControlName" />
+      </mat-form-field>
+    </div>
+    <button mat-raised-button>Save</button>
+  </form>
+</div>

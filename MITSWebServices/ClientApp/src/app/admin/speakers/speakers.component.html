@@ -2,26 +2,19 @@
   <div style="padding-bottom: 5px;" class="fullwidth" fxFlex="40">
     <speakers-list
       [speakers]="speakers"
-      (edit)="editing($event)"
+      (onEdit)="showEditSpeakerForm($event)"
     ></speakers-list>
   </div>
 
   <div fxFlex="60">
-    <!--
-      <speaker-add
-        [speakers]="speakers"
-        (onAdd)="addSpeaker($event)"
-        *ngIf="!editingSpeaker"
-      ></speaker-add>
-    -->
     <add-entity
-      *ngIf="!editingSpeaker"
-      [addForm]="addSpeakerForm"
+      *ngIf="!showEditForm"
+      [addForm]="speakerForm"
       title="Speaker"
-      [formFields]="addSpeakerFormFields"
+      [addFormFields]="speakerFormFields"
       [showAddForm]="showAddForm"
       (onAdd)="addSpeaker($event)"
-      (onClose)="closeAddForm($event)"
+      (onClose)="closeAddSpeakerForm($event)"
     >
       <h1>Speakers</h1>
       <h2>{{ speakers?.length }}</h2>
@@ -33,12 +26,18 @@
         Add new speaker
       </button>
     </add-entity>
-    <speaker-edit
-      *ngIf="editingSpeaker"
-      [speaker]="editingSpeaker"
-      (onClose)="close($event)"
-      (onEdit)="editSpeaker($event)"
+    <edit-entity
+      *ngIf="showEditForm"
+      [entity]="activeSpeaker"
+       title="Speaker"
+      [editForm]="speakerForm"
+      [editFormFields]="speakerFormFields"
+      (onClose)="closeEditSpeakerForm($event)"
       (onDelete)="deleteSpeaker($event)"
-    ></speaker-edit>
+      (onEdit)="editSpeaker($event)"
+      (onReset)="resetEditSpeakerForm($event)"
+
+    >
+    </edit-entity>
   </div>
 </div>

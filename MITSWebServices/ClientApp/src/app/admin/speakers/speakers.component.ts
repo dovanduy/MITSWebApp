@@ -38,20 +38,19 @@ export class SpeakersComponent implements OnInit {
   // speakers: Observable<AllSpeakers.Speakers[]>
   speakers: AllSpeakers.Speakers[];
   isOverSpeaker: number;
-  editingSpeaker: AllSpeakers.Speakers;
+  activeSpeaker: AllSpeakers.Speakers;
   showAddForm: boolean = false;
-  addSpeakerForm: FormGroup;
-  addSpeakerFormFields: FormField[];
+  showEditForm: boolean = false;
+  speakerForm: FormGroup;
+  speakerFormFields: FormField[];
 
   ngOnInit() {
     this.adminData.pageTitle("Speakers");
 
     this.allSpeakersSectionsGQL.watch().valueChanges.subscribe(result => {
+      console.log(result);
       this.speakers = result.data.speakers;
-      console.log(this.speakers);
     });
-
-    this.createAddSpeakerStuff();
   }
 
   getSpeakers(): void {}
@@ -78,30 +77,9 @@ export class SpeakersComponent implements OnInit {
       });
   }
 
-  deleteSpeaker(speaker: AllSpeakers.Speakers) {
-    this.deleteSpeakerGQL
-      .mutate({
-        speakerId: speaker.id
-      })
-      .subscribe(result => {
-        //Update the speaker list
-      });
-  }
+  createSpeakerForm() {
 
-  editSpeaker(speaker: UpdateSpeaker.UpdateSpeaker) {
-    console.log(speaker);
-    this.updateSpeakerGQL
-      .mutate({
-        speaker: speaker
-      })
-      .subscribe(result => {
-        //update the speaker list
-      });
-  }
-
-  createAddSpeakerStuff() {
-
-    this.addSpeakerForm = this.fb.group({
+    this.speakerForm = this.fb.group({
       firstName: ["", [Validators.required, Validators.max(100)]],
       lastName: ["", [Validators.required, Validators.max(100)]],
       title: ["", [Validators.required, Validators.max(100)]],
@@ -109,7 +87,7 @@ export class SpeakersComponent implements OnInit {
     });
     
 
-    this.addSpeakerFormFields = [
+    this.speakerFormFields = [
       {
         name: "First Name",
         formControlName: "firstName"
@@ -129,20 +107,81 @@ export class SpeakersComponent implements OnInit {
     ];
   }
 
+  createEditSpeakerForm(speaker: AllSpeakers.Speakers) {
+    this.createSpeakerForm();
+
+    this.speakerForm.setValue({
+      firstName: speaker.firstName,
+      lastName: speaker.lastName,
+      title: speaker.title,
+      bio: speaker.bio
+    });
+
+  }
+
   showAddSpeakerForm() {
+    this.createSpeakerForm();
     this.showAddForm = true;
   }
 
-  closeAddForm() {
+  closeAddSpeakerForm() {
     this.showAddForm = false;
   }
 
-  editing(speaker: AllSpeakers.Speakers) {
-    console.log("Editing called in the speakers componet.");
-    this.editingSpeaker = speaker;
+  deleteSpeaker(speakerId: number) {
+    this.deleteSpeakerGQL
+      .mutate({
+        speakerId: speakerId
+      })
+      .subscribe(result => {
+        this.speakers = this.speakers.filter(speaker => speaker.id != speakerId);
+      });
   }
 
-  close(value: boolean): void {
-    this.editingSpeaker = null;
+  editSpeaker(editForm: FormGroup) {
+    console.log(editForm);
+
+    var updatedSpeaker: UpdateSpeaker.UpdateSpeaker = 
+    {
+      id: this.activeSpeaker.id,
+      firstName: editForm.value.firstName,
+      lastName: editForm.value.lastName,
+      title: editForm.value.title,
+      bio: editForm.value.bio
+    }
+
+    console.log(updatedSpeaker);
+
+    this.updateSpeakerGQL
+      .mutate({
+        speaker: updatedSpeaker
+      })
+      .subscribe(result => {
+        //update the speaker list
+      });
   }
+
+  showEditSpeakerForm(speaker: AllSpeakers.Speakers) {
+    this.showEditForm = true;
+    this.activeSpeaker = speaker;
+    this.createEditSpeakerForm(speaker);
+  }
+
+  closeEditSpeakerForm(value: boolean) {
+    this.showEditForm = false;
+    this.adminData.removeActiveFromSpeakerList(true);
+  }
+
+  resetEditSpeakerForm(speaker: AllSpeakers.Speakers) {
+    this.showAddForm = false;
+    this.speakerForm.reset({
+      firstName: speaker.firstName,
+      lastName: speaker.lastName,
+      title: speaker.title,
+      bio: speaker.bio
+    });
+  }
+
+
+
 }

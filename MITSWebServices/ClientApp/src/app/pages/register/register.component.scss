@@ -1,0 +1,46 @@
+.container {
+    margin: auto;
+    max-width: 1100px;
+    padding-top: 30px;
+    justify-content: center;
+    align-items: center; 
+    background-color: #2b3843;
+    color: white;
+    display: flex;
+  }
+
+.title {
+    padding-bottom: 15px;
+    font-size: 48px;
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 600;
+    border-bottom: 1px solid white;
+}
+
+.highlight {
+    font-size: 24px;
+    font-weight: 200;
+    max-width: 950px;
+    text-align: center;
+}
+
+.options {
+    display: flex;
+    justify-content: space-around;
+
+}
+
+.MITS_reg {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    max-width: 800px;
+}
+
+.golf_reg {
+    max-width: 800px;
+    padding-bottom: 5px;
+}
+
+.luncheon_reg {
+    max-width: 800px;
+}

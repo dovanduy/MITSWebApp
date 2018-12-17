@@ -47,6 +47,8 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     MatExpansionModule,
    MatTableModule,
    ScrollDispatchModule,
+   MatExpansionModule,
+   
   ],
   exports: [
     CommonModule,
@@ -78,6 +80,7 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     MatExpansionModule,
     MatTableModule,
     ScrollDispatchModule,
+  
   ]
 })
 export class SharedModule { }

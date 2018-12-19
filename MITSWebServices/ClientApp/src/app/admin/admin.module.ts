@@ -16,7 +16,6 @@ import { EventsComponent } from "./events/events.component";
 import { SponsorsComponent } from "./sponsors/sponsors.component";
 import { SpeakersListComponent } from "./speakers/list/speakers-list.component";
 import { EventAddComponent } from "./events/add/event-add.component";
-import { EventDeleteComponent } from "./events/delete/event-delete.component";
 import { EventEditComponent } from "./events/edit/event-edit.component";
 import { EventsListComponent } from "./events/list/events-list.component";
 import { AddEntityComponent } from "../provider/add-entity/add-entity.component";
@@ -37,7 +36,6 @@ import { EditEntityComponent } from '../provider/edit-entity/edit-entity.compone
     SpeakersListComponent,
     EventsListComponent,
     EventAddComponent,
-    EventDeleteComponent,
     EventEditComponent,
     EventsListComponent,
     AddEntityComponent,

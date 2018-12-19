@@ -1,3 +1,34 @@
-<p>
-  events works!
-</p>
+<div class="whitebg" fxLayout="row" fxLayoutAlign="start start">
+    <div style="padding-bottom: 5px;" class="fullwidth" fxFlex="40">
+      <events-list
+       [events]="events"
+       (onEdit)="showEditEventForm($event)"
+      >
+
+      </events-list>
+    </div>
+  
+    <div fxFlex="60">
+      <event-add
+      *ngIf="!showEditForm"
+      [showAddForm]="showAddForm"
+      (onAdd)="addEvent($event)"
+      (onClose)="closeAddEventForm($event)"
+      >
+
+      <button mat-raised-button (click)="addEvent()">Add Event</button>
+
+      </event-add>
+
+      <event-edit
+        *ngIf="showEditForm"
+        [event]="activeEvent"
+        (onClose)="closeEditEventForm($event)"
+        (onDelete)="deleteSpeaker($event)"
+        (onEdit)='editSpeaker($event)'
+      >
+
+      </event-edit>
+    </div>
+  </div>
+  

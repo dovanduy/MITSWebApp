@@ -1,3 +1,52 @@
-<p>
-  events-list works!
-</p>
+<div>
+    <mat-form-field class="fullwidth">
+      <input matInput placeholder="Search Events" value="" />
+    </mat-form-field>
+  </div>
+  <div>
+    <!--
+      <cdk-virtual-scroll-viewport itemSize="50" class="viewport">
+        <div
+          style="padding-left: 5px; padding-top:10px; margin-bottom: 0px;"
+          [class.active]="editingSpeaker?.id == speaker.id"
+          [ngClass]="{ 'mat-elevation-z2 over': isOverSpeaker == speaker.id }"
+          (click)="editing(speaker)"
+          (mouseover)="isOverSpeaker = speaker.id"
+          (mouseleave)="isOverSpeaker = null"
+          matRipple
+          class="border"
+          *cdkVirtualFor="let speaker of speakers"
+        >5
+          <h3 style="margin-bottom: 6px;">
+            {{ speaker.firstName }} {{ speaker.lastName }} - {{ speaker.title }}
+          </h3>
+        </div>
+      </cdk-virtual-scroll-viewport>
+    -->
+  
+    <div>
+      <div
+        style="padding-left: 5px; padding-top:10px; margin-bottom: 0px;"
+        [class.active]="activeEvent?.id == event.id"
+        [ngClass]="{ 'mat-elevation-z2 over': isOverEvent == event.id }"
+        (click)="editing(event)"
+        (mouseover)="isOverEvent = event.id"
+        (mouseleave)="isOverEvent = null"
+        matRipple
+        class="border"
+        *ngFor="let event of events"
+      >
+        <h3 style="margin-bottom: 6px;">
+          {{event.mainEventId}} {{event.waEvent[0]?.name}} {{event.waEvent[0]?.description}}
+        </h3>
+        <div fxFlex></div>
+        <h3>
+            {{event.waEvent[0]?.isEnabled}}
+            {{event.waEvent[0]?.startDate}}
+            {{event.waEvent[0]?.endDate}}
+
+        </h3>
+      </div>
+    </div>
+  </div>
+  

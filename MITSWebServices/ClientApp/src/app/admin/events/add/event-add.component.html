@@ -1,3 +1,7 @@
-<p>
-  event-add works!
-</p>
+<div *ngIf="!showAddForm">
+  
+    <!-- <ng-content select="button" ></ng-content> -->
+    <ng-content></ng-content>
+  </div>
+
+<button *ngIf="showAddForm" mat-raised-button (click)="close()">Close</button>

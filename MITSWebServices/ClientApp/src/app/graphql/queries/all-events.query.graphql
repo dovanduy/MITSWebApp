@@ -1,0 +1,25 @@
+query AllEvents {
+  events {
+    id
+    mainEventId
+    isSponsor
+    waEvent {
+      id
+      name
+      description
+      isEnabled
+      location
+      startDate
+      endDate
+      types {
+        name
+        description
+        availableFrom
+        availableThrough
+        basePrice
+        registrationCode
+        isEnabled
+      }
+    }
+  }
+}

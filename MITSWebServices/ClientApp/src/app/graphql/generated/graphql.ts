@@ -41,6 +41,66 @@ export type Seconds = any;
 // Documents
 // ====================================================
 
+export namespace AllEvents {
+  export type Variables = {};
+
+  export type Query = {
+    __typename?: "Query";
+
+    events: (Events | null)[] | null;
+  };
+
+  export type Events = {
+    __typename?: "EventType";
+
+    id: number;
+
+    mainEventId: number;
+
+    isSponsor: boolean;
+
+    waEvent: (WaEvent | null)[] | null;
+  };
+
+  export type WaEvent = {
+    __typename?: "WaEventType";
+
+    id: number;
+
+    name: string;
+
+    description: string;
+
+    isEnabled: boolean;
+
+    location: string;
+
+    startDate: Date;
+
+    endDate: Date;
+
+    types: (Types | null)[] | null;
+  };
+
+  export type Types = {
+    __typename?: "WaRegistrationType";
+
+    name: string;
+
+    description: string;
+
+    availableFrom: Date;
+
+    availableThrough: Date;
+
+    basePrice: Decimal;
+
+    registrationCode: string | null;
+
+    isEnabled: boolean;
+  };
+}
+
 export namespace AllSections {
   export type Variables = {};
 
@@ -220,6 +280,41 @@ import gql from "graphql-tag";
 // Apollo Services
 // ====================================================
 
+@Injectable({
+  providedIn: "root"
+})
+export class AllEventsGQL extends Apollo.Query<
+  AllEvents.Query,
+  AllEvents.Variables
+> {
+  document: any = gql`
+    query AllEvents {
+      events {
+        id
+        mainEventId
+        isSponsor
+        waEvent {
+          id
+          name
+          description
+          isEnabled
+          location
+          startDate
+          endDate
+          types {
+            name
+            description
+            availableFrom
+            availableThrough
+            basePrice
+            registrationCode
+            isEnabled
+          }
+        }
+      }
+    }
+  `;
+}
 @Injectable({
   providedIn: "root"
 })

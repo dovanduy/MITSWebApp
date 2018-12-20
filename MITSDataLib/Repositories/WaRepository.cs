@@ -1,4 +1,8 @@
-﻿using MITSDataLib.Contexts;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using MITSDataLib.Contexts;
+using MITSDataLib.Models;
 using MITSDataLib.Repositories.Interfaces;
 
 namespace MITSDataLib.Repositories
@@ -12,7 +16,33 @@ namespace MITSDataLib.Repositories
             _context = context;
         }
 
-        //getToken
+        public async Task<WildApricotToken> GetTokenAsync()
+        {
+            return await  _context.WaTokens.SingleOrDefaultAsync();
+        }
+
+        public async Task<WildApricotToken> SetTokenAsync(WildApricotToken respToken)
+        {
+            var token = await GetTokenAsync();
+
+            if (token == null)
+            {
+                _context.WaTokens.Add(respToken);
+                await _context.SaveChangesAsync();
+                return respToken;
+
+            }
+            else {
+                token.AccessToken = respToken.AccessToken;
+                token.TokenExpires = respToken.TokenExpires;
+                await _context.SaveChangesAsync();
+                return token;
+            } 
+
+        }
+
+
+
 
         //setToken
 

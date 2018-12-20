@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MITSDataLib.Models
 {
-    public class WildApricotTokens
+    public class WildApricotToken
     {
         public int Id { get; set; }
         [Required]

@@ -188,6 +188,7 @@ namespace MITSWebServices
             services.AddScoped<ISpeakersRepository, SpeakersRepository>();
             services.AddScoped<ITagsRepository, TagsRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IWaRepository, WaRepository>();
             services.AddScoped<MITSQuery>();
             services.AddScoped<MITSMutation>();
             services.AddScoped<EventType>();

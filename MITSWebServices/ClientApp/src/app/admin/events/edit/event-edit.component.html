@@ -1,3 +1,11 @@
+<p>{{ event.mainEventId }}</p>
+<p>{{event.waEvent[0].name}}</p>
+<p>{{event.waEvent[0].description}}</p>
+<p>{{event.waEvent[0].isEnabled}}</p>
+<p>{{event.waEvent[0].location}}</p>
+<p>{{event.waEvent[0].startDate}}</p>
+<p>{{event.waEvent[0].endDate}}</p>
 
-
-{{event.mainEventId}}
+<div *ngFor="let type of event.waEvent[0].types">
+  <p>{{type.name}} {{type.description}} {{type.isEnabled}}</p>
+</div>

@@ -1,5 +1,12 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { AllEvents } from 'src/app/graphql/generated/graphql';
+import {
+  FormGroup,
+  FormControl,
+  FormBuilder,
+  Validators
+} from "@angular/forms";
+
+import { AllEvents, EventInput } from 'src/app/graphql/generated/graphql';
 
 @Component({
   selector: 'event-add',
@@ -8,18 +15,35 @@ import { AllEvents } from 'src/app/graphql/generated/graphql';
 })
 export class EventAddComponent implements OnInit {
 
-  constructor() { }
+  constructor(private fb: FormBuilder) { }
 
   @Input() showAddForm: boolean;
   
   @Output() onClose = new EventEmitter<boolean>();
+  @Output() onAdd = new EventEmitter<EventInput>();
+
+  addEventForm: FormGroup;
 
   ngOnInit() {
+    this.addEventForm = this.fb.group({
+      waEventId: ["", [Validators.required, Validators.max(100), Validators.pattern('/^\d+$/')]],
+    });
   }
 
   close() {
     this.showAddForm = false;
     this.onClose.emit(false);
+  }
+
+  submitHandler() {
+    var newEvent: EventInput =
+    {
+      mainEventId: this.addEventForm.value.waEventId,
+      isSponsor: false
+
+    };
+
+    this.onAdd.emit(newEvent);
   }
 
 }

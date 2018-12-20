@@ -5,3 +5,18 @@
   </div>
 
 <button *ngIf="showAddForm" mat-raised-button (click)="close()">Close</button>
+
+<div *ngIf="showAddForm">
+  <h1>Add Event</h1>
+
+  <form [formGroup]="addEventForm" (ngSubmit)="submitHandler()">
+    <hr />
+    <div fxLayout="column" fxLayoutGap="5px">
+      <mat-form-field>
+        <h3>Wild Apricot Event Id</h3>
+        <input matInput formControlName="waEventId" />
+      </mat-form-field>
+    </div>
+    <button mat-raised-button>Add Speaker</button>
+  </form>
+</div>

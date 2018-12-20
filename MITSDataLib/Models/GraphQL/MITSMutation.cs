@@ -107,6 +107,8 @@ namespace MITSDataLib.Models.GraphQL
                     try
                     {
                         var newEvent = context.GetArgument<Event>("event");
+                        //Is this the best place to put logic for other things..... what other choice do I have....
+
                         return eventsRepo.CreateEvent(newEvent);
                     }
                     catch (Exception e)

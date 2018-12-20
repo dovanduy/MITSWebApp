@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminDataService } from '../services/admin-data.service';
-import { AllEventsGQL, AllEvents } from 'src/app/graphql/generated/graphql';
+import { AllEventsGQL, AllEvents, EventInput, CreateEventGQL } from 'src/app/graphql/generated/graphql';
 
 @Component({
   selector: 'app-events',
@@ -9,7 +9,7 @@ import { AllEventsGQL, AllEvents } from 'src/app/graphql/generated/graphql';
 })
 export class EventsComponent implements OnInit {
 
-  constructor(private adminData: AdminDataService, private allEventsGQL: AllEventsGQL) { }
+  constructor(private adminData: AdminDataService, private allEventsGQL: AllEventsGQL, private createEventGQL: CreateEventGQL) { }
 
   events: AllEvents.Events[];
   showAddForm: boolean = false;
@@ -29,12 +29,21 @@ export class EventsComponent implements OnInit {
     this.activeEvent = event;
   }
 
-  addEvent(){
+  addEvent(newEvent: EventInput){
     this.showAddForm = true;
+    console.log(newEvent);
+    this.createEventGQL
+    .mutate({
+      event: newEvent
+    }).subscribe(result => console.log(result));
   }
 
   closeAddEventForm() {
     this.showAddForm = false;
+  }
+
+  showAddEventForm() {
+    this.showAddForm = true;
   }
 
 }

@@ -193,6 +193,28 @@ export namespace AllSpeakers {
   };
 }
 
+export namespace CreateEvent {
+  export type Variables = {
+    event: EventInput;
+  };
+
+  export type Mutation = {
+    __typename?: "Mutation";
+
+    createEvent: CreateEvent | null;
+  };
+
+  export type CreateEvent = {
+    __typename?: "EventType";
+
+    id: number;
+
+    mainEventId: number;
+
+    isSponsor: boolean;
+  };
+}
+
 export namespace CreateSpeaker {
   export type Variables = {
     speaker: SpeakerInput;
@@ -377,6 +399,23 @@ export class AllSpeakersGQL extends Apollo.Query<
         bio
         isPanelist
         title
+      }
+    }
+  `;
+}
+@Injectable({
+  providedIn: "root"
+})
+export class CreateEventGQL extends Apollo.Mutation<
+  CreateEvent.Mutation,
+  CreateEvent.Variables
+> {
+  document: any = gql`
+    mutation CreateEvent($event: EventInput!) {
+      createEvent(event: $event) {
+        id
+        mainEventId
+        isSponsor
       }
     }
   `;

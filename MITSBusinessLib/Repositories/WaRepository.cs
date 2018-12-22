@@ -87,10 +87,10 @@ namespace MITSBusinessLib.Repositories
 
         }
 
-        public async Task<EventResponse> GetWaEventDetails(Event newEvent)
+        public async Task<EventResponse> GetWaEventDetails(Event eventAddedToDB)
         {
 
-            var apiEventResource = $"accounts/{_accountId}/events/{newEvent.MainEventId}";
+            var apiEventResource = $"accounts/{_accountId}/events/{eventAddedToDB.MainEventId}";
 
             var response = new HttpResponseMessage();
             var token = await GetTokenAsync();
@@ -118,21 +118,37 @@ namespace MITSBusinessLib.Repositories
 
         }
 
-        public async Task<bool> AddWildApricotEvent(Event newEvent)
+        public async Task<Event> AddWildApricotEvent(Event eventAddedToDB)
         {
-            var eventDetailsResponse = await GetWaEventDetails(newEvent);
+
+            var eventDetailsResponse = await GetWaEventDetails(eventAddedToDB);
 
             if (eventDetailsResponse == null)
             {
-                return false;
+                throw new ExecutionError("Error Wild Apricot Event could not be found");
             }
 
             var registrationTypes = eventDetailsResponse.Details.RegistrationTypes;
 
             var newRegistrationTypes = new List<WildApricotRegistration>();
 
-          
+
             //EventDetailsResponse should not be null because there is a null check in GetWaEventDetails
+
+            var newWaEvent = new WildApricotEvent
+            {
+                Description = eventDetailsResponse.Details.DescriptionHtml,
+                Name = eventDetailsResponse.Name,
+                Location = eventDetailsResponse.Location,
+                StartDate = eventDetailsResponse.StartDate,
+                EndDate = eventDetailsResponse.EndDate,
+                IsEnabled = eventDetailsResponse.RegistrationEnabled,
+                Event = eventAddedToDB,
+                WaRegistrationTypes = newRegistrationTypes
+
+            };
+
+            
 
             registrationTypes.ForEach(rt =>
             {
@@ -145,7 +161,9 @@ namespace MITSBusinessLib.Repositories
                     RegistrationCode = rt.RegistrationCode,
                     AvailableFrom = rt.AvailableFrom,
                     AvailableThrough = rt.AvailableThrough,
-                    Name = rt.Name
+                    Name = rt.Name,
+                    WaEvent = newWaEvent
+
 
                 };
 
@@ -153,20 +171,14 @@ namespace MITSBusinessLib.Repositories
             });
 
 
-            var newWaEvent = new WildApricotEvent
-            {
-                Description = eventDetailsResponse.Details.DescriptionHtml,
-                Name = eventDetailsResponse.Name,
-                Location = eventDetailsResponse.Location,
-                StartDate = eventDetailsResponse.StartDate,
-                EndDate = eventDetailsResponse.EndDate,
-                IsEnabled = eventDetailsResponse.RegistrationEnabled,
-                Event = newEvent,
-                WaRegistrationTypes = newRegistrationTypes
+            
 
-            };
+            
+            await _context.WaEvents.AddAsync(newWaEvent);
+            await _context.WaRegistrations.AddRangeAsync(newRegistrationTypes);
+            await _context.SaveChangesAsync();
 
-            return true;
+            return eventAddedToDB;
         }
 
         //setToken

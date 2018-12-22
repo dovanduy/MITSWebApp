@@ -10,6 +10,6 @@ namespace MITSBusinessLib.Repositories.Interfaces
         Task<WildApricotToken> GetTokenAsync();
         Task<WildApricotToken> SetTokenAsync(WildApricotToken respToken, bool updateToken);
         Task<EventResponse> GetWaEventDetails(Event newEvent);
-        Task<bool> AddWildApricotEvent(Event newEvent);
+        Task<Event> AddWildApricotEvent(Event newEvent);
     }
 }

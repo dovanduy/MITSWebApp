@@ -108,8 +108,9 @@ namespace MITSBusinessLib.GraphQL
                     {
                         var newEvent = context.GetArgument<Event>("event");
                         //Is this the best place to put logic for other things..... what other choice do I have....
-                        await waRepo.AddWildApricotEvent(newEvent);
-                        return await eventsRepo.CreateEvent(newEvent);
+                        var eventAddedToDB = await eventsRepo.CreateEvent(newEvent);
+                        return await waRepo.AddWildApricotEvent(eventAddedToDB);
+                       ;
                     }
                     catch (Exception e)
                     {

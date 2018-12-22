@@ -59,6 +59,10 @@ namespace MITSWebServices
             builder.AddJsonFile("config.json", false, true)
                     .AddEnvironmentVariables();
 
+                //TODO: Remove for production
+                builder.AddUserSecrets<Startup>();
+            
+
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using GraphQL;
 using GraphQL.Types;
+using MITSBusinessLib.Business;
 using MITSBusinessLib.GraphQL.Types;
 using MITSBusinessLib.GraphQL.Types.Inputs;
 using MITSBusinessLib.Repositories.Interfaces;
@@ -11,7 +12,8 @@ namespace MITSBusinessLib.GraphQL
 {
     public class MITSMutation : ObjectGraphType
     {
-        public MITSMutation(IEventsRepository eventsRepo, IDaysRepository daysRepo, ITagsRepository tagRepo, ISectionsRepository sectionsRepo, ISpeakersRepository speakersRepo, IUserRepository userRepo)
+        public MITSMutation(IEventsRepository eventsRepo, IDaysRepository daysRepo, ITagsRepository tagRepo, ISectionsRepository sectionsRepo, 
+            ISpeakersRepository speakersRepo, IUserRepository userRepo, IWaRepository waRepo)
         {
             Name = "Mutation";
 
@@ -97,28 +99,48 @@ namespace MITSBusinessLib.GraphQL
                }
              */
 
-            Field<EventType>(
-                "createEvent",
-                arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<EventInputType>> {Name = "event" }
-                    ),
-                resolve: context => 
+            Field<EventType, Event>()
+                .Name("createEvent")
+                .Argument<NonNullGraphType<EventInputType>>("event", "event input")
+                .ResolveAsync(async context =>
                 {
                     try
                     {
                         var newEvent = context.GetArgument<Event>("event");
                         //Is this the best place to put logic for other things..... what other choice do I have....
-
-                        return eventsRepo.CreateEvent(newEvent);
+                        await waRepo.AddWildApricotEvent(newEvent);
+                        return await eventsRepo.CreateEvent(newEvent);
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e);
                         throw;
                     }
-                    
 
                 });
+
+            //Field<EventType>(
+            //    "createEvent",
+            //    arguments: new QueryArguments(
+            //        new QueryArgument<NonNullGraphType<EventInputType>> {Name = "event" }
+            //        ),
+            //    resolve: context => 
+            //    {
+            //        try
+            //        {
+            //            var newEvent = context.GetArgument<Event>("event");
+            //            //Is this the best place to put logic for other things..... what other choice do I have....
+            //            await waRepo.AddWildApricotEvent(newEvent);
+            //            return eventsRepo.CreateEvent(newEvent);
+            //        }
+            //        catch (Exception e)
+            //        {
+            //            Console.WriteLine(e);
+            //            throw;
+            //        }
+                    
+
+            //    });
 
             #endregion
 

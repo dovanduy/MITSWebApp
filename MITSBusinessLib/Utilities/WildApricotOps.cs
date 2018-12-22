@@ -13,17 +13,14 @@ namespace MITSBusinessLib.Utilities
         private static readonly string WildApricotApiUrl = "https://api.wildapricot.org/v2/";
         private static readonly string WildApricotTokenUrl = "https://oauth.wildapricot.org/auth/token";
 
-  
-        
-
         public static async Task<TokenResponse> GenerateNewAccessToken(string apiKey) {
             var client = new HttpClient();
             var authAddr = new Uri(WildApricotTokenUrl);
-            byte[] apiKeyBytes = System.Text.Encoding.UTF8.GetBytes(apiKey);
+            byte[] apiKeyBytes = System.Text.Encoding.UTF8.GetBytes("APIKEY:" + apiKey);
             var encodedApiKey = Convert.ToBase64String(apiKeyBytes);
 
             client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Add("Authorization", "Basic" + encodedApiKey);
+            client.DefaultRequestHeaders.Add("Authorization", "Basic " + encodedApiKey);
             
        
             var content = new FormUrlEncodedContent(new[] {
@@ -42,11 +39,9 @@ namespace MITSBusinessLib.Utilities
             var respContent = await response.Content.ReadAsStringAsync();
             return Newtonsoft.Json.JsonConvert.DeserializeObject<TokenResponse>(respContent);
 
-            
-
         }
 
-        public static async Task<HttpResponseMessage> GetResponse(int facultyId, string apiResource, WildApricotToken token)
+        public static async Task<HttpResponseMessage> GetResponse(string apiResource, WildApricotToken token)
         {
          
             var client = new HttpClient();

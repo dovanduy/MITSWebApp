@@ -15,8 +15,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MITSDataLib.Contexts;
 using MITSDataLib.Models;
-using MITSDataLib.Models.GraphQL;
-using MITSDataLib.Repositories;
 using MITSDataLib.Seeds;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -33,11 +31,13 @@ using GraphQL.Server.Transports.AspNetCore;
 using GraphQL.Server.Ui.Playground;
 using GraphQL.Types;
 using GraphiQl;
-using MITSDataLib.Repositories.Interfaces;
-using MITSDataLib.Models.GraphQL.Types;
 using static MITSWebServices.GraphQL;
 using GraphQL.Validation;
-using MITSDataLib.Models.GraphQL.Types.Inputs;
+using MITSBusinessLib.GraphQL;
+using MITSBusinessLib.GraphQL.Types;
+using MITSBusinessLib.GraphQL.Types.Inputs;
+using MITSBusinessLib.Repositories;
+using MITSBusinessLib.Repositories.Interfaces;
 
 namespace MITSWebServices
 {

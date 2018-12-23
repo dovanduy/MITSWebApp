@@ -35,7 +35,7 @@ namespace MITSBusinessLib.Repositories
             if (token != null)
             {
                 var tokenExpires = token?.TokenExpires ?? DateTime.Now;
-                if (DateTime.Compare(tokenExpires, DateTime.Now.AddMinutes(3)) < 0)
+                if (DateTime.Compare(tokenExpires, DateTime.Now.AddMinutes(3)) > 0)
                 {
                     return token;
                 }
@@ -181,10 +181,115 @@ namespace MITSBusinessLib.Repositories
             return eventAddedToDB;
         }
 
-        //setToken
+        //Need to figure out how to generate an invoice for the paid member and mark it as paid. 
 
-        //replaceToken
+        //Used for checking in event attendee....https://api.wildapricot.org/v2/rpc/12615/CheckInEventAttendee
 
-        //deleteToken
+        //Must create new contact before event registration
+        //Must first query for contact by unique email and then if there isn't one add the new contact
+
+        //Retrieve a contact...https://api.wildapricot.org/v2/accounts/12615/contacts?simpleQuery=brandy.canty@gmail.com 
+        //Get the result if it is complete....https://api.wildapricot.org/v2/accounts/12615/contacts?resultId=2fb32e1b-869e-4db4-8c17-3c80c148e76e
+
+        //Create new contact....https://api.wildapricot.org/v2/accounts/12615/contacts
+        //{
+        //    "FirstName": "Bob",
+        //    "LastName": "Anderson",
+        //    "Organization": "Pinhest Corp",
+        //    "Email": "bob@bob.com",
+        //    "Status": "Active",
+        //    "RecreateInvoice": true
+        //}
+
+        //Create new Event registration JSON body...https://api.wildapricot.org/v2/accounts/12615/eventregistrations
+
+
+        //  "Event": {
+        //    "Id": 3176755
+        //  },
+        //  "Contact": {
+        //    "Id": 48952441
+        //  },
+        //  "RegistrationTypeId": 4574357,
+        //  "IsCheckedIn": false,
+        //  "RegistrationFields": [
+        //		{
+        //	        "FieldName": "First name",
+        //	        "Value": "Bob",
+        //	        "SystemCode": "FirstName"
+
+        //        },
+        //	    {
+        //	        "FieldName": "Last name",
+        //	        "Value": "Anderson",
+        //	        "SystemCode": "LastName"
+        //	    },
+        //	    {
+        //	        "FieldName": "Organization",
+        //	        "Value": "",
+        //	        "SystemCode": "Organization"
+        //	    },
+        //	    {
+        //	        "FieldName": "e-Mail",
+        //	        "Value": "bob.Anderson@gmail.com",
+        //	        "SystemCode": "Email"
+        //	    },
+        //	    {
+        //	        "FieldName": "Phone",
+        //	        "Value": "3344671140",
+        //	        "SystemCode": "Phone"
+        //	    },
+        //	    {
+        //	        "FieldName": "Cell Phone",
+        //	        "Value": "",
+        //	        "SystemCode": "custom-2646430"
+        //	    },
+        //	    {
+        //	        "FieldName": "Title",
+        //	        "Value": "",
+        //	        "SystemCode": "custom-2646431"
+        //	    },
+        //	    {
+        //	        "FieldName": "Registration Terms and Conditions",
+        //	        "Value": true,
+        //	        "SystemCode": "custom-10687529"
+        //	    },
+        //	    {
+        //	        "FieldName": "AFCEA Member ID#",
+        //	        "Value": "342343",
+        //	        "SystemCode": "custom-10687532"
+        //	    },
+        //	    {
+        //	        "FieldName": "AFCEA Membership Expire Date",
+        //	        "Value": "2019-04-18T19:00:00-05:00",
+        //	        "SystemCode": "custom-10687533"
+        //	    },
+        //	    {
+        //	        "FieldName": "AFCEA Life Member",
+        //	        "Value": [
+        //	            {
+        //	                "Id": 11477352,
+        //	                "Label": "Yes"
+        //	            }
+        //	        ],
+        //	        "SystemCode": "custom-10687534"
+        //	    },
+        //	    {
+        //	        "FieldName": "Local or Traveling",
+        //	        "Value": {
+        //	            "Id": 11477353,
+        //	            "Label": "Local Montgomery Area"
+        //	        },
+        //	        "SystemCode": "custom-10687535"
+        //	    }
+
+        //  ],
+        //  "ShowToPublic": false,
+        //  "RegistrationDate": "2018-12-23T19:00:00-05:00",
+        //  "Memo": "This was automatically loaded by MITS Conference App",
+        //  "RecreateInvoice": false
+
+
+       
     }
 }

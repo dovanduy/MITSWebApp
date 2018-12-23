@@ -1,19 +1,40 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 
 import {
-  MatButtonModule, MatListModule, MatIconModule, MatCardModule, MatMenuModule, MatInputModule, MatButtonToggleModule,
-  MatProgressSpinnerModule, MatSelectModule, MatSlideToggleModule, MatDialogModule, MatSnackBarModule, MatToolbarModule,
-  MatTabsModule, MatSidenavModule, MatTooltipModule, MatCheckboxModule, MatRadioModule, MatGridListModule,
-  MatProgressBarModule, MatSliderModule, MatChipsModule, MatRippleModule, MatExpansionModule, MatTableModule,
-} from '@angular/material';
+  MatButtonModule,
+  MatListModule,
+  MatIconModule,
+  MatCardModule,
+  MatMenuModule,
+  MatInputModule,
+  MatButtonToggleModule,
+  MatProgressSpinnerModule,
+  MatSelectModule,
+  MatSlideToggleModule,
+  MatDialogModule,
+  MatSnackBarModule,
+  MatToolbarModule,
+  MatTabsModule,
+  MatSidenavModule,
+  MatTooltipModule,
+  MatCheckboxModule,
+  MatRadioModule,
+  MatGridListModule,
+  MatProgressBarModule,
+  MatSliderModule,
+  MatChipsModule,
+  MatRippleModule,
+  MatExpansionModule,
+  MatTableModule,
+  MatDividerModule,
+  MatStepperModule,
+} from "@angular/material";
 
-import {ScrollDispatchModule} from '@angular/cdk/scrolling';
+import { ScrollDispatchModule } from "@angular/cdk/scrolling";
 
 import { FlexLayoutModule } from "@angular/flex-layout";
-
 
 @NgModule({
   declarations: [],
@@ -45,10 +66,11 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     MatGridListModule,
     MatRippleModule,
     MatExpansionModule,
-   MatTableModule,
-   ScrollDispatchModule,
-   MatExpansionModule,
-   
+    MatTableModule,
+    ScrollDispatchModule,
+    MatExpansionModule,
+    MatDividerModule,
+    MatStepperModule,
   ],
   exports: [
     CommonModule,
@@ -80,7 +102,8 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     MatExpansionModule,
     MatTableModule,
     ScrollDispatchModule,
-  
+    MatDividerModule,
+    MatStepperModule
   ]
 })
-export class SharedModule { }
+export class SharedModule {}

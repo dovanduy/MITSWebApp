@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
+import { RegisterDialogComponent } from '../../provider/register-dialog/register-dialog.component';
+import { ProviderService } from '../../provider/provider.service';
 import { AllEventsGQL, AllEvents } from 'src/app/graphql/generated/graphql';
 
 @Component({
@@ -9,7 +12,7 @@ import { AllEventsGQL, AllEvents } from 'src/app/graphql/generated/graphql';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor(private allEventsGQL: AllEventsGQL) { }
+  constructor(private allEventsGQL: AllEventsGQL, private provider: ProviderService ) { }
 
   events: AllEvents.Events[];
   mainEvent: AllEvents.Events;
@@ -27,7 +30,10 @@ export class RegisterComponent implements OnInit {
 
   activate() {
     this.events = this.events.filter(event => event.isSponsor != true);
-    console.log(this.events);
+  }
+
+  register(type: AllEvents.Types) {
+   this.provider.openRegisterDialog(type);
   }
 
 

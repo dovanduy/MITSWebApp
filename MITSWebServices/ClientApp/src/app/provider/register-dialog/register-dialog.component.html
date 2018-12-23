@@ -1,0 +1,143 @@
+<div style="border-bottom: 1px solid lightgrey;" fxLayoutAlign="center center">
+  <h1>{{event?.name}}</h1>
+</div>
+
+
+<mat-vertical-stepper [linear]="true" #stepper>
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Your Details</ng-template>
+      <div
+        fxLayout="column"
+        fxLayoutAlign="space-between center"
+        fxLayoutGap="5px"
+      >
+        <div fxLayout="row" fxLayoutGap="10px">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="First Name"
+              formControlName="firstCtrl"
+              required
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="Last name"
+              formControlName="firstCtrl"
+              required
+            />
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutGap="10px">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="Title"
+              formControlName="firstCtrl"
+              required
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="Email"
+              formControlName="firstCtrl"
+              required
+            />
+          </mat-form-field>
+        </div>
+      </div>
+      <div><button mat-button matStepperNext>Next</button></div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Your AFCEA Details</ng-template>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Last name, First name"
+          formControlName="secondCtrl"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Last name, First name"
+          formControlName="secondCtrl"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Last name, First name"
+          formControlName="secondCtrl"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Last name, First name"
+          formControlName="secondCtrl"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Last name, First name"
+          formControlName="secondCtrl"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Last name, First name"
+          formControlName="secondCtrl"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Last name, First name"
+          formControlName="secondCtrl"
+          required
+        />
+      </mat-form-field>
+
+      <div><button mat-button matStepperNext>Next</button></div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="thirdFormGroup">
+    <form [formGroup]="thirdFormGroup">
+      <ng-template matStepLabel>Payment</ng-template>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Address"
+          formControlName="thirdCtrl"
+          required
+        />
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    You are now done.
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+</mat-vertical-stepper>

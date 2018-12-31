@@ -16,11 +16,14 @@ export class ProviderService {
   constructor(private dialog: MatDialog) {}
 
 
-  openRegisterDialog(eventType: AllEvents.Types ): Observable<MatDialogRef<RegisterDialogComponent>> {
+  openRegisterDialog(eventType: AllEvents.Types, mainEventId: number ): Observable<MatDialogRef<RegisterDialogComponent>> {
     return this.dialog.open(RegisterDialogComponent, {
       height: 'auto',
       width: '500px',
-      data: eventType
+      data: {
+        eventType: eventType,
+        mainEventId: mainEventId
+      }
     }).afterClosed();
   }
 

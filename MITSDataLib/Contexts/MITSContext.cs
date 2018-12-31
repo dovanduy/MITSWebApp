@@ -45,7 +45,7 @@ namespace MITSDataLib.Contexts
 
         public DbSet<WildApricotToken> WaTokens { get; set; }
         public DbSet<WildApricotEvent> WaEvents { get; set; }
-        public DbSet<WildApricotRegistration> WaRegistrations { get; set; }
+        public DbSet<WildApricotRegistrationType> WaRegistrations { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<SectionSpeaker> SectionsSpeakers { get; set; }
         public DbSet<SectionTag> SectionsTags { get; set; }

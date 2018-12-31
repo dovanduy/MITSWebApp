@@ -12,6 +12,7 @@ query AllEvents {
       startDate
       endDate
       types {
+        registrationTypeId
         name
         description
         availableFrom

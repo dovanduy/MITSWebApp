@@ -16,7 +16,7 @@ namespace MITSBusinessLib.GraphQL.Types
             Field(e => e.Location);
             Field(e => e.StartDate);
             Field(e => e.EndDate);
-            Field<ListGraphType<WaRegistrationType>, List<WildApricotRegistration>>()
+            Field<ListGraphType<WaRegistrationType>, List<WildApricotRegistrationType>>()
                 .Name("types")
                 .ResolveAsync(context => eventsRepo.GetWaRegistrationTypesByWaEventId(context.Source.Id));
         }

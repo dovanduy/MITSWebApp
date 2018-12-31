@@ -34,7 +34,7 @@
           <div fxFlex></div>
           <h2 style="margin-top: 15px;">{{type.basePrice | currency}}</h2>
           <div style="padding-right: 10px; padding-left: 10px">-</div>
-          <button (click)="register(type)" style="padding-left: 10px;" [disabled]="!type.isEnabled" mat-stroked-button>Register</button>
+          <button (click)="register(type, event.mainEventId)" style="padding-left: 10px;" [disabled]="!type.isEnabled" mat-stroked-button>Register</button>
 
           <mat-divider></mat-divider>
       </mat-list-item>

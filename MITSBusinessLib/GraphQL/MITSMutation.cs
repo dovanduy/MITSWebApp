@@ -17,6 +17,50 @@ namespace MITSBusinessLib.GraphQL
         {
             Name = "Mutation";
 
+            #region Registration
+
+            //mutation ProcessRegistration($registration: RegistrationInput!) {
+            //    processRegistration(registration: $registration) {
+            //        eventRegistrationId,
+            //        qrCode
+            //    }
+            //}
+
+            //{
+            //    "registration" :{
+            //        "dataDescriptor" : "COMMON.ACCEPT.INAPP.PAYMENT",
+            //        "dataValue" : "4354f34f34gfdhsfhfrhdfshs",
+            //        "firstName" : "Bob",
+            //        "lastName" :"Anderson",
+            //        "title" : "CEO, Boeing",
+            //        "email" : "enderjs@gmail.com",
+            //        "memberId" :"121232",
+            //        "memberExpirationDate" : "0118",
+            //        "isLifeMember" : false,
+            //        "isLocal" : true,
+            //        "registrationTypeId" : 4574357,
+            //        "eventId" : 3176755
+            //    }
+
+            //}
+
+            //Input, output
+            Field<RegistrationType, Registration>()
+                .Name("processRegistration")
+                .Argument<NonNullGraphType<RegistrationInputType>>("registration",
+                    "Details to process a new registration")
+                .ResolveAsync(async context =>
+                {
+                    var newRegistration = context.GetArgument<Registration>("registration");
+                    return new Registration()
+                    {
+                        EventRegistrationId = 324234,
+                        QrCode = "324j2o3kj423ijd23n23ij923jd923jd2938jd2398du2398du2398dj2398"
+                    };
+                });
+
+            #endregion
+
             #region Speaker
 
             Field<SpeakerType>(
@@ -108,8 +152,8 @@ namespace MITSBusinessLib.GraphQL
                     {
                         var newEvent = context.GetArgument<Event>("event");
                         //Is this the best place to put logic for other things..... what other choice do I have....
-                        var eventAddedToDB = await eventsRepo.CreateEvent(newEvent);
-                        return await waRepo.AddWildApricotEvent(eventAddedToDB);
+                        var eventAddedToDb = await eventsRepo.CreateEvent(newEvent);
+                        return await waRepo.AddWildApricotEvent(eventAddedToDb);
                        ;
                     }
                     catch (Exception e)

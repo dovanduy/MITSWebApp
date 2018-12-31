@@ -15,7 +15,7 @@ export class RegisterComponent implements OnInit {
   constructor(private allEventsGQL: AllEventsGQL, private provider: ProviderService ) { }
 
   events: AllEvents.Events[];
-  mainEvent: AllEvents.Events;
+  //mainEvent: AllEvents.Events;
 
   ngOnInit() {
     this.allEventsGQL.watch().valueChanges.subscribe(result => {
@@ -32,8 +32,8 @@ export class RegisterComponent implements OnInit {
     this.events = this.events.filter(event => event.isSponsor != true);
   }
 
-  register(type: AllEvents.Types) {
-   this.provider.openRegisterDialog(type);
+  register(type: AllEvents.Types, eventId: number) {
+   this.provider.openRegisterDialog(type, eventId);
   }
 
 

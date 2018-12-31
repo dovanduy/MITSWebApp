@@ -3,10 +3,11 @@ using MITSDataLib.Models;
 
 namespace MITSBusinessLib.GraphQL.Types
 {
-    public class WaRegistrationType : ObjectGraphType<WildApricotRegistration>
+    public class WaRegistrationType : ObjectGraphType<WildApricotRegistrationType>
     {
         public WaRegistrationType()
         {
+            Field(rt => rt.RegistrationTypeId);
             Field(rt => rt.Name);
             Field(rt => rt.Description);
             Field(rt => rt.AvailableFrom);

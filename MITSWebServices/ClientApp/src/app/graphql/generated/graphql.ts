@@ -20,6 +20,32 @@ export interface SpeakerInput {
   title: string;
 }
 
+export interface RegistrationInput {
+  dataDescriptor: string;
+
+  dataValue: string;
+
+  firstName: string;
+
+  lastName: string;
+
+  title: string;
+
+  email: string;
+
+  memberId?: string | null;
+
+  memberExpirationDate?: string | null;
+
+  isLifeMember?: boolean | null;
+
+  isLocal?: boolean | null;
+
+  registrationTypeId: number;
+
+  eventId: number;
+}
+
 /** The `Date` scalar type represents a year, month and day in accordance with the[ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard. */
 export type Date = any;
 
@@ -84,6 +110,8 @@ export namespace AllEvents {
 
   export type Types = {
     __typename?: "WaRegistrationType";
+
+    registrationTypeId: number;
 
     name: string;
 
@@ -263,6 +291,26 @@ export namespace DeleteSpeaker {
   };
 }
 
+export namespace ProcessRegistration {
+  export type Variables = {
+    registration: RegistrationInput;
+  };
+
+  export type Mutation = {
+    __typename?: "Mutation";
+
+    processRegistration: ProcessRegistration | null;
+  };
+
+  export type ProcessRegistration = {
+    __typename?: "RegistrationType";
+
+    eventRegistrationId: number;
+
+    qrCode: string;
+  };
+}
+
 export namespace UpdateSpeaker {
   export type Variables = {
     speaker: SpeakerInput;
@@ -324,6 +372,7 @@ export class AllEventsGQL extends Apollo.Query<
           startDate
           endDate
           types {
+            registrationTypeId
             name
             description
             availableFrom
@@ -453,6 +502,22 @@ export class DeleteSpeakerGQL extends Apollo.Mutation<
   document: any = gql`
     mutation DeleteSpeaker($speakerId: Int!) {
       deleteSpeaker(speakerId: $speakerId)
+    }
+  `;
+}
+@Injectable({
+  providedIn: "root"
+})
+export class ProcessRegistrationGQL extends Apollo.Mutation<
+  ProcessRegistration.Mutation,
+  ProcessRegistration.Variables
+> {
+  document: any = gql`
+    mutation ProcessRegistration($registration: RegistrationInput!) {
+      processRegistration(registration: $registration) {
+        eventRegistrationId
+        qrCode
+      }
     }
   `;
 }

@@ -130,7 +130,7 @@ namespace MITSBusinessLib.Repositories
 
             var registrationTypes = eventDetailsResponse.Details.RegistrationTypes;
 
-            var newRegistrationTypes = new List<WildApricotRegistration>();
+            var newRegistrationTypes = new List<WildApricotRegistrationType>();
 
 
             //EventDetailsResponse should not be null because there is a null check in GetWaEventDetails
@@ -152,8 +152,9 @@ namespace MITSBusinessLib.Repositories
 
             registrationTypes.ForEach(rt =>
             {
-                var newRegistrationType = new WildApricotRegistration
+                var newRegistrationType = new WildApricotRegistrationType
                 {
+                    RegistrationTypeId = rt.Id,
                     IsEnabled = rt.IsEnabled,
                     Description = rt.Description,
                     BasePrice = rt.BasePrice,
@@ -181,7 +182,30 @@ namespace MITSBusinessLib.Repositories
             return eventAddedToDB;
         }
 
-        //Need to figure out how to generate an invoice for the paid member and mark it as paid. 
+        //Maybe I can batch some requests together...http://gethelp.wildapricot.com/en/articles/488-batch-api-requests
+
+
+        //generate an invoice for the paid member.....https://api.wildapricot.org/v2/rpc/12615/GenerateInvoiceForEventRegistration?eventRegistrationId=24247466&updateIfexists=false 
+        //Mark it as paid....https://api.wildapricot.org/v2/accounts/12615/payments 
+
+        //{
+        //    "Value": 425,
+        //    "Invoices": [
+        //    {
+        //        "Id": 46428947,
+        //        "Url": "string"
+        //    }
+        //    ],
+        //    "Contact": {
+        //        "Id": 48952441,
+        //        "Url": "string"
+        //    },
+
+        //    "Comment": "This was paid through the MITS web app",
+        //    "PublicComment": "string",
+        //    "PaymentType": "InvoicePayment"
+        //}
+
 
         //Used for checking in event attendee....https://api.wildapricot.org/v2/rpc/12615/CheckInEventAttendee
 
@@ -235,16 +259,6 @@ namespace MITSBusinessLib.Repositories
         //	        "SystemCode": "Email"
         //	    },
         //	    {
-        //	        "FieldName": "Phone",
-        //	        "Value": "3344671140",
-        //	        "SystemCode": "Phone"
-        //	    },
-        //	    {
-        //	        "FieldName": "Cell Phone",
-        //	        "Value": "",
-        //	        "SystemCode": "custom-2646430"
-        //	    },
-        //	    {
         //	        "FieldName": "Title",
         //	        "Value": "",
         //	        "SystemCode": "custom-2646431"
@@ -290,6 +304,6 @@ namespace MITSBusinessLib.Repositories
         //  "RecreateInvoice": false
 
 
-       
+
     }
 }

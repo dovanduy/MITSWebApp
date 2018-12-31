@@ -5,9 +5,10 @@ using System.Text;
 
 namespace MITSDataLib.Models
 {
-    public class WildApricotRegistration
+    public class WildApricotRegistrationType
     {
         public int Id { get; set; }
+        public int RegistrationTypeId { get; set; }
         public bool IsEnabled { get; set; }
         public string Description { get; set; }
         [Column(TypeName = "decimal(18,2)")]

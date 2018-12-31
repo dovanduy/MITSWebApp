@@ -10,6 +10,6 @@ namespace MITSBusinessLib.Repositories.Interfaces
         Task<List<Event>> GetEventsAsync();
         Task<Event> CreateEvent(Event newEvent);
         Task<List<WildApricotEvent>> GetWaEventByEventId(int id);
-        Task<List<WildApricotRegistration>> GetWaRegistrationTypesByWaEventId(int id);
+        Task<List<WildApricotRegistrationType>> GetWaRegistrationTypesByWaEventId(int id);
     }
 }

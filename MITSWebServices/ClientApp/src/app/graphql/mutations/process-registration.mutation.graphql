@@ -1,0 +1,6 @@
+mutation ProcessRegistration($registration: RegistrationInput!) {
+  processRegistration(registration: $registration) {
+    eventRegistrationId,
+    qrCode
+  }
+}

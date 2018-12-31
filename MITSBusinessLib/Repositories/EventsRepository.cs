@@ -46,7 +46,7 @@ namespace MITSBusinessLib.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<WildApricotRegistration>> GetWaRegistrationTypesByWaEventId(int id)
+        public async Task<List<WildApricotRegistrationType>> GetWaRegistrationTypesByWaEventId(int id)
         {
             return await _context.WaRegistrations
                 .Where(war => war.WaEventId == id)

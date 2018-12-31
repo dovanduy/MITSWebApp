@@ -19,7 +19,7 @@ namespace MITSDataLib.Models
         public int EventId { get; set; }
         public Event Event { get; set; }
 
-        public List<WildApricotRegistration> WaRegistrationTypes { get; set; }
+        public List<WildApricotRegistrationType> WaRegistrationTypes { get; set; }
         
 
     }

@@ -1,7 +1,6 @@
 <div style="border-bottom: 1px solid lightgrey;" fxLayoutAlign="center center">
-  <h1>{{event?.name}}</h1>
+  <h1>{{ eventRegistrationType?.name }}</h1>
 </div>
-
 
 <mat-vertical-stepper [linear]="true" #stepper>
   <mat-step [stepControl]="firstFormGroup">
@@ -58,7 +57,7 @@
       <mat-form-field>
         <input
           matInput
-          placeholder="Last name, First name"
+          placeholder="AFCEA Member ID#"
           formControlName="secondCtrl"
           required
         />
@@ -66,7 +65,7 @@
       <mat-form-field>
         <input
           matInput
-          placeholder="Last name, First name"
+          placeholder="AFCEA Membership Exire Date"
           formControlName="secondCtrl"
           required
         />
@@ -74,7 +73,7 @@
       <mat-form-field>
         <input
           matInput
-          placeholder="Last name, First name"
+          placeholder="AFCEA Life Member"
           formControlName="secondCtrl"
           required
         />
@@ -82,36 +81,11 @@
       <mat-form-field>
         <input
           matInput
-          placeholder="Last name, First name"
+          placeholder="Local Or Traveling"
           formControlName="secondCtrl"
           required
         />
       </mat-form-field>
-      <mat-form-field>
-        <input
-          matInput
-          placeholder="Last name, First name"
-          formControlName="secondCtrl"
-          required
-        />
-      </mat-form-field>
-      <mat-form-field>
-        <input
-          matInput
-          placeholder="Last name, First name"
-          formControlName="secondCtrl"
-          required
-        />
-      </mat-form-field>
-      <mat-form-field>
-        <input
-          matInput
-          placeholder="Last name, First name"
-          formControlName="secondCtrl"
-          required
-        />
-      </mat-form-field>
-
       <div><button mat-button matStepperNext>Next</button></div>
     </form>
   </mat-step>
@@ -121,23 +95,39 @@
       <mat-form-field>
         <input
           matInput
-          placeholder="Address"
+          placeholder="Card Number"
+          formControlName="thirdCtrl"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Month"
+          formControlName="thirdCtrl"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Year"
+          formControlName="thirdCtrl"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Card Code"
           formControlName="thirdCtrl"
           required
         />
       </mat-form-field>
       <div>
         <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
+        <button mat-button (click)="processRegistration()">Register</button>
       </div>
     </form>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    You are now done.
-    <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
-    </div>
   </mat-step>
 </mat-vertical-stepper>

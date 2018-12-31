@@ -193,6 +193,8 @@ namespace MITSWebServices
             services.AddScoped<MITSMutation>();
             services.AddScoped<EventType>();
             services.AddScoped<EventInputType>();
+            services.AddScoped<RegistrationType>();
+            services.AddScoped<RegistrationInputType>();
             services.AddScoped<DayType>();
             services.AddScoped<DayInputType>();
             services.AddScoped<SectionType>();

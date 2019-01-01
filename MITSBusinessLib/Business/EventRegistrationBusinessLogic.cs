@@ -131,11 +131,15 @@ namespace MITSBusinessLib.Business
 
             //Create QR Code
 
+            var qrCode = QrOps.GenerateQrCode(eventRegistrationId);
+
+
+
             //Return Event Registration Id and QR Code Bitmap
             return new Registration()
             {
                 EventRegistrationId = eventRegistrationId,
-                QrCode = "324j2o3kj423ijd23n23ij923jd923jd2938jd2398du2398du2398dj2398"
+                QrCode = qrCode
             };
         }
 

@@ -26,6 +26,8 @@ export class RegisterDialogComponent implements OnInit {
   thirdFormGroup: FormGroup;
   eventRegistrationType: AllEvents.Types;
   mainEventId: number;
+  qrCode: string;
+  registrationComplete: boolean = false;
 
   ngOnInit() {
 
@@ -95,7 +97,12 @@ export class RegisterDialogComponent implements OnInit {
     this.processRegistrationGQL
     .mutate({
       registration: newRegistration
-    }).subscribe(result => console.log(result));
+    }).subscribe(result => {
+      this.registrationComplete = true;
+      console.log(result)
+      this.qrCode = result.data.processRegistration.qrCode;
+      console.log(this.qrCode);
+    });
 
     
 

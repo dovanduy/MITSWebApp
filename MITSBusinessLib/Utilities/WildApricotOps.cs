@@ -4,6 +4,7 @@ using MITSDataLib.Models;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MITSBusinessLib.Utilities
@@ -41,7 +42,47 @@ namespace MITSBusinessLib.Utilities
 
         }
 
-        public static async Task<HttpResponseMessage> GetResponse(string apiResource, WildApricotToken token)
+        public static async Task<HttpResponseMessage> PostRequest(string apiResource, WildApricotToken token,
+            StringContent content = null, List<string> queryList = null)
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+
+            var apiAddr = new UriBuilder(WildApricotApiUrl + apiResource);
+
+            if (queryList != null)
+            {
+                queryList.ForEach(query =>
+                {
+                    if (apiAddr.Query != null && apiAddr.Query.Length > 1)
+                    {
+                        apiAddr.Query = apiAddr.Query.Substring(1) + "&" + query;
+                    }
+                    else
+                    {
+                        apiAddr.Query = query;
+                    }
+                });
+            }
+
+
+            try
+            {
+
+                return await client.PostAsync(apiAddr.ToString(), content);
+            }
+
+            catch (Exception e)
+            {
+                var message = e.Message + " " + e.InnerException;
+                throw new Exception(message);
+            }
+
+
+        }
+
+        public static async Task<HttpResponseMessage> GetRequest(string apiResource, WildApricotToken token, List<string> queryList = null)
         {
          
             var client = new HttpClient();
@@ -49,13 +90,27 @@ namespace MITSBusinessLib.Utilities
 
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
 
-            var apiAddr = new Uri(WildApricotApiUrl + apiResource, UriKind.Absolute);
+            var apiAddr = new UriBuilder(WildApricotApiUrl + apiResource);
+
+            if (queryList != null)
+            {
+                queryList.ForEach(query =>
+                {
+                    if (apiAddr.Query != null && apiAddr.Query.Length > 1)
+                    {
+                        apiAddr.Query = apiAddr.Query.Substring(1) + "&" + query;
+                    }
+                    else
+                    {
+                        apiAddr.Query = query;
+                    }
+                });
+            }
 
             try
             {
                 
-                return await client.GetAsync(apiAddr);
-
+                return await client.GetAsync(apiAddr.ToString());
             }
 
             catch (Exception e)

@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using GraphQL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MITSBusinessLib.Models;
 using MITSBusinessLib.Repositories.Interfaces;
+using MITSBusinessLib.ResponseModels.WildApricot;
 using MITSBusinessLib.Utilities;
 using MITSDataLib.Contexts;
 using MITSDataLib.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace MITSBusinessLib.Repositories
 {
@@ -97,7 +101,7 @@ namespace MITSBusinessLib.Repositories
 
             try
             {
-                response = await WildApricotOps.GetResponse(apiEventResource, token);
+                response = await WildApricotOps.GetRequest(apiEventResource, token);
             }
             catch (Exception e)
             {
@@ -182,6 +186,275 @@ namespace MITSBusinessLib.Repositories
             return eventAddedToDB;
         }
 
+        public async Task<Contact> GetContact(string email)
+        {
+            var apiEventResource = $"accounts/{_accountId}/contacts";
+            var query = new List<string>
+            {
+                "$async=false",
+                $"simpleQuery={email}"
+            };
+
+            HttpResponseMessage response;
+            var token = await GetTokenAsync();
+
+            try
+            {
+                response = await WildApricotOps.GetRequest(apiEventResource, token, query);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception(e.Message);
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<QueryContactResponse>(content);
+
+            if (result.Contacts.Count == 0)
+            {
+                return null;
+            }
+
+            var returnedContact = result.Contacts[0];
+
+            return new Contact
+            {
+                FirstName = returnedContact.FirstName,
+                LastName = returnedContact.LastName,
+                Email = returnedContact.Email,
+                Organization = returnedContact.Organization,
+                Status = returnedContact.Status,
+                Id = returnedContact.Id
+                
+            };
+                              
+        }
+
+        public async Task<Contact> CreateContact(Registration newRegistration)
+        {
+            var newContact = new NewContact
+            {
+                FirstName = newRegistration.FirstName,
+                LastName = newRegistration.LastName,
+                Email = newRegistration.Email,
+                Organization = newRegistration.Title,
+                Status = "Active",
+                RecreateInvoice = false
+            };
+
+            var contractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            };
+
+            var newContactString = JsonConvert.SerializeObject(newContact, new JsonSerializerSettings
+            {
+                ContractResolver = contractResolver,
+            });
+
+            var encodedContact = new StringContent(newContactString, Encoding.UTF8, "application/json");
+
+            var apiEventResource = $"accounts/{_accountId}/contacts";
+            HttpResponseMessage response;
+            var token = await GetTokenAsync();
+
+            try
+            {
+                response = await WildApricotOps.PostRequest(apiEventResource, token, encodedContact);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception(e.Message);
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<NewContactResponse>(content);
+
+            return new Contact
+            {
+                FirstName = result.FirstName,
+                LastName = result.LastName,
+                Email = result.Email,
+                Organization = result.Organization,
+                Status = "Active",
+                Id = result.Id
+
+            };
+
+        }
+
+        public async Task<int> AddEventRegistration(Registration newRegistration, int contactId)
+        {
+            var newRegistrationData = new NewEventRegistration
+            {
+                Event = new WaEvent
+                {
+                    Id = newRegistration.EventId
+                },
+                Contact = new WaContact
+                {
+                    Id = contactId
+                },
+                RegistrationTypeId = newRegistration.RegistrationTypeId,
+                IsCheckedIn = false,
+                RegistrationFields = new List<RegistrationField>
+                {
+                    new RegistrationField
+                    {
+                        FieldName = "First name",
+                        Value = newRegistration.FirstName,
+                        SystemCode = "FirstName"
+                    },
+                    new RegistrationField
+                    {
+                        FieldName = "Last name",
+                        Value = newRegistration.LastName,
+                        SystemCode = "LastName"
+                    },
+                    new RegistrationField
+                    {
+                        FieldName = "Title",
+                        Value = newRegistration.Title,
+                        SystemCode = "Title"
+                    },
+                    new RegistrationField
+                    {
+                        FieldName = "e-mail",
+                        Value = newRegistration.Email,
+                        SystemCode = "Email"
+                    },
+                    new RegistrationField
+                    {
+                        FieldName = "Registration Terms and Conditions",
+                        Value = true,
+                        SystemCode = "custom-10687529"
+                    },
+                    new RegistrationField
+                    {
+                        FieldName = "AFCEA Member ID#",
+                        Value = newRegistration.MemberId,
+                        SystemCode = "custom-10687532"
+                    }
+                },
+                Memo = "Event Registration Created by MITS Web App"
+
+            };
+
+            var contractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            };
+
+            var newRegistrationString = JsonConvert.SerializeObject(newRegistrationData, new JsonSerializerSettings
+            {
+                ContractResolver = contractResolver,
+            });
+
+            var encodedRegistration = new StringContent(newRegistrationString, Encoding.UTF8, "application/json");
+
+            var apiEventResource = $"accounts/{_accountId}/eventregistrations";
+            HttpResponseMessage response;
+            var token = await GetTokenAsync();
+
+            try
+            {
+                response = await WildApricotOps.PostRequest(apiEventResource, token, encodedRegistration);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception(e.Message);
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<NewEventRegistrationResponse>(content);
+
+            return result.Id;
+        }
+
+        public async Task<int> GenerateEventRegistrationInvoice(int eventRegistrationId)
+        {
+            var apiEventResource = $"rpc/{_accountId}/GenerateInvoiceForEventRegistration";
+
+            var query = new List<string>
+            {
+                $"eventRegistrationId={eventRegistrationId}",
+                "updateIfexists=false"
+            };
+
+            HttpResponseMessage response;
+            var token = await GetTokenAsync();
+
+            try
+            {
+                response = await WildApricotOps.PostRequest(apiEventResource, token, null, query);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception(e.Message);
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<GenerateEventRegistrationInvoiceResponse>(content);
+
+            return result.Id;
+        }
+
+        public async Task<int> MarkInvoiceAsPaid(WildApricotRegistrationType registrationType, int invoiceId, int contactId)
+        {
+            var newInvoice = new NewInvoice
+            {
+               Value = registrationType.BasePrice,
+                Invoices = new List<Invoice>
+                {
+                    new Invoice
+                    {
+                        Id = invoiceId
+                    }
+                },
+                Contact = new InvoiceContact
+                {
+                    Id = contactId
+                },
+                Comment = "Marked paid by the MITS Web application",
+                PaymentType = "InvoicePayment"
+            };
+
+            var contractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            };
+
+            var newInvoiceString = JsonConvert.SerializeObject(newInvoice, new JsonSerializerSettings
+            {
+                ContractResolver = contractResolver,
+            });
+
+            var encodedContact = new StringContent(newInvoiceString, Encoding.UTF8, "application/json");
+
+            var apiEventResource = $"accounts/{_accountId}/payments";
+            HttpResponseMessage response;
+            var token = await GetTokenAsync();
+
+            try
+            {
+                response = await WildApricotOps.PostRequest(apiEventResource, token, encodedContact);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception(e.Message);
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<NewInvoiceResponse>(content);
+
+            return result.Id;
+        }
+
         //Maybe I can batch some requests together...http://gethelp.wildapricot.com/en/articles/488-batch-api-requests
 
 
@@ -212,7 +485,7 @@ namespace MITSBusinessLib.Repositories
         //Must create new contact before event registration
         //Must first query for contact by unique email and then if there isn't one add the new contact
 
-        //Retrieve a contact...https://api.wildapricot.org/v2/accounts/12615/contacts?simpleQuery=brandy.canty@gmail.com 
+        //Get a contact...https://api.wildapricot.org/v2/accounts/12615/contacts?simpleQuery=brandy.canty@gmail.com 
         //Get the result if it is complete....https://api.wildapricot.org/v2/accounts/12615/contacts?resultId=2fb32e1b-869e-4db4-8c17-3c80c148e76e
 
         //Create new contact....https://api.wildapricot.org/v2/accounts/12615/contacts

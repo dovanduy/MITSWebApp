@@ -19,7 +19,7 @@ namespace MITSDataLib.Models
         //Contact Created - Contact was created in Wild Apricot
         //Event Registration Created - Attendee was successfully registered for Event
         //Event Invoice Created - Invoice was successfully created for event registration
-        //Event Payment Created - Payment was successfully created for Invoice
+        //Event Payment Processed - Payment was successfully created for Invoice
         //Process Complete - QR Code was created and everything worked as it should
 
         public string Status { get; set; }

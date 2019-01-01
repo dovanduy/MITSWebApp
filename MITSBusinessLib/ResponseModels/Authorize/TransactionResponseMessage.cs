@@ -1,8 +1,10 @@
-﻿namespace MITSBusinessLib.ResponseModels.Authorize
+﻿using System.Collections.Generic;
+
+namespace MITSBusinessLib.ResponseModels.Authorize
 {
     public class TransactionResponseMessage
     {
-        public string Code;
-        public string Description;
+        public string Code { get; set; }
+        public string Description { get; set; }
     }
 }

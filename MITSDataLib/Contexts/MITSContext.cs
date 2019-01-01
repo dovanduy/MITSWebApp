@@ -53,7 +53,8 @@ namespace MITSDataLib.Contexts
         public DbSet<Section> Sections { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Day> Days { get; set; }
+        public DbSet<EventRegistrationAudit> EventRegistrationAudits { get; set; }
 
-        
+
     }
 }

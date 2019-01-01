@@ -33,6 +33,7 @@ using GraphQL.Types;
 using GraphiQl;
 using static MITSWebServices.GraphQL;
 using GraphQL.Validation;
+using MITSBusinessLib.Business;
 using MITSBusinessLib.GraphQL;
 using MITSBusinessLib.GraphQL.Types;
 using MITSBusinessLib.GraphQL.Types.Inputs;
@@ -189,6 +190,7 @@ namespace MITSWebServices
             services.AddScoped<ITagsRepository, TagsRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IWaRepository, WaRepository>();
+            services.AddScoped<IEventRegistrationBusinessLogic, EventRegistrationBusinessLogic>();
             services.AddScoped<MITSQuery>();
             services.AddScoped<MITSMutation>();
             services.AddScoped<EventType>();

@@ -13,7 +13,7 @@ namespace MITSBusinessLib.GraphQL
     public class MITSMutation : ObjectGraphType
     {
         public MITSMutation(IEventsRepository eventsRepo, IDaysRepository daysRepo, ITagsRepository tagRepo, ISectionsRepository sectionsRepo, 
-            ISpeakersRepository speakersRepo, IUserRepository userRepo, IWaRepository waRepo)
+            ISpeakersRepository speakersRepo, IUserRepository userRepo, IWaRepository waRepo, IEventRegistrationBusinessLogic eventRegistrationBusinessLogic)
         {
             Name = "Mutation";
 
@@ -52,11 +52,12 @@ namespace MITSBusinessLib.GraphQL
                 .ResolveAsync(async context =>
                 {
                     var newRegistration = context.GetArgument<Registration>("registration");
-                    return new Registration()
-                    {
-                        EventRegistrationId = 324234,
-                        QrCode = "324j2o3kj423ijd23n23ij923jd923jd2938jd2398du2398du2398dj2398"
-                    };
+                    return await eventRegistrationBusinessLogic.RegisterAttendee(newRegistration);
+                    //return new Registration()
+                    //{
+                    //    EventRegistrationId = 324234,
+                    //    QrCode = "324j2o3kj423ijd23n23ij923jd923jd2938jd2398du2398du2398dj2398"
+                    //};
                 });
 
             #endregion

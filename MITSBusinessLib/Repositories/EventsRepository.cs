@@ -52,5 +52,12 @@ namespace MITSBusinessLib.Repositories
                 .Where(war => war.WaEventId == id)
                 .ToListAsync();
         }
+
+        public async Task<WildApricotRegistrationType> GetEventTypeById(int registrationTypeId)
+        {
+            return await _context.WaRegistrations
+                .Where(war => war.RegistrationTypeId == registrationTypeId)
+                .FirstOrDefaultAsync();
+        }
     }
 }

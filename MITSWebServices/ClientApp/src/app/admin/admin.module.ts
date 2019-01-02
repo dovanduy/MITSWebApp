@@ -3,6 +3,7 @@ import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "../shared/shared.module";
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
 
 import { LoginComponent } from "./login/login.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
@@ -21,6 +22,7 @@ import { EventsListComponent } from "./events/list/events-list.component";
 import { AddEntityComponent } from "../provider/add-entity/add-entity.component";
 import { ListEntitiesComponent } from '../provider/list-entities/list-entities.component';
 import { EditEntityComponent } from '../provider/edit-entity/edit-entity.component';
+import { CheckinComponent } from './checkin/checkin.component';
 
 @NgModule({
   declarations: [
@@ -41,13 +43,15 @@ import { EditEntityComponent } from '../provider/edit-entity/edit-entity.compone
     AddEntityComponent,
     ListEntitiesComponent,
     EditEntityComponent,
+    CheckinComponent,
   ],
   imports: [
     CommonModule,
     AdminRoutingModule,
     SharedModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ZXingScannerModule
   ]
 })
 export class AdminModule {}

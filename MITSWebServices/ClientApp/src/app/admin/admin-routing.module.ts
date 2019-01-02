@@ -8,6 +8,7 @@ import { SectionsComponent } from './sections/sections.component';
 import { SpeakersComponent } from './speakers/speakers.component';
 import { EventsComponent } from './events/events.component';
 import { SponsorsComponent } from './sponsors/sponsors.component';
+import { CheckinComponent } from './checkin/checkin.component';
 
 const adminRoutes: Routes = [
     {
@@ -17,6 +18,10 @@ const adminRoutes: Routes = [
             {
                 path: 'dashboard',
                 component: DashboardComponent
+            },
+            {
+                path: 'checkin',
+                component: CheckinComponent
             },
             {
                 path: 'days',

@@ -8,7 +8,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PagesModule } from './pages/pages.module';
 import { OrganizerModule } from './organizer/organizer.module';
-import { CheckinModule } from './checkin/checkin.module';
 import { CoreModule } from './core/core.module';
 import { GraphQLModule } from './graphql/graphql.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -23,7 +22,6 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserAnimationsModule,
     PagesModule,
     OrganizerModule,
-    CheckinModule,
     CoreModule,
     AppRoutingModule,
     MatToolbarModule,

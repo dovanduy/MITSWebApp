@@ -455,6 +455,13 @@ namespace MITSBusinessLib.Repositories
             return result.Id;
         }
 
+        //public async Task<int> CheckInEventAttendee(int registrationId)
+        //{
+
+        //}
+
+
+
         //Maybe I can batch some requests together...http://gethelp.wildapricot.com/en/articles/488-batch-api-requests
 
 
@@ -481,6 +488,14 @@ namespace MITSBusinessLib.Repositories
 
 
         //Used for checking in event attendee....https://api.wildapricot.org/v2/rpc/12615/CheckInEventAttendee
+
+        //{
+        //  "RegistrationId": 0,
+        //  "CheckedIn": true,
+        //  "CheckedInGuests": 0
+        //}
+
+
 
         //Must create new contact before event registration
         //Must first query for contact by unique email and then if there isn't one add the new contact

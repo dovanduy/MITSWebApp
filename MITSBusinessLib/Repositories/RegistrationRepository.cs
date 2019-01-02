@@ -43,5 +43,7 @@ namespace MITSBusinessLib.Repositories
 
             return eventRegistrationAudit;
         }
+
+        //public async Task<EventCheckInAudit> CreateEventCheckinAudit() { }
     }
 }

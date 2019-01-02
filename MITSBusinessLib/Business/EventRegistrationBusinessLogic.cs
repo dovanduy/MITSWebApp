@@ -84,7 +84,7 @@ namespace MITSBusinessLib.Business
                         },
                         Order = new Order
                         {
-                            InvoiceNumber = "00055",
+                            InvoiceNumber = $"{invoiceId}",
                             Description = $"Registration for {registrationTypeDetails.Name}"
 
                         },
@@ -92,8 +92,8 @@ namespace MITSBusinessLib.Business
                         {
                             LineItem = new LineItem
                             {
-                                ItemId = "0555",
-                                Name = $"Invoice #{0555}",
+                                ItemId = $"{invoiceId}",
+                                Name = $"Invoice #{invoiceId}",
                                 Description = $"Registration for {registrationTypeDetails.Name}",
                                 Quantity = "1",
                                 UnitPrice = registrationTypeDetails.BasePrice.ToString(CultureInfo.InvariantCulture)
@@ -132,8 +132,7 @@ namespace MITSBusinessLib.Business
             //Create QR Code
 
             var qrCode = QrOps.GenerateQrCode(eventRegistrationId);
-
-
+            await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit, $"Registration Complete - {eventRegistrationId}");
 
             //Return Event Registration Id and QR Code Bitmap
             return new Registration()

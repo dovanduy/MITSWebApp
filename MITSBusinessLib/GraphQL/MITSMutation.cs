@@ -6,6 +6,7 @@ using MITSBusinessLib.Business;
 using MITSBusinessLib.GraphQL.Types;
 using MITSBusinessLib.GraphQL.Types.Inputs;
 using MITSBusinessLib.Repositories.Interfaces;
+using MITSBusinessLib.ResponseModels.WildApricot;
 using MITSDataLib.Models;
 
 namespace MITSBusinessLib.GraphQL
@@ -16,6 +17,28 @@ namespace MITSBusinessLib.GraphQL
             ISpeakersRepository speakersRepo, IUserRepository userRepo, IWaRepository waRepo, IEventRegistrationBusinessLogic eventRegistrationBusinessLogic)
         {
             Name = "Mutation";
+
+            #region Checkin
+
+            Field<CheckInAttendeeType, CheckInAttendee>()
+                .Name("checkInAttendee")
+                .Argument<NonNullGraphType<CheckInAttendeeInputType>>("checkInAttendee",
+                    "Check in event attendee")
+                .ResolveAsync(async context =>
+                {
+                    var newCheckIn = context.GetArgument<CheckInAttendee>("checkInAttendee");
+                    return new CheckInAttendee {
+                        CheckedIn = true
+                    };
+                    
+                    //return new Registration()
+                    //{
+                    //    EventRegistrationId = 324234,
+                    //    QrCode = "324j2o3kj423ijd23n23ij923jd923jd2938jd2398du2398du2398dj2398"
+                    //};
+                });
+
+            #endregion
 
             #region Registration
 

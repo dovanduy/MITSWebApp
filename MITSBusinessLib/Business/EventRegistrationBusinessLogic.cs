@@ -7,6 +7,7 @@ using GraphQL.Conversion;
 using Microsoft.Extensions.Configuration;
 using MITSBusinessLib.Repositories.Interfaces;
 using MITSBusinessLib.ResponseModels.Authorize;
+using MITSBusinessLib.ResponseModels.WildApricot;
 using MITSBusinessLib.Utilities;
 using MITSDataLib.Models;
 using Newtonsoft.Json;
@@ -140,6 +141,14 @@ namespace MITSBusinessLib.Business
                 EventRegistrationId = eventRegistrationId,
                 QrCode = qrCode
             };
+        }
+
+        public async Task<CheckInAttendee> CheckInAttendee(CheckInAttendee attendee)
+        {
+            //Check if attendee is registered
+            //Check if attendee has paid
+
+            //Check in attendee
         }
 
     }

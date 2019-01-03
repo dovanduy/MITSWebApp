@@ -369,7 +369,7 @@ namespace MITSBusinessLib.Repositories
             }
 
             var content = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<NewEventRegistrationResponse>(content);
+            var result = JsonConvert.DeserializeObject<EventRegistrationResponse>(content);
 
             return result.Id;
         }

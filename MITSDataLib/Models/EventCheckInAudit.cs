@@ -11,7 +11,8 @@ namespace MITSDataLib.Models
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public DateTime CheckInAt { get; set; }
+        public string Status { get; set; }
+        public DateTime CheckedInAt { get; set; }
 
     }
 }

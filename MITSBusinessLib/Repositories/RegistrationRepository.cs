@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MITSBusinessLib.Repositories.Interfaces;
+using MITSBusinessLib.ResponseModels.WildApricot;
 using MITSDataLib.Contexts;
 using MITSDataLib.Models;
 
@@ -44,6 +45,10 @@ namespace MITSBusinessLib.Repositories
             return eventRegistrationAudit;
         }
 
-        //public async Task<EventCheckInAudit> CreateEventCheckinAudit() { }
+        public async Task<EventCheckInAudit> CreateEventCheckinAudit(EventCheckInAudit checkInAudit)
+        {
+          
+            return checkInAudit;
+        }
     }
 }

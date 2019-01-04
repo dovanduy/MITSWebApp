@@ -1,20 +1,30 @@
 <section class="results" *ngIf="qrResultString">
-  <small>Result</small>
-  <strong>{{ qrResultString }}</strong>
+  <small>Result</small> <strong>{{ qrResultString }}</strong>
 </section>
 
-<form style="background-color: white; color: black;" [formGroup]="checkInForm" (ngSubmit)="onSubmit()">
-  <mat-form-field >
-    <input  matInput placeholder="Event Registration Id" formControlName="registrationId">
+<form
+  style="background-color: white; color: black;"
+  [formGroup]="checkInForm"
+  (ngSubmit)="onSubmit()"
+>
+  <mat-form-field>
+    <input
+      matInput
+      placeholder="Event Registration Id"
+      formControlName="registrationId"
+    />
   </mat-form-field>
-  <button mat-raised-button type="submit" [disabled]="!checkInForm.valid">Submit</button>
+  <button mat-raised-button type="submit" [disabled]="!checkInForm.valid">
+    Submit
+  </button>
 </form>
 
-<zxing-scanner
-  #scanner
-  [device]="currentDevice"
-  (scanSuccess)="handleQrCodeResult($event)"
-  [formats]="['EAN_13', 'CODE_128', 'QR_CODE']"
-  [tryHarder]="true"
->
-</zxing-scanner>
+  <zxing-scanner
+    #scanner
+    [device]="currentDevice"
+    (scanSuccess)="handleQrCodeResult($event)"
+    [formats]="['EAN_13', 'CODE_128', 'QR_CODE']"
+    [tryHarder]="true"
+    [scannerEnabled]="scannerEnabled"
+  >
+  </zxing-scanner>

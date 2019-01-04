@@ -1,0 +1,6 @@
+mutation CheckInAttendee($checkInAttendee: CheckInAttendeeInput! ) {
+  checkInAttendee(checkInAttendee: $checkInAttendee) {
+    checkedIn
+    status
+  }
+}

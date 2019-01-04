@@ -1,3 +1,7 @@
+export interface CheckInAttendeeInput {
+  registrationId: number;
+}
+
 export interface DayInput {
   agendaDay: DateTime;
 }
@@ -279,6 +283,26 @@ export namespace CreateSpeaker {
   };
 }
 
+export namespace CheckInAttendee {
+  export type Variables = {
+    checkInAttendee: CheckInAttendeeInput;
+  };
+
+  export type Mutation = {
+    __typename?: "Mutation";
+
+    checkInAttendee: CheckInAttendee | null;
+  };
+
+  export type CheckInAttendee = {
+    __typename?: "CheckInAttendeeType";
+
+    checkedIn: boolean;
+
+    status: string;
+  };
+}
+
 export namespace DeleteSpeaker {
   export type Variables = {
     speakerId: number;
@@ -488,6 +512,22 @@ export class CreateSpeakerGQL extends Apollo.Mutation<
           id
           name
         }
+      }
+    }
+  `;
+}
+@Injectable({
+  providedIn: "root"
+})
+export class CheckInAttendeeGQL extends Apollo.Mutation<
+  CheckInAttendee.Mutation,
+  CheckInAttendee.Variables
+> {
+  document: any = gql`
+    mutation CheckInAttendee($checkInAttendee: CheckInAttendeeInput!) {
+      checkInAttendee(checkInAttendee: $checkInAttendee) {
+        checkedIn
+        status
       }
     }
   `;

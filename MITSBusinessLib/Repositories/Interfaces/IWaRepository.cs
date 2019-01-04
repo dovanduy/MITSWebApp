@@ -17,5 +17,7 @@ namespace MITSBusinessLib.Repositories.Interfaces
         Task<int> AddEventRegistration(Registration newRegistration, int contactId);
         Task<int> GenerateEventRegistrationInvoice(int eventRegistrationId);
         Task<int> MarkInvoiceAsPaid(WildApricotRegistrationType registrationType, int invoiceId, int contactId);
+        Task<EventRegistrationResponse> GetEventRegistration(int registrationId);
+        Task<bool> CheckInEventAttendee(int registrationId);
     }
 }

@@ -27,15 +27,9 @@ namespace MITSBusinessLib.GraphQL
                 .ResolveAsync(async context =>
                 {
                     var newCheckIn = context.GetArgument<CheckInAttendee>("checkInAttendee");
-                    return new CheckInAttendee {
-                        CheckedIn = true
-                    };
-                    
-                    //return new Registration()
-                    //{
-                    //    EventRegistrationId = 324234,
-                    //    QrCode = "324j2o3kj423ijd23n23ij923jd923jd2938jd2398du2398du2398dj2398"
-                    //};
+
+                    return await eventRegistrationBusinessLogic.CheckInAttendee(newCheckIn);
+
                 });
 
             #endregion

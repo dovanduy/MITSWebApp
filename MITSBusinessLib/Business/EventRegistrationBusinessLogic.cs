@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
+using GraphQL;
 using GraphQL.Conversion;
 using Microsoft.Extensions.Configuration;
 using MITSBusinessLib.Repositories.Interfaces;
@@ -20,11 +21,11 @@ namespace MITSBusinessLib.Business
 
         private readonly IWaRepository _waRepo;
         private readonly IEventsRepository _eventsRepository;
-        private readonly IRegistrationRepository _registrationRepo;
+        private readonly IAuditRepository _registrationRepo;
         private readonly string _name;
         private readonly string _transactionKey;
 
-        public EventRegistrationBusinessLogic(IWaRepository waRepo, IEventsRepository eventsRepo, IRegistrationRepository registrationRepo, IConfiguration config)
+        public EventRegistrationBusinessLogic(IWaRepository waRepo, IEventsRepository eventsRepo, IAuditRepository registrationRepo, IConfiguration config)
         {
             _waRepo = waRepo;
             _eventsRepository = eventsRepo;
@@ -146,9 +147,41 @@ namespace MITSBusinessLib.Business
         public async Task<CheckInAttendee> CheckInAttendee(CheckInAttendee attendee)
         {
             //Check if attendee is registered
-            //Check if attendee has paid
 
-            //Check in attendee
+            var result = await _waRepo.GetEventRegistration(attendee.RegistrationId);
+
+            var newCheckInAttendee = new CheckInAttendee
+            {
+                RegistrationId = attendee.RegistrationId,
+            };
+
+            if (result == null)
+            {
+                throw new ExecutionError("Registration could not be found");
+            }
+
+            
+
+            if (result.IsPaid)
+            {
+                
+                //Returns True if member was successfully checked in
+                if (await _waRepo.CheckInEventAttendee(attendee.RegistrationId))
+                {
+                    newCheckInAttendee.CheckedIn = true;
+                    newCheckInAttendee.Status = "Member is Checked In";
+                    return newCheckInAttendee;
+                }
+
+                newCheckInAttendee.CheckedIn = false;
+                newCheckInAttendee.Status = "Member has paid but there was a problem checking them in";
+
+            }
+
+            newCheckInAttendee.CheckedIn = false;
+            newCheckInAttendee.Status = "Member was not check in. Member has an outstanding balance";
+
+            return newCheckInAttendee;
         }
 
     }

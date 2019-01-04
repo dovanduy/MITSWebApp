@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 
 import { AdminDataService } from '../services/admin-data.service';
 import { ZXingScannerComponent } from '@zxing/ngx-scanner';
@@ -24,6 +25,10 @@ export class CheckinComponent implements OnInit {
 
   availableDevices: MediaDeviceInfo[];
   currentDevice: MediaDeviceInfo;
+
+  checkInForm = new FormGroup({
+    registrationId: new FormControl('')
+  });
 
   ngOnInit() {
     this.adminData.pageTitle('Check In');
@@ -53,6 +58,14 @@ export class CheckinComponent implements OnInit {
   onDeviceSelectChange(selectedValue: string) {
     console.debug('Selection changed: ', selectedValue);
     this.currentDevice = this.scanner.getDeviceById(selectedValue);
+  }
+
+  onSubmit() {
+    // TODO: Use EventEmitter with form value
+
+    
+    var id = this.checkInForm.value.registrationId;
+    console.log(id);
   }
 
   stateToEmoji(state: boolean): string {

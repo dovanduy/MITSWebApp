@@ -7,11 +7,11 @@ using MITSDataLib.Models;
 
 namespace MITSBusinessLib.Repositories
 {
-    public class RegistrationRepository : IRegistrationRepository
+    public class AuditRepository : IAuditRepository
     {
         private readonly MITSContext _context;
 
-        public RegistrationRepository(MITSContext context)
+        public AuditRepository(MITSContext context)
         {
             _context = context;
         }
@@ -45,9 +45,11 @@ namespace MITSBusinessLib.Repositories
             return eventRegistrationAudit;
         }
 
-        public async Task<EventCheckInAudit> CreateEventCheckinAudit(EventCheckInAudit checkInAudit)
+        public async Task<EventCheckInAudit> CreateEventCheckInAudit(EventCheckInAudit checkInAudit)
         {
-          
+
+            await _context.AddAsync(checkInAudit);
+            await _context.SaveChangesAsync();
             return checkInAudit;
         }
     }

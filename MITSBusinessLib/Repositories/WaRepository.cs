@@ -455,10 +455,68 @@ namespace MITSBusinessLib.Repositories
             return result.Id;
         }
 
-        //public async Task<int> CheckInEventAttendee(int registrationId)
-        //{
+        public async Task<EventRegistrationResponse> GetEventRegistration(int registrationId)
+        {
+            var apiEventResource = $"accounts/{_accountId}/eventregistrations/{registrationId}";
+            HttpResponseMessage response;
+            var token = await GetTokenAsync();
 
-        //}
+            try
+            {
+                response = await WildApricotOps.GetRequest(apiEventResource, token);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception(e.Message);
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<EventRegistrationResponse>(content);
+
+            return result;
+        }
+
+        public async Task<bool> CheckInEventAttendee(int registrationId)
+        {
+            var newEventRegistrationCheckIn = new EventRegistrationCheckIn
+            {
+                RegistrationId = registrationId,
+                CheckedIn = true
+            };
+
+            var contractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            };
+
+            var newEventRegistrationCheckInString = JsonConvert.SerializeObject(newEventRegistrationCheckIn, new JsonSerializerSettings
+            {
+                ContractResolver = contractResolver,
+            });
+
+            var encodedContact = new StringContent(newEventRegistrationCheckInString, Encoding.UTF8, "application/json");
+
+            var apiEventResource = $"rpc/{_accountId}/CheckInEventAttendee";
+            HttpResponseMessage response;
+            var token = await GetTokenAsync();
+
+            try
+            {
+                response = await WildApricotOps.PostRequest(apiEventResource, token, encodedContact);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception(e.Message);
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            var result = content.Contains("true");
+
+            return result;
+        }
 
 
 

@@ -6,11 +6,12 @@ using MITSDataLib.Models;
 
 namespace MITSBusinessLib.Repositories.Interfaces
 {
-    public interface IRegistrationRepository
+    public interface IAuditRepository
     {
         Task<EventRegistrationAudit> CreateEventRegistrationAudit(Registration newEventRegistrationAudit);
         Task<EventRegistrationAudit> UpdateEventRegistrationAudit(EventRegistrationAudit eventRegistrationAudit,
             string status);
-        Task<EventCheckInAudit> CreateEventCheckinAudit(EventCheckInAudit checkInAudit)
+
+        Task<EventCheckInAudit> CreateEventCheckInAudit(EventCheckInAudit checkInAudit);
     }
 }

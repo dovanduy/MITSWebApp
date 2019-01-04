@@ -186,7 +186,7 @@ namespace MITSWebServices
             services.AddScoped<IEventsRepository, EventsRepository>();
             services.AddScoped<IDaysRepository, DaysRepository>();
             services.AddScoped<ISectionsRepository, SectionsRepository>();
-            services.AddScoped<IRegistrationRepository, RegistrationRepository>();
+            services.AddScoped<IAuditRepository, AuditRepository>();
             services.AddScoped<ISpeakersRepository, SpeakersRepository>();
             services.AddScoped<ITagsRepository, TagsRepository>();
             services.AddScoped<IUserRepository, UserRepository>();

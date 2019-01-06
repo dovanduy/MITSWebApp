@@ -9,7 +9,7 @@ export interface DayInput {
 export interface EventInput {
   mainEventId: number;
 
-  isSponsor: boolean;
+  eventRegistrationType: string;
 }
 
 export interface SpeakerInput {
@@ -87,7 +87,7 @@ export namespace AllEvents {
 
     mainEventId: number;
 
-    isSponsor: boolean;
+    eventRegistrationType: string;
 
     waEvent: (WaEvent | null)[] | null;
   };
@@ -243,7 +243,7 @@ export namespace CreateEvent {
 
     mainEventId: number;
 
-    isSponsor: boolean;
+    eventRegistrationType: string;
   };
 }
 
@@ -386,7 +386,7 @@ export class AllEventsGQL extends Apollo.Query<
       events {
         id
         mainEventId
-        isSponsor
+        eventRegistrationType
         waEvent {
           id
           name
@@ -488,7 +488,7 @@ export class CreateEventGQL extends Apollo.Mutation<
       createEvent(event: $event) {
         id
         mainEventId
-        isSponsor
+        eventRegistrationType
       }
     }
   `;

@@ -2,6 +2,6 @@ mutation CreateEvent($event: EventInput!) {
   createEvent(event: $event) {
     id
     mainEventId
-    isSponsor
+    eventRegistrationType
   }
 }

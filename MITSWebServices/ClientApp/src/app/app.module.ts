@@ -22,13 +22,13 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserAnimationsModule,
     PagesModule,
     OrganizerModule,
-    CoreModule,
     AppRoutingModule,
     MatToolbarModule,
     FlexLayoutModule,
     MatButtonModule,
     GraphQLModule,
-    HttpClientModule
+    HttpClientModule,
+    CoreModule.forRoot(),
    
   ],
   providers: [],

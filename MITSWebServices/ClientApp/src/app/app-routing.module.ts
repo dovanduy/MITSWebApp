@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AppComponent } from './app.component';
 import { AgendaComponent } from './pages/agenda/agenda.component';
 import { DetailsComponent } from './pages/details/details.component';
 import { AdminModule } from './admin/admin.module';

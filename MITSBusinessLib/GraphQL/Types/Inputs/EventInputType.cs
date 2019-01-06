@@ -8,7 +8,7 @@ namespace MITSBusinessLib.GraphQL.Types.Inputs
         {
             Name = "EventInput";
             Field<NonNullGraphType<IntGraphType>>("mainEventId");
-            Field<NonNullGraphType<BooleanGraphType>>("isSponsor");
+            Field<NonNullGraphType<StringGraphType>>("eventRegistrationType");
         }
     }
 }

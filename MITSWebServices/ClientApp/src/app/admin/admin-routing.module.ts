@@ -9,6 +9,11 @@ import { SpeakersComponent } from './speakers/speakers.component';
 import { EventsComponent } from './events/events.component';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { CheckinComponent } from './checkin/checkin.component';
+import { AdminGuard } from '../core/guards/admin.guard';
+import { AuthGuard } from '../core/guards/auth.guard';
+import { CanActivate } from '@angular/router/src/utils/preactivation';
+import { CheckinGuard } from '../core/guards/checkin.guard';
+import { LoginComponent } from './login/login.component';
 
 const adminRoutes: Routes = [
     {
@@ -16,32 +21,49 @@ const adminRoutes: Routes = [
         component: AdminComponent,
         children: [
             {
+                path: '',
+                component: DashboardComponent,
+                canActivate: [AuthGuard]
+            },
+            {
+                path: 'login',
+                component: LoginComponent
+            },
+
+            {
                 path: 'dashboard',
-                component: DashboardComponent
+                component: DashboardComponent,
+                canActivate: [AuthGuard]
             },
             {
                 path: 'checkin',
-                component: CheckinComponent
+                component: CheckinComponent,
+                canActivate: [AuthGuard, CheckinGuard]
             },
             {
                 path: 'days',
-                component: DaysComponent
+                component: DaysComponent,
+                canActivate: [AuthGuard, AdminGuard]
             },
             {
                 path: 'sections',
-                component: SectionsComponent
+                component: SectionsComponent,
+                canActivate: [AuthGuard, AdminGuard]
             },
             {
                 path: 'speakers',
-                component: SpeakersComponent
+                component: SpeakersComponent,
+                canActivate: [AuthGuard, AdminGuard]
             },
             {
                 path: 'events',
-                component: EventsComponent
+                component: EventsComponent,
+                canActivate: [AuthGuard, AdminGuard]
             },
             {
                 path: 'sponsors',
-                component: SponsorsComponent
+                component: SponsorsComponent,
+                canActivate: [AuthGuard, AdminGuard]
             },
             
         ]
@@ -54,6 +76,11 @@ const adminRoutes: Routes = [
 @NgModule({
     imports: [
         RouterModule.forChild(adminRoutes)
+    ],
+    providers: [
+        AuthGuard,
+        AdminGuard,
+        CheckinGuard
     ],
     exports: [RouterModule]
 })

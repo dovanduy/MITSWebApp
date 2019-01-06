@@ -39,7 +39,7 @@ export class EventAddComponent implements OnInit {
     var newEvent: EventInput =
     {
       mainEventId: this.addEventForm.value.waEventId,
-      isSponsor: false
+      eventRegistrationType: "main"
 
     };
 

@@ -4,6 +4,8 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { RegisterDialogComponent } from '../../provider/register-dialog/register-dialog.component';
 import { ProviderService } from '../../provider/provider.service';
 import { AllEventsGQL, AllEvents } from 'src/app/graphql/generated/graphql';
+import { JwtHelperService } from 'src/app/core/services/jwt-helper.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -12,7 +14,7 @@ import { AllEventsGQL, AllEvents } from 'src/app/graphql/generated/graphql';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor(private allEventsGQL: AllEventsGQL, private provider: ProviderService ) { }
+  constructor(private allEventsGQL: AllEventsGQL, private provider: ProviderService, private jwtHelper: JwtHelperService, private authService: AuthService ) { }
 
   events: AllEvents.Events[];
   //mainEvent: AllEvents.Events;
@@ -25,11 +27,16 @@ export class RegisterComponent implements OnInit {
 
     });
 
+    var token = this.authService.getJwt();
+    var decodedToken = this.jwtHelper.decodeToken(token);
+
+    console.log(decodedToken);
+
 
   }
 
   activate() {
-    this.events = this.events.filter(event => event.isSponsor != true);
+    this.events = this.events.filter(event => event.eventRegistrationType == "Main");
   }
 
   register(type: AllEvents.Types, eventId: number) {

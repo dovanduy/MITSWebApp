@@ -24,6 +24,10 @@ import { ListEntitiesComponent } from '../provider/list-entities/list-entities.c
 import { EditEntityComponent } from '../provider/edit-entity/edit-entity.component';
 import { CheckinComponent } from './checkin/checkin.component';
 
+import { AuthGuard } from '../core/guards/auth.guard';
+import { AdminGuard } from '../core/guards/admin.guard';
+import { CheckinGuard } from '../core/guards/checkin.guard';
+
 @NgModule({
   declarations: [
     LoginComponent,
@@ -44,6 +48,11 @@ import { CheckinComponent } from './checkin/checkin.component';
     ListEntitiesComponent,
     EditEntityComponent,
     CheckinComponent,
+  ],
+  providers: [
+    AuthGuard,
+    AdminGuard,
+    CheckinGuard
   ],
   imports: [
     CommonModule,

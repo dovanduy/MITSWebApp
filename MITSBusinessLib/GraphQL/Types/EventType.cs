@@ -11,7 +11,7 @@ namespace MITSBusinessLib.GraphQL.Types
         {
             
             Field(e => e.Id);
-            Field(e => e.IsSponsor);
+            Field(e => e.EventRegistrationType);
             Field(e => e.MainEventId);
             Field<ListGraphType<WaEventType>, List<WildApricotEvent>>()
                 .Name("WaEvent")

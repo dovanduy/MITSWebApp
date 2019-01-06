@@ -5,8 +5,8 @@
         <a routerLink="/">Home</a>
     </mat-toolbar-row>
 </mat-toolbar>
-<div fxLayout="row">
-    <div fxFlex="200px">
+<div fxLayout="row" >
+    <div fxFlex="200px" *ngIf="(loggedIn$ | async)">
         <sidenav></sidenav>
     </div>
     <div fxFlex>

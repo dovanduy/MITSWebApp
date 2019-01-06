@@ -2,7 +2,7 @@ query AllEvents {
   events {
     id
     mainEventId
-    isSponsor
+    eventRegistrationType
     waEvent {
       id
       name

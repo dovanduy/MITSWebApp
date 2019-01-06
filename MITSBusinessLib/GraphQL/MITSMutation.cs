@@ -150,13 +150,13 @@ namespace MITSBusinessLib.GraphQL
                createEvent(event:$event){
                id
                mainEventId
-               isSponsor
+               eventType
                }
                }
                {
                "event": {
                "mainEventId" :"4334",
-               "isSponsor" : "False"
+               "eventRegistrationType" : "Main"
                }
                }
              */

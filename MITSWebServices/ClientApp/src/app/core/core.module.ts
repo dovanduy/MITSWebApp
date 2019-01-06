@@ -22,5 +22,15 @@ export class CoreModule {
         'CoreModule is already loaded. Import it in the AppModule only');
     }
   }
+
+  //This makes AuthService a singleton
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: CoreModule,
+      providers: [
+        AuthService
+      ]
+    }
+  }
 }
 

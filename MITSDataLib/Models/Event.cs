@@ -10,7 +10,7 @@ namespace MITSDataLib.Models
         public int Id { get; set; }
 
         [Required]
-        public bool IsSponsor { get; set; }
+        public string EventRegistrationType { get; set; }
 
         [Required]
         public int MainEventId { get; set; }

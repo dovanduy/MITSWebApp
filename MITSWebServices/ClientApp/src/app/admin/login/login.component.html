@@ -1,3 +1,65 @@
-<p>
-  login works!
-</p>
+<div fxLayoutAlign="center center" class="login">
+  <mat-card style="width: 300px;">
+    <mat-card-content fxLayoutAlign="center center">
+      <form #loginForm="ngForm" (keyup.enter)="login()">
+        <div>
+          <mat-form-field>
+            <input
+              matInput
+              #userElement
+              #userControl="ngModel"
+              placeholder="Username"
+              type="text"
+              maxlength="30"
+              name="username"
+              [(ngModel)]="username"
+              required
+            />
+            <mat-hint align="start">
+              <span
+                [hidden]="!userControl.errors?.required || userControl.pristine"
+                class="tc-red"
+                >Required</span
+              >
+            </mat-hint>
+            <mat-hint align="end">{{ userElement.value.length }} / 30</mat-hint>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
+            <input
+              matInput
+              #passElement
+              #passControl="ngModel"
+              placeholder="Password"
+              type="password"
+              name="password"
+              [(ngModel)]="password"
+              required
+            />
+            <mat-hint align="start">
+              <span
+                [hidden]="!passControl.errors?.required || passControl.pristine"
+                class="tc-red-600"
+                >Required</span
+              >
+            </mat-hint>
+            <mat-hint align="end">Something hard to guess</mat-hint>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-divider></mat-divider>
+    <mat-card-actions>
+      <div fxFlex></div>
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="!loginForm.form.valid"
+        (click)="login()"
+      >
+        Sign In
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

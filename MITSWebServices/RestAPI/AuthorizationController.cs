@@ -73,12 +73,14 @@ namespace MITSWebServices.Controllers
             // the "access_token" destination to allow OpenIddict to store it
             // in the access token, so it can be retrieved from your controllers.
             identity.AddClaim(OpenIdConnectConstants.Claims.Subject,
-                "71346D62-9BA5-4B6D-9ECA-755574D628D8",
+                user.Id,
                 OpenIdConnectConstants.Destinations.AccessToken);
-            identity.AddClaim("Name", "Alice",
-                OpenIdConnectConstants.Destinations.IdentityToken);
+            //identity.AddClaim("Name", user.FirstName,
+            //    OpenIdConnectConstants.Destinations.AccessToken);
 
-            string role = _userManager.GetRolesAsync(user).Result.SingleOrDefault();
+            var roles = _userManager.GetRolesAsync(user).Result.ToList();
+
+            string role = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
             
             identity.AddClaim(OpenIdConnectConstants.Claims.Role, role, OpenIdConnectConstants.Destinations.AccessToken);
 

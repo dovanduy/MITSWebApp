@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GraphQL;
+using GraphQL.Authorization;
 using GraphQL.Types;
 using MITSBusinessLib.Business;
 using MITSBusinessLib.GraphQL.Types;
@@ -22,6 +23,8 @@ namespace MITSBusinessLib.GraphQL
 
             Field<CheckInAttendeeType, CheckInAttendee>()
                 .Name("checkInAttendee")
+                .AuthorizeWith("CheckinPolicy")
+                .AuthorizeWith("AdminPolicy")
                 .Argument<NonNullGraphType<CheckInAttendeeInputType>>("checkInAttendee",
                     "Check in event attendee")
                 .ResolveAsync(async context =>
@@ -100,7 +103,7 @@ namespace MITSBusinessLib.GraphQL
                     }
 
 
-                });
+                }).AuthorizeWith("AdminPolicy");
 
             Field<SpeakerType>(
                 "updateSpeaker",
@@ -122,10 +125,11 @@ namespace MITSBusinessLib.GraphQL
                     }
 
 
-                });
+                }).AuthorizeWith("AdminPolicy"); ;
 
             Field<IntGraphType, int>()
                 .Name("deleteSpeaker")
+                .AuthorizeWith("AdminPolicy")
                 .Argument<NonNullGraphType<IntGraphType>>("speakerId", "Id of Speaker to delete")
                 .ResolveAsync(context =>
                 {
@@ -163,6 +167,7 @@ namespace MITSBusinessLib.GraphQL
 
             Field<EventType, Event>()
                 .Name("createEvent")
+                .AuthorizeWith("AdminPolicy")
                 .Argument<NonNullGraphType<EventInputType>>("event", "event input")
                 .ResolveAsync(async context =>
                 {
@@ -225,6 +230,7 @@ namespace MITSBusinessLib.GraphQL
              */
             Field<DayType, Day>()
                 .Name("createDay")
+                .AuthorizeWith("AdminPolicy")
                 .Argument<NonNullGraphType<DayInputType>>("day", "day input")
                 .ResolveAsync(context =>
                 {
@@ -256,6 +262,7 @@ namespace MITSBusinessLib.GraphQL
 
             Field<IntGraphType, List<Day>>()
                 .Name("deleteDay")
+                .AuthorizeWith("AdminPolicy")
                 .Argument<NonNullGraphType<IntGraphType>>("dayId", "Id of Day to delete")
                 .ResolveAsync(context =>
                 {

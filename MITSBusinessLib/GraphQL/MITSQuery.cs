@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GraphQL.Authorization;
 using GraphQL.Types;
 using MITSBusinessLib.GraphQL.Types;
 using MITSBusinessLib.Repositories.Interfaces;
@@ -80,6 +81,7 @@ namespace MITSBusinessLib.GraphQL
 
             Field<ListGraphType<UserType>, List<User>>()
                 .Name("users")
+                .AuthorizeWith("AdminPolicy")
                 .ResolveAsync(context => userRepo.GetUsersAsync());
 
             #endregion

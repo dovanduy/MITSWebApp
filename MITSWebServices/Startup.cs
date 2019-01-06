@@ -100,6 +100,7 @@ namespace MITSWebServices
             services.AddGraphQLAuth(options =>
             {
                 options.AddPolicy("AdminPolicy", policy => policy.RequireClaim("role", "Admin"));
+                options.AddPolicy("CheckinPolicy", policy => policy.RequireClaim("role", "Checkin"));
             });
 
             services.AddGraphQL(options =>

@@ -24,7 +24,6 @@ namespace MITSBusinessLib.GraphQL
             Field<CheckInAttendeeType, CheckInAttendee>()
                 .Name("checkInAttendee")
                 .AuthorizeWith("CheckinPolicy")
-                .AuthorizeWith("AdminPolicy")
                 .Argument<NonNullGraphType<CheckInAttendeeInputType>>("checkInAttendee",
                     "Check in event attendee")
                 .ResolveAsync(async context =>

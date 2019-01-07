@@ -22,3 +22,10 @@ a.nav {
     flex-grow: 1;
     flex-wrap: nowrap;
 }
+
+.footer {
+    display: flex;
+    position: bottom;
+    flex-wrap: nowrap;
+    height: 100px;
+}

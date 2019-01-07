@@ -6,6 +6,7 @@
     align-items: center;
     padding-left: 10px;
     padding-right: 10px;
+    
 }
 
 .title {
@@ -22,4 +23,42 @@
     font-size: 24px;
     font-weight: 200;
     padding-bottom: 16px;
+}
+
+.schedule {
+    max-width: 900px;
+}
+
+.agenda_item {
+    border-bottom: 1px solid #1c2329;
+}
+
+.agenda {
+    padding-top: 35px;
+   }
+
+.agenda_item {
+    padding-bottom: 25px;
+    padding-top: 25px;
+}
+
+.agenda_time {
+    font-size: 32px;
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 200;
+}
+
+.agenda_title {
+    font-size: 24px;
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 600;
+    }
+
+.agenda_speaker {
+    font-size: 18px;
+    font-weight: 200;
+}
+
+.mat_icon {
+    font-size: 48px;
 }

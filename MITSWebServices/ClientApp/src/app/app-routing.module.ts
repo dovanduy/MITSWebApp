@@ -7,6 +7,8 @@ import { AdminModule } from './admin/admin.module';
 import { SpeakersComponent } from './pages/speakers/speakers.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { SponsorsComponent } from './pages/sponsors/sponsors.component';
+import { HotelComponent } from "./pages/hotel/hotel.component";     
+import { GolfComponent  } from "./pages/golf/golf.component";
 
 
 const routes: Routes = [
@@ -16,8 +18,9 @@ const routes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
   { path: 'speakers', component: SpeakersComponent},
   { path: 'register', component: RegisterComponent},
-  { path: 'sponsors', component: SponsorsComponent}
-
+  { path: 'sponsors', component: SponsorsComponent},
+  { path: 'hotel', component: HotelComponent},
+  { path: 'golf', component: GolfComponent}
 ];
 
 @NgModule({

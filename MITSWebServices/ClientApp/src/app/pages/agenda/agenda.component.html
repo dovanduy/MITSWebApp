@@ -7,7 +7,22 @@
   </p>
 
   <div class="agenda_day" fxLayout="row">
-    <button mat-fab color="primary">Day 1</button>
-    <button mat-fab fxFlexOffset="2" color="primary">Day 2</button>
+    <button mat-fab color="primary">May 21</button>
+    <button mat-fab fxFlexOffset="2" color="primary">May 22</button>
+  </div>
+
+  <div class="agenda" fxLayout="column" color="primary">
+    <div class="agenda_item" fxLayoutAlign="space-between">
+      <div class="agenda_time" fxFlex="0 0 12%">09:30</div>
+      <div class="agenda_title" fxFlex="0 0 32%">This is an agenda title</div>
+      <div class="agenda_speaker" fxFlex="0 0 32%"> This is an agenda speaker</div>
+      <div class="agenda_icons" fxFlex="0 0 12%" fxHide.xs><mat-icon matTooltip="Keynote">mic</mat-icon></div>
+    </div>
+    <div class="agenda_item" fxLayoutAlign="space-between">
+        <div class="agenda_time" fxFlex="0 0 12%">09:30</div>
+        <div class="agenda_title" fxFlex="0 0 32%">This is an agenda title</div>
+        <div class="agenda_speaker" fxFlex="0 0 32%"> This is an agenda speaker</div>
+        <div class="agenda_icons" fxFlex="0 0 12%" fxHide.xs><mat-icon matTooltip="Security">security</mat-icon><mat-icon matTooltip="Acquisitions">monetization_on</mat-icon></div>
+      </div>
   </div>
 </div>

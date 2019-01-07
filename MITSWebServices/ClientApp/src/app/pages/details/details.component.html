@@ -4,44 +4,29 @@
     The Montgomery Information Technology Summit is being held on 20-22 May,
     2019 at the Renaissance Hotel in downtown Montgomery, Alabama.
   </p>
-  <p class="blaster-xs" fxHide fxShow.sm fxShow.xs>
+  <p class="blaster-xs" fxHide fxShow.xs-sm>
       The Montgomery Information Technology Summit is being held on 20-22 May,
       2019 at the Renaissance Hotel in downtown Montgomery, Alabama.
     </p>
-  <img class="stage" src="./assets/stage.png">
+  <img class="stage" src="./assets/BannerTest.png" fxShow.gt-sm fxHide>
+  <img class="stage" src="./assets/bannerXS.png" fxShow.xs fxShow.gt-xs fxShow.gt-sm="false">
   <div class="main">
-  <p class="secondary" fxHide fxShow.gt-sm>
-    Hosted by the Montgomery AFCEA Chapter, this event allows attendees to
-    engage with speakers, panel members, and other Government and Industry
-    leaders in understanding how the Government can work with their contractor
-    partners to deliver collaborative IT solutions and make them operational in
-    a timely and effective manner for the Warrior. 
-  </p>
-  <p class="secondary-xs" fxHide fxShow.sm fxShow.xs>
-      Hosted by the Montgomery AFCEA Chapter, this event allows attendees to
-      engage with speakers, panel members, and other Government and Industry
-      leaders in understanding how the Government can work with their contractor
-      partners to deliver collaborative IT solutions and make them operational in
-      a timely and effective manner for the Warrior. 
-    </p>
-  
-  
     <div class="infocards" fxLayout="row wrap">
       
-      <mat-card class="mat-elevation-z12">
+      <mat-card class="mat-elevation-z12" routerLink="/hotel">
       <mat-card-header>
-        <mat-card-title>Hotel Information</mat-card-title>
+        <mat-card-title >Hotel Information</mat-card-title>
       </mat-card-header>
       <div class="hotel-over">
-      <img mat-card-img src="./assets/hotel.gif" width="100%"></div>
+      <img mat-card-img src="./assets/hotel.gif" width="100%" ></div>
       <mat-card-content>
       </mat-card-content>
     </mat-card>
-    <mat-card class="mat-elevation-z12">
+    <mat-card class="mat-elevation-z12" routerLink="/golf">
         <mat-card-header>
-          <mat-card-title>Golf Tournament</mat-card-title>
+          <mat-card-title >Golf Tournament</mat-card-title>
         </mat-card-header>
-        <img mat-card-img src="./assets/wynlakes.gif">
+        <img mat-card-img src="./assets/wynlakes.gif" >
         <mat-card-content>
         </mat-card-content>
       </mat-card>

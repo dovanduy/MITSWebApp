@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { TdLoadingService } from "@covalent/core";
 
 import { AuthService } from "src/app/core/services/auth.service";
 import { SnackbarService } from "src/app/core/services/snackbar.service";
@@ -15,7 +16,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private auth: AuthService,
     private snackbar: SnackbarService,
-    private adminData: AdminDataService
+    private adminData: AdminDataService,
+    private _loading: TdLoadingService
   ) {}
 
   username: string;
@@ -35,21 +37,24 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
+    this._loading.register('loading');
     this.loading = true;
     this.auth.login(this.username, this.password).subscribe(
       result => {
+        this._loading.resolve('loading');
+        this.loading = false;
         if (result === true) {
-          this.loading = false;
           this.adminData.loggedIn(true);
           this.router.navigate(["../admin/dashboard"]);
         } else {
           // replace with correct message box
           this.snackbar.show("Sorry, something went wrong. Please try again.");
-          this.loading = false;
         }
       },
       (error: any) => {
+        this._loading.resolve('loading');
         this.loading = false;
+
         if (error.status === 400) {
           this.snackbar.show(error.error.error_description);
         } else {

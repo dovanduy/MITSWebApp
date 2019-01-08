@@ -32,6 +32,8 @@ import {
   MatStepperModule,
 } from "@angular/material";
 
+import { CovalentLoadingModule } from '@covalent/core';
+
 import { ScrollDispatchModule } from "@angular/cdk/scrolling";
 
 import { FlexLayoutModule } from "@angular/flex-layout";
@@ -71,6 +73,7 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     MatExpansionModule,
     MatDividerModule,
     MatStepperModule,
+    CovalentLoadingModule
   ],
   exports: [
     CommonModule,
@@ -103,7 +106,8 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     MatTableModule,
     ScrollDispatchModule,
     MatDividerModule,
-    MatStepperModule
+    MatStepperModule,
+    CovalentLoadingModule
   ]
 })
 export class SharedModule {}

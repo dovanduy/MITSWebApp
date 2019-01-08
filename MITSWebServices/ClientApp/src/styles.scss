@@ -2,6 +2,7 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @import '~@angular/material/theming';
+@import '~@covalent/core/theming/all-theme';
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -20,24 +21,24 @@ $MITS-palette: (
     700: #38649d,
     800: #305687,
     900: #284770,
-    A100: #ffffff,
+    A100: #7fa3d1,
     A200: #dde6f3,
     A400: #639dcc,
     A700: #38649d,
     contrast: (
-        50: $black-87-opacity,
-        100: $black-87-opacity,
-        200: $black-87-opacity,
-        300: $black-87-opacity,
-        400: $black-87-opacity,
+        50: white,
+        100: white,
+        200: white,
+        300: white,
+        400: white,
         500: white,
         600: white,
         700: white,
         800: white,
         900: white,
-        A100: $black-87-opacity,
-        A200: $black-87-opacity,
-        A400: $black-87-opacity,
+        A100: white,
+        A200: white,
+        A400: white,
         A700: white,
     )
 );
@@ -58,6 +59,7 @@ $MITSClientApp-theme: mat-light-theme($MITSClientApp-primary, $MITSClientApp-acc
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($MITSClientApp-theme);
+@include covalent-theme($MITSClientApp-theme);
 
 /* You can add global styles to this file, and also import other style files */
 

@@ -1,5 +1,5 @@
-<div fxLayoutAlign="center center" class="login">
-  <mat-card style="width: 300px;">
+<div fxLayoutAlign="center center" class="login"  >
+  <mat-card style="width: 300px;" *tdLoading="'loading'; mode:'indeterminate'; type:'linear'; strategy:'overlay'; color:'primary'" >
     <mat-card-content fxLayoutAlign="center center">
       <form #loginForm="ngForm" (keyup.enter)="login()">
         <div>
@@ -55,7 +55,7 @@
       <button
         mat-raised-button
         color="primary"
-        [disabled]="!loginForm.form.valid"
+        [disabled]="!loginForm.form.valid || loading"
         (click)="login()"
       >
         Sign In

@@ -39,6 +39,7 @@ using MITSBusinessLib.GraphQL.Types;
 using MITSBusinessLib.GraphQL.Types.Inputs;
 using MITSBusinessLib.Repositories;
 using MITSBusinessLib.Repositories.Interfaces;
+using MITSBusinessLib.Utilities;
 
 namespace MITSWebServices
 {
@@ -193,6 +194,7 @@ namespace MITSWebServices
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IWaRepository, WaRepository>();
             services.AddScoped<IEventRegistrationBusinessLogic, EventRegistrationBusinessLogic>();
+            services.AddScoped<IMailOps, MailOps>();
             services.AddScoped<MITSQuery>();
             services.AddScoped<MITSMutation>();
             services.AddScoped<EventType>();

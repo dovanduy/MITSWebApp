@@ -22,14 +22,16 @@ namespace MITSBusinessLib.Business
         private readonly IWaRepository _waRepo;
         private readonly IEventsRepository _eventsRepository;
         private readonly IAuditRepository _registrationRepo;
+        private readonly IMailOps _mailOps;
         private readonly string _name;
         private readonly string _transactionKey;
 
-        public EventRegistrationBusinessLogic(IWaRepository waRepo, IEventsRepository eventsRepo, IAuditRepository registrationRepo, IConfiguration config)
+        public EventRegistrationBusinessLogic(IWaRepository waRepo, IEventsRepository eventsRepo, IAuditRepository registrationRepo, IConfiguration config, IMailOps mailOps)
         {
             _waRepo = waRepo;
             _eventsRepository = eventsRepo;
             _registrationRepo = registrationRepo;
+            _mailOps = mailOps;
             _name = config.GetSection("Secrets:Name").Value;
             _transactionKey = config.GetSection("Secrets:TransactionKey").Value;
         }
@@ -135,6 +137,10 @@ namespace MITSBusinessLib.Business
 
             var qrCode = QrOps.GenerateQrCode(eventRegistrationId);
             await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit, $"Registration Complete - {eventRegistrationId}");
+
+            //Send email with Confirmation and QR code
+
+            _mailOps.Send(newRegistration.Email, eventRegistrationId, qrCode);
 
             //Return Event Registration Id and QR Code Bitmap
             return new Registration()

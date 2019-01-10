@@ -1,16 +1,19 @@
-﻿using MailKit.Net.Smtp;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using MimeKit;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Mail;
 using System.Text;
+using MimeKit.Utils;
+using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace MITSBusinessLib.Utilities
 {
 
     public interface IMailOps
     {
-       void Send(string toAddress, int registrationId, string QRCode);
+       void Send(string toAddress, int registrationId, MemoryStream QRCode);
     }
 
     public class MailOps : IMailOps
@@ -28,24 +31,29 @@ namespace MITSBusinessLib.Utilities
            _pasword = config.GetSection("EmailConfiguration:Password").Value;
         }
 
-        public void Send(string toAddress, int registrationId, string QRCode)
+        public void Send(string toAddress, int registrationId, MemoryStream QRCode)
         {
             var message = new MimeMessage();
-            message.To.Add(new MailboxAddress("John Smith", "enderjs@gmail.com"));
+            message.To.Add(new MailboxAddress("John Smith", toAddress));
             message.From.Add(new MailboxAddress("MITS 2019", "AFCEAMITS2019@gmail.com"));
             message.Subject = "This is the subject";
+            
 
             var builder = new BodyBuilder();
+            builder.Attachments.Add("Code.png", QRCode);
+            var image = builder.LinkedResources.Add("Code.png", QRCode);
+            image.ContentId = MimeUtils.GenerateMessageId();
 
             builder.HtmlBody = string.Format(@"
             Hello,
 
 You have successfully registered
 
- <img alt=""Embedded QR Code"" height=""200px"" width=""200px"" src=""data: image / jpeg; base64, {0}"" />
+ <img src=""cid:d0932d0823098d20d832"" >
 
-                ", QRCode);
+                ", image.ContentId);
 
+            
             message.Body = builder.ToMessageBody();
 
             using (var client = new SmtpClient())

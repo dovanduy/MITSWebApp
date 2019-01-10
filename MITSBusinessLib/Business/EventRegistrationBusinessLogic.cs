@@ -135,12 +135,12 @@ namespace MITSBusinessLib.Business
 
             //Create QR Code
 
-            var qrCode = QrOps.GenerateQrCode(eventRegistrationId);
+            var qrCode = QrOps.GenerateBase64QrCode(eventRegistrationId);
             await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit, $"Registration Complete - {eventRegistrationId}");
 
             //Send email with Confirmation and QR code
 
-            _mailOps.Send(newRegistration.Email, eventRegistrationId, qrCode);
+            _mailOps.Send(newRegistration.Email, eventRegistrationId, QrOps.GenerateBitmapQrCode(eventRegistrationId));
 
             //Return Event Registration Id and QR Code Bitmap
             return new Registration()

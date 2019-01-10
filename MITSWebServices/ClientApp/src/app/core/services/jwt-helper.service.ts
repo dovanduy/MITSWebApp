@@ -87,6 +87,10 @@ export class JwtHelperService {
       return null;
     }
 
+    if (token === '') {
+      return null;
+    }
+
     let parts = token.split('.');
 
     if (parts.length !== 3) {

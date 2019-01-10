@@ -82,7 +82,7 @@ export class RegisterDialogComponent implements OnInit {
       firstName: 'Bob',
       lastName: 'Anderson',
       title: 'CEO, weoifjwefoji',
-      email: 'bob.anderson@gmail.com',
+      email: 'bob.anderson.4234@gmail.com',
       memberId: "324232423",
       memberExpirationDate: "05546",
       isLifeMember: false,

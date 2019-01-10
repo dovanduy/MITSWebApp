@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Text;
 using QRCoder;
 
@@ -8,7 +10,7 @@ namespace MITSBusinessLib.Utilities
 {
     public static class QrOps
     {
-        public static string GenerateQrCode(int eventRegistrationId)
+        public static string GenerateBase64QrCode(int eventRegistrationId)
         {
             var imgType = Base64QRCode.ImageType.Jpeg;
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
@@ -18,5 +20,22 @@ namespace MITSBusinessLib.Utilities
 
             return qrCodeImageAsBase64;
         }
+
+        public static MemoryStream GenerateBitmapQrCode(int eventRegistrationId)
+        {
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(eventRegistrationId.ToString(), QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            Bitmap qrCodeImage = qrCode.GetGraphic(20, Color.Black, Color.White, true);
+
+            var stream = new MemoryStream();
+            qrCodeImage.Save(stream, ImageFormat.Png);
+
+            stream.Position = 0;
+
+            return stream;
+
+        }
+
     }
 }

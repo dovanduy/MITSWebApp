@@ -21,7 +21,7 @@ namespace MITSBusinessLib.Utilities
             return qrCodeImageAsBase64;
         }
 
-        public static MemoryStream GenerateBitmapQrCode(int eventRegistrationId)
+        public static MemoryStream GenerateBitmapQrCodeSteam(int eventRegistrationId)
         {
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(eventRegistrationId.ToString(), QRCodeGenerator.ECCLevel.Q);
@@ -34,6 +34,17 @@ namespace MITSBusinessLib.Utilities
             stream.Position = 0;
 
             return stream;
+
+        }
+
+        public static Bitmap GenerateBitmapQrCode(int eventRegistrationId)
+        {
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(eventRegistrationId.ToString(), QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            Bitmap qrCodeImage = qrCode.GetGraphic(20, Color.Black, Color.White, true);
+
+            return qrCodeImage;
 
         }
 

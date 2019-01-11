@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.Globalization;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using GraphQL;
@@ -140,13 +142,23 @@ namespace MITSBusinessLib.Business
 
             //Send email with Confirmation and QR code
 
-            _mailOps.Send(newRegistration.Email, eventRegistrationId, QrOps.GenerateBitmapQrCode(eventRegistrationId));
+            var guid = Guid.NewGuid().ToString("N");
+
+            var directory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "tickets", guid);
+            Directory.CreateDirectory(directory);
+            var code = QrOps.GenerateBitmapQrCode(eventRegistrationId);
+            code.Save(directory + "\\code.png");
+
+            
+
+
+            //_mailOps.Send(newRegistration.Email, eventRegistrationId, QrOps.GenerateBitmapQrCode(eventRegistrationId), qrCode);
 
             //Return Event Registration Id and QR Code Bitmap
             return new Registration()
             {
                 EventRegistrationId = eventRegistrationId,
-                QrCode = qrCode
+                QrCode = guid
             };
         }
 

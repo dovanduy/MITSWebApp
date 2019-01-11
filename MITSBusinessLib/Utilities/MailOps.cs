@@ -13,7 +13,7 @@ namespace MITSBusinessLib.Utilities
 
     public interface IMailOps
     {
-       void Send(string toAddress, int registrationId, MemoryStream QRCode);
+       void Send(string toAddress, int registrationId, MemoryStream QRCode, string stringQrCode);
     }
 
     public class MailOps : IMailOps
@@ -31,8 +31,11 @@ namespace MITSBusinessLib.Utilities
            _pasword = config.GetSection("EmailConfiguration:Password").Value;
         }
 
-        public void Send(string toAddress, int registrationId, MemoryStream QRCode)
+        public void Send(string toAddress, int registrationId, MemoryStream QRCode, string stringQrCode)
         {
+
+       
+
             var message = new MimeMessage();
             message.To.Add(new MailboxAddress("John Smith", toAddress));
             message.From.Add(new MailboxAddress("MITS 2019", "AFCEAMITS2019@gmail.com"));

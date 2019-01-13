@@ -1,7 +1,5 @@
 <div class="container" fxLayout="column">
-  <div>
-    <h1 class="title">Registration</h1>
-  </div>
+  <div><h1 class="title">Registration</h1></div>
 
   <div>
     <h3 class="highlight">
@@ -20,28 +18,66 @@
       <mat-icon>money_off</mat-icon>Refund Policy
     </button>
   </div>
+  <div style="height: 20px; border-bottom: 1px solid darkgray;"></div>
+  <h1>{{ (mainEvent?.waEvent)[0]?.name }}</h1>
 
-  <div class="MITS_reg" fxLayout="column">MITS Registration list</div>
-  <div *ngFor="let event of events">
-    <h1>{{event.waEvent[0]?.name}}</h1>
-    <p innerHtml="{{event.waEvent[0]?.description}}"></p>
-
+  <div>
+    <p
+      style="padding-left: 20px; padding-right: 20px;"
+      innerHtml="{{ (mainEvent?.waEvent)[0]?.description }}"
+    ></p>
     <mat-list style="background-color: white;">
-      <mat-list-item [class.disabled]="!type.isEnabled"  *ngFor="let type of event.waEvent[0]?.types">
-          <h3 matLine>{{type.name}}</h3>
+      <mat-list-item
+        [class.disabled]="!type.isEnabled"
+        *ngFor="let type of (mainEvent?.waEvent)[0]?.types"
+      >
+        <h3 matLine>{{ type.name }}</h3>
 
-          <h5 matLine>{{type.description}}</h5>
-          <div fxFlex></div>
-          <h2 style="margin-top: 15px;">{{type.basePrice | currency}}</h2>
-          <div style="padding-right: 10px; padding-left: 10px">-</div>
-          <button (click)="register(type, event.mainEventId)" style="padding-left: 10px;" [disabled]="!type.isEnabled" mat-stroked-button>Register</button>
+        <h5 matLine>{{ type.description }}</h5>
+        <div fxFlex></div>
+        <h2 style="margin-top: 15px;">{{ type.basePrice | currency }}</h2>
+        <div style="padding-right: 10px; padding-left: 10px">-</div>
+        <button
+          (click)="register(type, mainEvent?.mainEventId)"
+          style="padding-left: 10px;"
+          [disabled]="!type.isEnabled"
+          mat-stroked-button
+        >
+          Register
+        </button>
 
-          <mat-divider></mat-divider>
+        <mat-divider></mat-divider>
       </mat-list-item>
-      
-
     </mat-list>
   </div>
-  <div class="golf_reg" fxLayout="column">Golf registration list</div>
-  <div class="luncheon_reg">Luncheon</div>
+  <h1 style="padding-top: 10px;">{{ (golfEvent?.waEvent)[0]?.name }}</h1>
+  <div style="max-width: 1100px;">
+    <p
+      style="padding-left: 20px; padding-right: 20px;"
+      innerHtml="{{ (golfEvent?.waEvent)[0]?.description }}"
+    ></p>
+    <mat-list style="background-color: white;">
+      <mat-list-item
+        [class.disabled]="!type.isEnabled"
+        *ngFor="let type of (golfEvent?.waEvent)[0]?.types"
+      >
+        <h3 matLine>{{ type.name }}</h3>
+
+        <h5 matLine>{{ type.description }}</h5>
+        <div fxFlex></div>
+        <h2 style="margin-top: 15px;">{{ type.basePrice | currency }}</h2>
+        <div style="padding-right: 10px; padding-left: 10px">-</div>
+        <button
+          (click)="register(type, golfEvent?.mainEventId)"
+          style="padding-left: 10px;"
+          [disabled]="!type.isEnabled"
+          mat-stroked-button
+        >
+          Register
+        </button>
+
+        <mat-divider></mat-divider>
+      </mat-list-item>
+    </mat-list>
+  </div>
 </div>

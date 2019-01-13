@@ -4,6 +4,7 @@ import { FormsModule } from "@angular/forms";
 
 import {
   MatButtonModule,
+  MatDatepickerModule,
   MatListModule,
   MatIconModule,
   MatCardModule,
@@ -30,13 +31,16 @@ import {
   MatTableModule,
   MatDividerModule,
   MatStepperModule,
+  MatNativeDateModule,
 } from "@angular/material";
 
-import { CovalentLoadingModule } from '@covalent/core';
+import { CovalentLoadingModule, CovalentDialogsModule } from '@covalent/core';
 
 import { ScrollDispatchModule } from "@angular/cdk/scrolling";
 
 import { FlexLayoutModule } from "@angular/flex-layout";
+
+import { CreditCardDirectivesModule } from 'angular-cc-library';
 
 @NgModule({
   declarations: [],
@@ -45,6 +49,8 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     FlexLayoutModule,
     FormsModule,
     MatButtonModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatListModule,
     MatIconModule,
     MatCardModule,
@@ -73,13 +79,17 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     MatExpansionModule,
     MatDividerModule,
     MatStepperModule,
-    CovalentLoadingModule
+    CovalentLoadingModule,
+    CovalentDialogsModule,
+    CreditCardDirectivesModule
   ],
   exports: [
     CommonModule,
     FlexLayoutModule,
     FormsModule,
     MatButtonModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatListModule,
     MatIconModule,
     MatCardModule,
@@ -107,7 +117,9 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     ScrollDispatchModule,
     MatDividerModule,
     MatStepperModule,
-    CovalentLoadingModule
+    CovalentLoadingModule,
+    CovalentDialogsModule,
+    CreditCardDirectivesModule
   ]
 })
 export class SharedModule {}

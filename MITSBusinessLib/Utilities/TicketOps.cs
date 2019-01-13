@@ -8,7 +8,7 @@ using QRCoder;
 
 namespace MITSBusinessLib.Utilities
 {
-    public static class QrOps
+    public static class TicketOps
     {
         public static string GenerateBase64QrCode(int eventRegistrationId)
         {
@@ -37,14 +37,22 @@ namespace MITSBusinessLib.Utilities
 
         }
 
-        public static Bitmap GenerateBitmapQrCode(int eventRegistrationId)
+
+        public static string GenerateTicket(int eventRegistrationId)
         {
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(eventRegistrationId.ToString(), QRCodeGenerator.ECCLevel.Q);
             QRCode qrCode = new QRCode(qrCodeData);
             Bitmap qrCodeImage = qrCode.GetGraphic(20, Color.Black, Color.White, true);
 
-            return qrCodeImage;
+            var registrantGuid = Guid.NewGuid().ToString("N");
+
+            var directory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "tickets", registrantGuid);
+            Directory.CreateDirectory(directory);
+
+            qrCodeImage.Save(directory + "\\code.png");
+
+            return registrantGuid;
 
         }
 

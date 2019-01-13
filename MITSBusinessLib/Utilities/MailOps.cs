@@ -13,7 +13,7 @@ namespace MITSBusinessLib.Utilities
 
     public interface IMailOps
     {
-       void Send(string toAddress, int registrationId, MemoryStream QRCode, string stringQrCode);
+       void Send(string toAddress, int registrationId, string registrantGuid);
     }
 
     public class MailOps : IMailOps
@@ -31,7 +31,7 @@ namespace MITSBusinessLib.Utilities
            _pasword = config.GetSection("EmailConfiguration:Password").Value;
         }
 
-        public void Send(string toAddress, int registrationId, MemoryStream QRCode, string stringQrCode)
+        public void Send(string toAddress, int registrationId, string registrantGuid)
         {
 
        
@@ -43,18 +43,14 @@ namespace MITSBusinessLib.Utilities
             
 
             var builder = new BodyBuilder();
-            builder.Attachments.Add("Code.png", QRCode);
-            var image = builder.LinkedResources.Add("Code.png", QRCode);
-            image.ContentId = MimeUtils.GenerateMessageId();
 
             builder.HtmlBody = string.Format(@"
             Hello,
 
 You have successfully registered
 
- <img src=""cid:d0932d0823098d20d832"" >
 
-                ", image.ContentId);
+                ");
 
             
             message.Body = builder.ToMessageBody();

@@ -13,7 +13,8 @@ namespace MITSBusinessLib.GraphQL.Types
             Field(rt => rt.AvailableFrom);
             Field(rt => rt.AvailableThrough);
             Field(rt => rt.BasePrice);
-            Field(rt => rt.RegistrationCode, true);
+            Field(rt => rt.CodeRequired);
+            //Field(rt => rt.RegistrationCode, true);
             Field(rt => rt.IsEnabled);         
         }
     }

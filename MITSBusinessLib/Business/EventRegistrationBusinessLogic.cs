@@ -135,30 +135,20 @@ namespace MITSBusinessLib.Business
             var paymentId = await _waRepo.MarkInvoiceAsPaid(registrationTypeDetails, invoiceId, contact.Id);
             await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit, $"Invoice Marked as Paid - {paymentId}");
 
-            //Create QR Code
-
-            var qrCode = QrOps.GenerateBase64QrCode(eventRegistrationId);
-            await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit, $"Registration Complete - {eventRegistrationId}");
+          
+            //Generate HTML Ticket/QR Code and store on server in WWWRoot           
+            var registrantGuid = TicketOps.GenerateTicket(eventRegistrationId);
 
             //Send email with Confirmation and QR code
+            _mailOps.Send(newRegistration.Email, eventRegistrationId, registrantGuid);
 
-            var guid = Guid.NewGuid().ToString("N");
-
-            var directory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "tickets", guid);
-            Directory.CreateDirectory(directory);
-            var code = QrOps.GenerateBitmapQrCode(eventRegistrationId);
-            code.Save(directory + "\\code.png");
-
-            
-
-
-            //_mailOps.Send(newRegistration.Email, eventRegistrationId, QrOps.GenerateBitmapQrCode(eventRegistrationId), qrCode);
+            await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit, $"Registration Complete - {eventRegistrationId}");
 
             //Return Event Registration Id and QR Code Bitmap
             return new Registration()
             {
                 EventRegistrationId = eventRegistrationId,
-                QrCode = guid
+                QrCode = registrantGuid
             };
         }
 

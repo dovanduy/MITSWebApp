@@ -1,9 +1,37 @@
 <div class="container" fxLayout="column">
   <div><h1 class="title">Sponsorships</h1></div>
-  <h3 class="highlight">2019 Montgomery IT Summit</h3>
 
   <button mat-raised-button color="primary">WANT TO BE A SPONSOR?</button>
 
-  <div class="MITS_sponsor">MITS Sponsor list</div>
-  <div class="golf_sponsor">golf sponsor</div>
+  <div style="padding-top: 10px; padding-bottom: 5px;" *ngFor="let event of sponsorEvents">
+    <h2 style="padding-left: 15px;">{{event.waEvent[0].name}}</h2>
+      <p
+        style="padding-left: 20px; padding-right: 20px;"
+        innerHtml="{{ (event?.waEvent)[0]?.description }}"
+      ></p>
+      <mat-list style="background-color: white;">
+        <mat-list-item
+          [class.disabled]="!type.isEnabled"
+          *ngFor="let type of (event?.waEvent)[0]?.types"
+        >
+          
+  
+          
+          <div fxFlex></div>
+          <h2 style="margin-top: 15px;">{{ type.basePrice | currency }}</h2>
+          <div style="padding-right: 10px; padding-left: 10px">-</div>
+          <button
+            (click)="register(type, event?.mainEventId)"
+            style="padding-left: 10px;"
+            [disabled]="!type.isEnabled"
+            mat-stroked-button
+          >
+            Sponsor
+          </button>
+  
+          <mat-divider></mat-divider>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  
 </div>

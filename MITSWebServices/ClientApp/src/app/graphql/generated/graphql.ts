@@ -127,7 +127,7 @@ export namespace AllEvents {
 
     basePrice: Decimal;
 
-    registrationCode: string | null;
+    codeRequired: boolean;
 
     isEnabled: boolean;
   };
@@ -402,7 +402,7 @@ export class AllEventsGQL extends Apollo.Query<
             availableFrom
             availableThrough
             basePrice
-            registrationCode
+            codeRequired
             isEnabled
           }
         }

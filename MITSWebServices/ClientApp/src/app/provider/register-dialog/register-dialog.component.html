@@ -89,10 +89,40 @@
             >AFCEA Lifetime Member</mat-checkbox
           >
 
-          <mat-checkbox (change)="print()" formControlName="isLocal"
-            >Local</mat-checkbox
-          >
+          <mat-checkbox formControlName="isLocal">Local</mat-checkbox>
         </div>
+
+        <div fxLayout="row" fxLayoutGap="2px" style="padding-top: 5px;">
+          <button mat-stroked-button matStepperPrevious>Back</button>
+          <button
+            *ngIf="!isFree || codeRequired || !isAddingTuesdayLuncheon"
+            color="primary"
+            mat-stroked-button
+            matStepperNext
+          >
+            Next
+          </button>
+          <!-- <button
+            *ngIf="isFree "
+            color="primary"
+            mat-stroked-button
+          >
+            Register
+          </button> -->
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="registrationCodeForm" *ngIf="codeRequired">
+      <form [formGroup]="registrationCodeForm">
+        <ng-template matStepLabel>Enter Registration Code</ng-template>
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Registration Code"
+            formControlName="registrationCode"
+            required
+          />
+        </mat-form-field>
 
         <div fxLayout="row" fxLayoutGap="2px" style="padding-top: 5px;">
           <button mat-stroked-button matStepperPrevious>Back</button>
@@ -104,18 +134,41 @@
           >
             Next
           </button>
-          <button
-            *ngIf="isFree"
-            color="primary"
-            mat-stroked-button
-            (click)="print()"
-          >
+          <button *ngIf="isFree" color="primary" mat-stroked-button>
             Register
           </button>
         </div>
       </form>
     </mat-step>
-    <mat-step [stepControl]="paymentDetailsForm" *ngIf="!isFree">
+    <mat-step *ngIf="isFree && !codeRequired" [optional]="true">
+      <ng-template matStepLabel>Tuesday Luncheon</ng-template>
+      <div fxLayout="column" fxLayoutGap="5px" style="padding-bottom: 10px;">
+        <mat-checkbox (change)="changeTuesdayLuncheonOption(stepper)"
+          >Add Tuesday Luncheon Registration ($20.00)</mat-checkbox
+        >
+      </div>
+      <div fxLayout="row" fxLayoutGap="2px">
+        <button mat-stroked-button matStepperPrevious>Back</button>
+        <button
+          *ngIf="isAddingTuesdayLuncheon"
+          mat-stroked-button
+          matStepperNext
+        >
+          Next
+        </button>
+        <button
+          *ngIf="!isAddingTuesdayLuncheon"
+          color="primary"
+          mat-raised-button
+        >
+          Register
+        </button>
+      </div>
+    </mat-step>
+    <mat-step
+      [stepControl]="paymentDetailsForm"
+      *ngIf="!isFree || isAddingTuesdayLuncheon"
+    >
       <form [formGroup]="paymentDetailsForm">
         <ng-template matStepLabel>Payment</ng-template>
         <div fxLayout="column">
@@ -161,9 +214,24 @@
             </mat-form-field>
             <div fxFlex></div>
             <div>
-              <img [class.deactivate]="cardBrand === 'mastercard' || cardBrand ==='amex' "  src="../../../assets/icons8-visa-filled-48.png" />
-              <img [class.deactivate]="cardBrand === 'visa' || cardBrand ==='amex' " src="../../../assets/icons8-mastercard-48.png" />
-              <img [class.deactivate]="cardBrand === 'visa' || cardBrand ==='mastercard' " src="../../../assets/icons8-american-express-48.png" />
+              <img
+                [class.deactivate]="
+                  cardBrand === 'mastercard' || cardBrand === 'amex'
+                "
+                src="../../../assets/icons8-visa-filled-48.png"
+              />
+              <img
+                [class.deactivate]="
+                  cardBrand === 'visa' || cardBrand === 'amex'
+                "
+                src="../../../assets/icons8-mastercard-48.png"
+              />
+              <img
+                [class.deactivate]="
+                  cardBrand === 'visa' || cardBrand === 'mastercard'
+                "
+                src="../../../assets/icons8-american-express-48.png"
+              />
             </div>
           </div>
         </div>

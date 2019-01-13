@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject, ViewChild } from "@angular/core";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
+import { MatStepper } from '@angular/material/stepper';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { TdDialogService } from '@covalent/core';
 
@@ -11,6 +12,8 @@ import {
 } from "../../graphql/generated/graphql";
 
 declare var Accept: any;
+import { environment } from "../../../environments/environment";
+import { AuthData, CardData, SecureData, AuthorizeResponse } from '../../core/models';
 import { AllEvents } from "src/app/graphql/generated/graphql";
 
 @Component({
@@ -34,10 +37,13 @@ export class RegisterDialogComponent implements OnInit {
   userDetailsForm: FormGroup;
   afceaDetailsForm: FormGroup;
   paymentDetailsForm: FormGroup;
+  registrationCodeForm: FormGroup;
   eventRegistrationType: AllEvents.Types;
+  isAddingTuesdayLuncheon: boolean = false;
+  isCommitteeRegistration: boolean;
   mainEventId: number;
   isFree: boolean;
-  needsCode: boolean;
+  codeRequired: boolean;
   qrCode: string;
   registrationComplete: boolean = false;
 
@@ -66,6 +72,7 @@ export class RegisterDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.data);
 
     this.dialogRef.backdropClick().subscribe(data => {
       this.tdDialog.openConfirm({
@@ -79,9 +86,10 @@ export class RegisterDialogComponent implements OnInit {
         }
       });
     });
-    console.log(this.data);
 
     this.isFree = this.data.eventType.basePrice > 0 ? false : true;
+    this.codeRequired = this.data.eventType.codeRequired;
+    this.isCommitteeRegistration = this.data.eventType.basePrice == 0 && this.data.eventType.codeRequired;
 
     this.eventRegistrationType = this.data.eventType;
     this.mainEventId = this.data.mainEventId;
@@ -98,6 +106,9 @@ export class RegisterDialogComponent implements OnInit {
       isLifeTimeMember: [""],
       isLocal: [""]
     });
+    this.registrationCodeForm = this._formBuilder.group({
+      registrationCode: ["", Validators.required]
+    });
     this.paymentDetailsForm = this._formBuilder.group({
       cardNumber: ["", CreditCardValidator.validateCCNumber],
       expirationDate: ["", CreditCardValidator.validateExpDate],
@@ -112,19 +123,40 @@ export class RegisterDialogComponent implements OnInit {
     });
   }
 
+  changeTuesdayLuncheonOption(stepper: MatStepper) {
+    this.isAddingTuesdayLuncheon = !this.isAddingTuesdayLuncheon;
+  }
+
   processRegistration(): void {
+    //transfer this to an environment variable
     let authData: AuthData = {
-      clientKey:
-        "5bmqpBJmhet82bWEg93jhwj4P3N3gYL4hy5YT7T7ZE7f5KydsZJNXTWNY3b5nXCp",
-      apiLoginID: "84EchY4vL"
+      clientKey: environment.clientKey,
+      apiLoginID: environment.apiLoginID
     };
 
+    var ccNumber = this.paymentDetailsForm.controls.cardNumber.value;
+    var ccCcv = this.paymentDetailsForm.controls.cardCode.value;
+    var ccDetails = this.paymentDetailsForm.controls.expirationDate.value.split('/');
+    var ccMonth = ccDetails[0].trim();
+    var ccYear = ccDetails[1].trim();
+    if (ccYear.length > 2) {
+      ccYear = ccYear.substring(2);
+    }
+
+
+    // let cardData: CardData = {
+    //   cardNumber: "5424000000000015",
+    //   month: "01",
+    //   year: "19",
+    //   cardCode: "454"
+    // };
+
     let cardData: CardData = {
-      cardNumber: "5424000000000015",
-      month: "01",
-      year: "19",
-      cardCode: "454"
-    };
+      cardNumber: ccNumber,
+      month: ccMonth,
+      year: ccYear,
+      cardCode: ccCcv
+    }
 
     let secureData: SecureData = {
       authData: authData,
@@ -136,68 +168,46 @@ export class RegisterDialogComponent implements OnInit {
   }
 
   responseHandler(response: AuthorizeResponse) {
+
+    console.log(response);
+
+    if (response.messages.resultCode === "Error") {
+      var errorMessage = response.messages.message[0].text;
+      this.tdDialog.openAlert({
+        message: 'Error processing Credit Card, please try again',
+        title: 'Error'
+      });
+    }
+
     var newRegistration: RegistrationInput = {
       dataDescriptor: response.opaqueData.dataDescriptor,
       dataValue: response.opaqueData.dataValue,
-      firstName: "Bob",
-      lastName: "Anderson",
-      title: "CEO, weoifjwefoji",
-      email: "bob.anderson.4234@gmail.com",
-      memberId: "324232423",
-      memberExpirationDate: "05546",
-      isLifeMember: false,
-      isLocal: true,
+      firstName: this.userDetailsForm.controls.firstName.value,
+      lastName: this.userDetailsForm.controls.lastName.value,
+      title: this.userDetailsForm.controls.title.value,
+      email: this.userDetailsForm.controls.email.value,
+      memberId: this.afceaDetailsForm.controls.memberId.value,
+      memberExpirationDate: this.afceaDetailsForm.controls.memberExpireDate.value,
+      isLifeMember: this.afceaDetailsForm.controls.isLifeTimeMember.value,
+      isLocal: this.afceaDetailsForm.controls.isLocal.value,
       registrationTypeId: this.eventRegistrationType.registrationTypeId,
       eventId: this.mainEventId
     };
 
     console.log(newRegistration);
 
-    this.processRegistrationGQL
-      .mutate({
-        registration: newRegistration
-      })
-      .subscribe(result => {
-        this.registrationComplete = true;
-        console.log(result);
-        this.qrCode = result.data.processRegistration.qrCode;
-        console.log(this.qrCode);
-      });
+    // this.processRegistrationGQL
+    //   .mutate({
+    //     registration: newRegistration
+    //   })
+    //   .subscribe(result => {
+    //     this.registrationComplete = true;
+    //     console.log(result);
+    //     this.qrCode = result.data.processRegistration.qrCode;
+    //     console.log(this.qrCode);
+    //   });
   }
 
-  print() {
-    this.isFree = !this.isFree;
-  }
 }
 
-interface AuthorizeResponse {
-  message: AuthorizeMessage;
-  opaqueData: AuthorizeOpaqueData;
-}
 
-interface AuthorizeMessage {
-  message: string[];
-  resultCode: string;
-}
-
-interface AuthorizeOpaqueData {
-  dataDescriptor: string;
-  dataValue: string;
-}
-
-interface SecureData {
-  cardData: CardData;
-  authData: AuthData;
-}
-
-interface CardData {
-  cardNumber: string;
-  month: string;
-  year: string;
-  cardCode: string;
-}
-
-interface AuthData {
-  clientKey: string;
-  apiLoginID: string;
-}

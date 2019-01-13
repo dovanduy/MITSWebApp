@@ -134,7 +134,7 @@
           >
             Next
           </button>
-          <button *ngIf="isFree" color="primary" mat-stroked-button>
+          <button *ngIf="isFree" color="primary" mat-raised-button>
             Register
           </button>
         </div>
@@ -239,7 +239,8 @@
           <button mat-stroked-button matStepperPrevious>Back</button>
           <button
             [disabled]="!paymentDetailsForm.valid"
-            mat-stroked-button
+            mat-raised-button
+            color = "primary"
             (click)="processRegistration()"
           >
             Register

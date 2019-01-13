@@ -1,10 +1,14 @@
 import { Component, OnInit, Inject, ViewChild } from "@angular/core";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
-import { MatStepper } from '@angular/material/stepper';
+import { MatStepper } from "@angular/material/stepper";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { TdDialogService } from '@covalent/core';
+import { TdDialogService, TdLoadingService } from "@covalent/core";
 
-import { CreditCardValidator, CreditCardFormatDirective, CreditCard } from "angular-cc-library";
+import {
+  CreditCardValidator,
+  CreditCardFormatDirective,
+  CreditCard
+} from "angular-cc-library";
 
 import {
   ProcessRegistrationGQL,
@@ -13,7 +17,12 @@ import {
 
 declare var Accept: any;
 import { environment } from "../../../environments/environment";
-import { AuthData, CardData, SecureData, AuthorizeResponse } from '../../core/models';
+import {
+  AuthData,
+  CardData,
+  SecureData,
+  AuthorizeResponse
+} from "../../core/models";
 import { AllEvents } from "src/app/graphql/generated/graphql";
 
 @Component({
@@ -27,13 +36,14 @@ export class RegisterDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _formBuilder: FormBuilder,
     private tdDialog: TdDialogService,
+    private tdLoading: TdLoadingService,
     private processRegistrationGQL: ProcessRegistrationGQL
   ) {
     dialogRef.disableClose = true;
-
   }
 
-  isLinear = false;
+  isProcessingRegistration: boolean = false;
+  isLinear: boolean = false;
   userDetailsForm: FormGroup;
   afceaDetailsForm: FormGroup;
   paymentDetailsForm: FormGroup;
@@ -61,35 +71,40 @@ export class RegisterDialogComponent implements OnInit {
     const input = <HTMLInputElement>this.ccCardInput.target;
     const cards = CreditCard.cards();
 
-    if (input.classList.contains('identified')) {
+    if (input.classList.contains("identified")) {
       for (const c of cards) {
         if (input.classList.contains(c.type)) {
           return c.type;
         }
       }
     }
-
   }
 
   ngOnInit() {
     console.log(this.data);
 
     this.dialogRef.backdropClick().subscribe(data => {
-      this.tdDialog.openConfirm({
-        message: 'Are you sure you want to cancel this order?',
-        disableClose: true,
-        cancelButton: "No",
-        acceptButton: "Yes, Cancel this order"        
-      }).afterClosed().subscribe((accept: boolean ) => {
-        if (accept) {
-          this.dialogRef.close();
-        }
-      });
+      if (!this.isProcessingRegistration) {
+        this.tdDialog
+          .openConfirm({
+            message: "Are you sure you want to cancel this order?",
+            disableClose: true,
+            cancelButton: "No",
+            acceptButton: "Yes, Cancel this order"
+          })
+          .afterClosed()
+          .subscribe((accept: boolean) => {
+            if (accept) {
+              this.dialogRef.close();
+            }
+          });
+      }
     });
 
     this.isFree = this.data.eventType.basePrice > 0 ? false : true;
     this.codeRequired = this.data.eventType.codeRequired;
-    this.isCommitteeRegistration = this.data.eventType.basePrice == 0 && this.data.eventType.codeRequired;
+    this.isCommitteeRegistration =
+      this.data.eventType.basePrice == 0 && this.data.eventType.codeRequired;
 
     this.eventRegistrationType = this.data.eventType;
     this.mainEventId = this.data.mainEventId;
@@ -129,6 +144,9 @@ export class RegisterDialogComponent implements OnInit {
 
   processRegistration(): void {
     //transfer this to an environment variable
+    this.tdLoading.register("overLayForm");
+    this.isProcessingRegistration = true;
+    
     let authData: AuthData = {
       clientKey: environment.clientKey,
       apiLoginID: environment.apiLoginID
@@ -136,13 +154,14 @@ export class RegisterDialogComponent implements OnInit {
 
     var ccNumber = this.paymentDetailsForm.controls.cardNumber.value;
     var ccCcv = this.paymentDetailsForm.controls.cardCode.value;
-    var ccDetails = this.paymentDetailsForm.controls.expirationDate.value.split('/');
+    var ccDetails = this.paymentDetailsForm.controls.expirationDate.value.split(
+      "/"
+    );
     var ccMonth = ccDetails[0].trim();
     var ccYear = ccDetails[1].trim();
     if (ccYear.length > 2) {
       ccYear = ccYear.substring(2);
     }
-
 
     // let cardData: CardData = {
     //   cardNumber: "5424000000000015",
@@ -156,7 +175,7 @@ export class RegisterDialogComponent implements OnInit {
       month: ccMonth,
       year: ccYear,
       cardCode: ccCcv
-    }
+    };
 
     let secureData: SecureData = {
       authData: authData,
@@ -168,14 +187,13 @@ export class RegisterDialogComponent implements OnInit {
   }
 
   responseHandler(response: AuthorizeResponse) {
-
     console.log(response);
 
     if (response.messages.resultCode === "Error") {
       var errorMessage = response.messages.message[0].text;
       this.tdDialog.openAlert({
-        message: 'Error processing Credit Card, please try again',
-        title: 'Error'
+        message: "Error processing Credit Card, please try again",
+        title: "Error"
       });
     }
 
@@ -187,7 +205,8 @@ export class RegisterDialogComponent implements OnInit {
       title: this.userDetailsForm.controls.title.value,
       email: this.userDetailsForm.controls.email.value,
       memberId: this.afceaDetailsForm.controls.memberId.value,
-      memberExpirationDate: this.afceaDetailsForm.controls.memberExpireDate.value,
+      memberExpirationDate: this.afceaDetailsForm.controls.memberExpireDate
+        .value,
       isLifeMember: this.afceaDetailsForm.controls.isLifeTimeMember.value,
       isLocal: this.afceaDetailsForm.controls.isLocal.value,
       registrationTypeId: this.eventRegistrationType.registrationTypeId,
@@ -207,7 +226,4 @@ export class RegisterDialogComponent implements OnInit {
     //     console.log(this.qrCode);
     //   });
   }
-
 }
-
-

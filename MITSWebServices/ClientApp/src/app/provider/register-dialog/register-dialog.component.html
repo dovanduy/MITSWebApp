@@ -1,254 +1,258 @@
 <div *ngIf="!registrationComplete">
-  <div
-    style="border-bottom: 1px solid lightgrey;"
-    fxLayoutAlign="center center"
-  >
-    <h1>{{ eventRegistrationType?.name }}</h1>
-  </div>
+  <div *tdLoading="'overLayForm'; mode:'indeterminate'; type:'circle'; strategy:'overlay'; color:'accent'">
+    <div
+      style="border-bottom: 1px solid lightgrey;"
+      fxLayoutAlign="center center"
+    >
+      <h1>{{ eventRegistrationType?.name }}</h1>
+    </div>
 
-  <mat-vertical-stepper [linear]="true" #stepper>
-    <mat-step [stepControl]="userDetailsForm">
-      <form [formGroup]="userDetailsForm">
-        <ng-template matStepLabel>Your Details</ng-template>
-        <div
-          fxLayout="column"
-          fxLayoutAlign="space-between center"
-          fxLayoutGap="5px"
-        >
+    <mat-vertical-stepper [linear]="true" #stepper>
+      <mat-step [stepControl]="userDetailsForm">
+        <form [formGroup]="userDetailsForm">
+          <ng-template matStepLabel>Your Details</ng-template>
+          <div
+            fxLayout="column"
+            fxLayoutAlign="space-between center"
+            fxLayoutGap="5px"
+          >
+            <div fxLayout="row" fxLayoutGap="10px">
+              <mat-form-field>
+                <input
+                  matInput
+                  placeholder="First Name"
+                  formControlName="firstName"
+                  required
+                />
+              </mat-form-field>
+              <mat-form-field>
+                <input
+                  matInput
+                  placeholder="Last name"
+                  formControlName="lastName"
+                  required
+                />
+              </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutGap="10px">
+              <mat-form-field>
+                <input
+                  matInput
+                  placeholder="Title"
+                  formControlName="title"
+                  required
+                />
+              </mat-form-field>
+              <mat-form-field>
+                <input
+                  id="email"
+                  matInput
+                  placeholder="Email"
+                  formControlName="email"
+                  required
+                />
+                <mat-error *ngIf="udForm.email.errors?.email"
+                  >Please provide a valid email</mat-error
+                >
+              </mat-form-field>
+            </div>
+          </div>
+          <div><button mat-stroked-button matStepperNext>Next</button></div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="afceaDetailsForm" [optional]="true">
+        <form [formGroup]="afceaDetailsForm">
+          <ng-template matStepLabel>Your AFCEA Details</ng-template>
           <div fxLayout="row" fxLayoutGap="10px">
             <mat-form-field>
               <input
                 matInput
-                placeholder="First Name"
-                formControlName="firstName"
-                required
+                placeholder="AFCEA Member ID#"
+                formControlName="memberId"
               />
             </mat-form-field>
             <mat-form-field>
               <input
+                formControlName="memberExpireDate"
                 matInput
-                placeholder="Last name"
-                formControlName="lastName"
-                required
+                [matDatepicker]="myDatepicker"
+                placeholder="AFCEA Expiration Date"
               />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="myDatepicker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #myDatepicker></mat-datepicker>
             </mat-form-field>
           </div>
-          <div fxLayout="row" fxLayoutGap="10px">
-            <mat-form-field>
-              <input
-                matInput
-                placeholder="Title"
-                formControlName="title"
-                required
-              />
-            </mat-form-field>
-            <mat-form-field>
-              <input
-                id="email"
-                matInput
-                placeholder="Email"
-                formControlName="email"
-                required
-              />
-              <mat-error *ngIf="udForm.email.errors?.email"
-                >Please provide a valid email</mat-error
-              >
-            </mat-form-field>
+          <div fxLayout="column" fxLayoutGap="5px">
+            <mat-checkbox
+              id="isLifeTimeMember"
+              formControlName="isLifeTimeMember"
+              >AFCEA Lifetime Member</mat-checkbox
+            >
+
+            <mat-checkbox formControlName="isLocal">Local</mat-checkbox>
           </div>
-        </div>
-        <div><button mat-stroked-button matStepperNext>Next</button></div>
-      </form>
-    </mat-step>
-    <mat-step [stepControl]="afceaDetailsForm" [optional]="true">
-      <form [formGroup]="afceaDetailsForm">
-        <ng-template matStepLabel>Your AFCEA Details</ng-template>
-        <div fxLayout="row" fxLayoutGap="10px">
-          <mat-form-field>
-            <input
-              matInput
-              placeholder="AFCEA Member ID#"
-              formControlName="memberId"
-            />
-          </mat-form-field>
-          <mat-form-field>
-            <input
-              formControlName="memberExpireDate"
-              matInput
-              [matDatepicker]="myDatepicker"
-              placeholder="AFCEA Expiration Date"
-            />
-            <mat-datepicker-toggle
-              matSuffix
-              [for]="myDatepicker"
-            ></mat-datepicker-toggle>
-            <mat-datepicker #myDatepicker></mat-datepicker>
-          </mat-form-field>
-        </div>
-        <div fxLayout="column" fxLayoutGap="5px">
-          <mat-checkbox id="isLifeTimeMember" formControlName="isLifeTimeMember"
-            >AFCEA Lifetime Member</mat-checkbox
-          >
 
-          <mat-checkbox formControlName="isLocal">Local</mat-checkbox>
-        </div>
-
-        <div fxLayout="row" fxLayoutGap="2px" style="padding-top: 5px;">
-          <button mat-stroked-button matStepperPrevious>Back</button>
-          <button
-            *ngIf="!isFree || codeRequired || !isAddingTuesdayLuncheon"
-            color="primary"
-            mat-stroked-button
-            matStepperNext
-          >
-            Next
-          </button>
-          <!-- <button
+          <div fxLayout="row" fxLayoutGap="2px" style="padding-top: 5px;">
+            <button mat-stroked-button matStepperPrevious>Back</button>
+            <button
+              *ngIf="!isFree || codeRequired || !isAddingTuesdayLuncheon"
+              color="primary"
+              mat-stroked-button
+              matStepperNext
+            >
+              Next
+            </button>
+            <!-- <button
             *ngIf="isFree "
             color="primary"
             mat-stroked-button
           >
             Register
           </button> -->
-        </div>
-      </form>
-    </mat-step>
-    <mat-step [stepControl]="registrationCodeForm" *ngIf="codeRequired">
-      <form [formGroup]="registrationCodeForm">
-        <ng-template matStepLabel>Enter Registration Code</ng-template>
-        <mat-form-field>
-          <input
-            matInput
-            placeholder="Registration Code"
-            formControlName="registrationCode"
-            required
-          />
-        </mat-form-field>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="registrationCodeForm" *ngIf="codeRequired">
+        <form [formGroup]="registrationCodeForm">
+          <ng-template matStepLabel>Enter Registration Code</ng-template>
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="Registration Code"
+              formControlName="registrationCode"
+              required
+            />
+          </mat-form-field>
 
-        <div fxLayout="row" fxLayoutGap="2px" style="padding-top: 5px;">
+          <div fxLayout="row" fxLayoutGap="2px" style="padding-top: 5px;">
+            <button mat-stroked-button matStepperPrevious>Back</button>
+            <button
+              *ngIf="!isFree"
+              color="primary"
+              mat-stroked-button
+              matStepperNext
+            >
+              Next
+            </button>
+            <button *ngIf="isFree" color="primary" (click)="processRegistration()" mat-raised-button>
+              Register
+            </button>
+          </div>
+        </form>
+      </mat-step>
+      <!-- Tuesday Luncheon -->
+      <mat-step *ngIf="isFree && !codeRequired" [optional]="true">
+        <ng-template matStepLabel>Tuesday Luncheon</ng-template>
+        <div fxLayout="column" fxLayoutGap="5px" style="padding-bottom: 10px;">
+          <mat-checkbox (change)="changeTuesdayLuncheonOption(stepper)"
+            >Add Tuesday Luncheon Registration ($20.00)</mat-checkbox
+          >
+        </div>
+        <div fxLayout="row" fxLayoutGap="2px">
           <button mat-stroked-button matStepperPrevious>Back</button>
           <button
-            *ngIf="!isFree"
-            color="primary"
+            *ngIf="isAddingTuesdayLuncheon"
             mat-stroked-button
             matStepperNext
           >
             Next
           </button>
-          <button *ngIf="isFree" color="primary" mat-raised-button>
-            Register
-          </button>
-        </div>
-      </form>
-    </mat-step>
-    <mat-step *ngIf="isFree && !codeRequired" [optional]="true">
-      <ng-template matStepLabel>Tuesday Luncheon</ng-template>
-      <div fxLayout="column" fxLayoutGap="5px" style="padding-bottom: 10px;">
-        <mat-checkbox (change)="changeTuesdayLuncheonOption(stepper)"
-          >Add Tuesday Luncheon Registration ($20.00)</mat-checkbox
-        >
-      </div>
-      <div fxLayout="row" fxLayoutGap="2px">
-        <button mat-stroked-button matStepperPrevious>Back</button>
-        <button
-          *ngIf="isAddingTuesdayLuncheon"
-          mat-stroked-button
-          matStepperNext
-        >
-          Next
-        </button>
-        <button
-          *ngIf="!isAddingTuesdayLuncheon"
-          color="primary"
-          mat-raised-button
-        >
-          Register
-        </button>
-      </div>
-    </mat-step>
-    <mat-step
-      [stepControl]="paymentDetailsForm"
-      *ngIf="!isFree || isAddingTuesdayLuncheon"
-    >
-      <form [formGroup]="paymentDetailsForm">
-        <ng-template matStepLabel>Payment</ng-template>
-        <div fxLayout="column">
-          <mat-form-field>
-            <input
-              id="cc-number"
-              type="tel"
-              autocomplete="cc-number"
-              ccNumber
-              matInput
-              placeholder="Card Number"
-              formControlName="cardNumber"
-              required
-            />
-          </mat-form-field>
-          <div fxLayout="row" fxLayoutGap="5px">
-            <mat-form-field style="width: 100px">
-              <input
-                id="cc-exp-date"
-                type="tel"
-                autocomplete="cc-exp"
-                ccExp
-                matInput
-                placeholder="mm/yyyy"
-                formControlName="expirationDate"
-                required
-              />
-            </mat-form-field>
-            <div style="padding-right: 10px;"></div>
-
-            <mat-form-field style="width: 50px">
-              <input
-                #cc
-                id="cc-cvc"
-                type="tel"
-                autocomplete="off"
-                ccCvc
-                matInput
-                placeholder="cvv"
-                formControlName="cardCode"
-                required
-              />
-            </mat-form-field>
-            <div fxFlex></div>
-            <div>
-              <img
-                [class.deactivate]="
-                  cardBrand === 'mastercard' || cardBrand === 'amex'
-                "
-                src="../../../assets/icons8-visa-filled-48.png"
-              />
-              <img
-                [class.deactivate]="
-                  cardBrand === 'visa' || cardBrand === 'amex'
-                "
-                src="../../../assets/icons8-mastercard-48.png"
-              />
-              <img
-                [class.deactivate]="
-                  cardBrand === 'visa' || cardBrand === 'mastercard'
-                "
-                src="../../../assets/icons8-american-express-48.png"
-              />
-            </div>
-          </div>
-        </div>
-        <div style="padding-top: 5px;" fxLayout="row" fxLayoutGap="2px">
-          <button mat-stroked-button matStepperPrevious>Back</button>
           <button
-            [disabled]="!paymentDetailsForm.valid"
+            *ngIf="!isAddingTuesdayLuncheon"
+            color="primary"
             mat-raised-button
-            color = "primary"
-            (click)="processRegistration()"
           >
             Register
           </button>
         </div>
-      </form>
-    </mat-step>
-  </mat-vertical-stepper>
+      </mat-step>
+      <mat-step [stepControl]="paymentDetailsForm"
+        *ngIf="!isFree || isAddingTuesdayLuncheon"
+      >
+        <form [formGroup]="paymentDetailsForm">
+          <ng-template matStepLabel>Payment</ng-template>
+          <div fxLayout="column">
+            <mat-form-field>
+              <input
+                id="cc-number"
+                type="tel"
+                autocomplete="cc-number"
+                ccNumber
+                matInput
+                placeholder="Card Number"
+                formControlName="cardNumber"
+                required
+              />
+            </mat-form-field>
+            <div fxLayout="row" fxLayoutGap="5px">
+              <mat-form-field style="width: 100px">
+                <input
+                  id="cc-exp-date"
+                  type="tel"
+                  autocomplete="cc-exp"
+                  ccExp
+                  matInput
+                  placeholder="mm/yyyy"
+                  formControlName="expirationDate"
+                  required
+                />
+              </mat-form-field>
+              <div style="padding-right: 10px;"></div>
+
+              <mat-form-field style="width: 50px">
+                <input
+                  #cc
+                  id="cc-cvc"
+                  type="tel"
+                  autocomplete="off"
+                  ccCvc
+                  matInput
+                  placeholder="cvv"
+                  formControlName="cardCode"
+                  required
+                />
+              </mat-form-field>
+              <div fxFlex></div>
+              <div>
+                <img
+                  [class.deactivate]="
+                    cardBrand === 'mastercard' || cardBrand === 'amex'
+                  "
+                  src="../../../assets/icons8-visa-filled-48.png"
+                />
+                <img
+                  [class.deactivate]="
+                    cardBrand === 'visa' || cardBrand === 'amex'
+                  "
+                  src="../../../assets/icons8-mastercard-48.png"
+                />
+                <img
+                  [class.deactivate]="
+                    cardBrand === 'visa' || cardBrand === 'mastercard'
+                  "
+                  src="../../../assets/icons8-american-express-48.png"
+                />
+              </div>
+            </div>
+          </div>
+          <div style="padding-top: 5px;" fxLayout="row" fxLayoutGap="2px">
+            <button mat-stroked-button matStepperPrevious>Back</button>
+            <button
+              [disabled]="!paymentDetailsForm.valid"
+              mat-raised-button
+              color="primary"
+              (click)="processRegistration()"
+            >
+              Register
+            </button>
+          </div>
+        </form>
+      </mat-step>
+    </mat-vertical-stepper>
+  </div>
 </div>
 
 <div *ngIf="registrationComplete">

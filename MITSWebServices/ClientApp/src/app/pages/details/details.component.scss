@@ -39,11 +39,15 @@
 .mat-card {
         
         max-width: 300px;
+        min-width: 100px;
         background-color: #13191E;
         color: #f0f0f0;
         margin-bottom: 20px;
        
-        
+        .mat-list-item {
+            color: #f0f0f0;
+           // border-bottom: 1px solid #2b3843;
+        }
 
         img {
             background-size: cover;
@@ -99,3 +103,4 @@ ul {
     padding-bottom: 20px;
     line-height: 1.2;
 }
+

@@ -14,6 +14,7 @@ import { HeadernavComponent } from "./utility/headernav/headernav.component";
 import { FooterComponent } from "./utility/footer/footer.component";
 import { HotelComponent } from "./hotel/hotel.component";
 import { GolfComponent } from "./golf/golf.component";
+import { FaqComponent } from './faq/faq.component';
 
 @NgModule({
   declarations: [
@@ -25,9 +26,10 @@ import { GolfComponent } from "./golf/golf.component";
     HeadernavComponent,
     FooterComponent,
     HotelComponent,
-    GolfComponent
+    GolfComponent,
+    FaqComponent
   ],
   imports: [CommonModule, SharedModule, RouterModule, ProviderModule],
-  exports: [HeadernavComponent]
+  exports: [HeadernavComponent, FooterComponent]
 })
 export class PagesModule {}

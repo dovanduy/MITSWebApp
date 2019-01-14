@@ -4,14 +4,14 @@
     The Montgomery Information Technology Summit is being held on 20-22 May,
     2019 at the Renaissance Hotel in downtown Montgomery, Alabama.
   </p>
-  <p class="blaster-xs" fxHide fxShow.xs-sm>
+  <p class="blaster-xs" fxHide fxShow.xs fxShow.sm>
       The Montgomery Information Technology Summit is being held on 20-22 May,
       2019 at the Renaissance Hotel in downtown Montgomery, Alabama.
     </p>
-  <img class="stage" src="./assets/BannerTest.png" fxShow.xl fxHide.lt-lg>
-  <img class="stage" src="./assets/bannerXS.png" fxShow.xs fxHide.gt-md>
+  <img class="stage" src="./assets/BannerTest.png" fxShow.gt-sm fxHide>
+  <img class="stage" src="./assets/bannerXS.png" fxHide fxShow.xs fxShow.sm>
   <div class="main">
-    <div class="infocards" fxLayout="row wrap">
+    <div class="infocards" fxLayout="row wrap" fxHide fxShow.gt-xs>
       
       <mat-card class="mat-elevation-z12" routerLink="/hotel">
       <mat-card-header>
@@ -30,18 +30,20 @@
         <mat-card-content>
         </mat-card-content>
       </mat-card>
-      <mat-card class="mat-elevation-z12">
+      <mat-card class="mat-elevation-z12" routerLink="/faq">
           <mat-card-header>
-            <mat-card-title>FAQ</mat-card-title>
+            <mat-card-title>Frequently Asked Questions</mat-card-title>
           </mat-card-header>
-          <img mat-card-img src="">
-          <mat-card-content>
-            <p>What else needs to go here? Anything? The Montgomery IT Summit has
-                been designated as an alternate duty location for the Air Force Business and
-                Enterprise Systems (BES) Directorate.</p>
+           <mat-card-content>
+            <mat-list>
+              <mat-list-item style="border-bottom:1px solid #2b3843"><button mat-icon-button><mat-icon style="color:red">not_interested</mat-icon></button>Cancellations and Refunds</mat-list-item>
+              <mat-list-item style="border-bottom:1px solid #2b3843"><button mat-icon-button><mat-icon style="color:seashell">playlist_add_check</mat-icon></button>Conference Policies</mat-list-item>
+              <mat-list-item><button mat-icon-button><mat-icon style="color:khaki">contact_mail</mat-icon></button>Help and Support</mat-list-item>
+            </mat-list>
             </mat-card-content>
           </mat-card>
   </div>
+  
 </div>
 </div>
   <div class="sponsorlogos" fxLayout="column" fxHide fxShow.gt-xs>
@@ -58,3 +60,4 @@
       </ul>
    </div>
 
+   <app-footer></app-footer>

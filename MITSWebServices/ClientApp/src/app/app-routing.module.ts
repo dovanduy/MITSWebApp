@@ -10,6 +10,8 @@ import { SponsorsComponent } from './pages/sponsors/sponsors.component';
 import { HotelComponent } from "./pages/hotel/hotel.component";     
 import { GolfComponent  } from "./pages/golf/golf.component";
 import { FaqComponent } from "./pages/faq/faq.component";
+import { PrivacyComponent } from "./pages/privacy/privacy.component";
+import { TermsComponent } from "./pages/terms/terms.component";
 
 
 const routes: Routes = [
@@ -23,6 +25,8 @@ const routes: Routes = [
   { path: 'hotel', component: HotelComponent},
   { path: 'golf', component: GolfComponent},
   { path: 'faq', component: FaqComponent},
+  { path: 'privacy', component: PrivacyComponent},
+  { path: 'terms', component: TermsComponent},
 ];
 
 @NgModule({

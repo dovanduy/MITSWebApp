@@ -15,6 +15,8 @@ import { FooterComponent } from "./utility/footer/footer.component";
 import { HotelComponent } from "./hotel/hotel.component";
 import { GolfComponent } from "./golf/golf.component";
 import { FaqComponent } from './faq/faq.component';
+import { TermsComponent } from './terms/terms.component';
+import { PrivacyComponent } from './privacy/privacy.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { FaqComponent } from './faq/faq.component';
     FooterComponent,
     HotelComponent,
     GolfComponent,
-    FaqComponent
+    FaqComponent,
+    TermsComponent,
+    PrivacyComponent
   ],
   imports: [CommonModule, SharedModule, RouterModule, ProviderModule],
   exports: [HeadernavComponent, FooterComponent]

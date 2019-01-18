@@ -1,0 +1,98 @@
+<div *ngIf="!registrationComplete">
+    <div *tdLoading="'overLayForm'; mode:'indeterminate'; type:'circle'; strategy:'overlay'; color:'accent'">
+      <div
+        style="border-bottom: 1px solid lightgrey;"
+        fxLayoutAlign="center center"
+      >
+        <h1>{{ data.eventType?.name }}</h1>
+      </div>
+  
+      <mat-vertical-stepper [linear]="true" #stepper>
+        <mat-step [stepControl]="userDetailsForm">
+          <form [formGroup]="userDetailsForm">
+            <ng-template matStepLabel>Your Details</ng-template>
+            <div
+              fxLayout="column"
+              fxLayoutAlign="space-between center"
+              fxLayoutGap="5px"
+            >
+              <div fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field>
+                  <input
+                    matInput
+                    placeholder="First Name"
+                    formControlName="firstName"
+                    required
+                  />
+                </mat-form-field>
+                <mat-form-field>
+                  <input
+                    matInput
+                    placeholder="Last name"
+                    formControlName="lastName"
+                    required
+                  />
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field>
+                  <input
+                    matInput
+                    placeholder="Organization"
+                    formControlName="organization"
+                    required
+                  />
+                </mat-form-field>
+                <mat-form-field>
+                  <input
+                    id="email"
+                    matInput
+                    placeholder="Email"
+                    formControlName="email"
+                    required
+                  />
+                  <mat-error *ngIf="udForm.email.errors?.email"
+                    >Please provide a valid email</mat-error
+                  >
+                </mat-form-field>
+              </div>
+            </div>
+            <div><button mat-stroked-button matStepperNext>Next</button></div>
+          </form>
+        </mat-step>
+        <mat-step [stepControl]="registrationCodeForm">
+          <form [formGroup]="registrationCodeForm">
+            <ng-template matStepLabel>Enter Registration Code</ng-template>
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="Registration Code"
+                formControlName="registrationCode"
+                required
+              />
+            </mat-form-field>
+  
+            <div fxLayout="row" fxLayoutGap="2px" style="padding-top: 5px;">
+              <button mat-stroked-button matStepperPrevious>Back</button>
+              <button color="primary" (click)="processRegistration()" mat-raised-button>
+                Register
+              </button>
+            </div>
+          </form>
+        </mat-step>
+
+
+      </mat-vertical-stepper>
+    </div>
+  </div>
+  
+  <div *ngIf="registrationComplete">
+    <h2>Event Registration Id - {{eventRegistrationId}}</h2>
+    <img
+      alt="Embedded QR Code"
+      height="200px"
+      width="200px"
+      src="http://localhost:50000/tickets/{{ qrCode }}/code.png"
+    />
+  </div>
+  

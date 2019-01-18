@@ -14,10 +14,11 @@ namespace MITSBusinessLib.GraphQL.Types.Inputs
             Field<NonNullGraphType<StringGraphType>>("dataValue");
             Field<NonNullGraphType<StringGraphType>>("firstName");
             Field<NonNullGraphType<StringGraphType>>("lastName");
-            Field<NonNullGraphType<StringGraphType>>("title");
+            Field<NonNullGraphType<StringGraphType>>("organization");
             Field<NonNullGraphType<StringGraphType>>("email");
             Field<StringGraphType>("memberId");
             Field<StringGraphType>("memberExpirationDate");
+            Field<StringGraphType>("registrationCode");
             Field<BooleanGraphType>("isLifeMember");
             Field<BooleanGraphType>("isLocal");
             Field<NonNullGraphType<IntGraphType>>("registrationTypeId");

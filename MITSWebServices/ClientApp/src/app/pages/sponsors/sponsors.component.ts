@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 
-import { ProviderService } from '../../provider/provider.service';
 import { AllEventsGQL, AllEvents } from 'src/app/graphql/generated/graphql';
+import { RegisterDialogService } from "src/app/provider/services/register-dialog.service";
 
 
 @Component({
@@ -14,7 +14,7 @@ export class SponsorsComponent implements OnInit {
   events: AllEvents.Events[];
   sponsorEvents: AllEvents.Events[];
 
-  constructor(private allEventsGQL: AllEventsGQL, private provider: ProviderService ) {}
+  constructor(private allEventsGQL: AllEventsGQL, private registerDialogService: RegisterDialogService ) {}
 
   ngOnInit() {
     this.allEventsGQL.watch().valueChanges.subscribe(result => {
@@ -29,6 +29,6 @@ export class SponsorsComponent implements OnInit {
   }
 
   register(type: AllEvents.Types, eventId: number) {
-   this.provider.openRegisterDialog(type, eventId);
+   //this.provider.openRegisterDialog(type, eventId);
   }
 }

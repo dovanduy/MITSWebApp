@@ -106,7 +106,8 @@ namespace MITSWebServices
 
             services.AddGraphQL(options =>
             {
-                options.ExposeExceptions = true;
+                //TODO: Disable for productions
+                //options.ExposeExceptions = true;
             }).AddUserContextBuilder(context => new GraphQLUserContext { User = context.User });
 
 

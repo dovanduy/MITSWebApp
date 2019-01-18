@@ -5,6 +5,7 @@ import {
 import { CommonModule } from '@angular/common';
 
 import { AuthService } from './services/auth.service';
+import { GlobalService } from './services/global.service';
 
 @NgModule({
   declarations: [],
@@ -13,6 +14,7 @@ import { AuthService } from './services/auth.service';
   ],
   providers: [
     AuthService,
+    GlobalService
   ]
 })
 export class CoreModule {
@@ -28,7 +30,8 @@ export class CoreModule {
     return {
       ngModule: CoreModule,
       providers: [
-        AuthService
+        AuthService,
+        GlobalService
       ]
     }
   }

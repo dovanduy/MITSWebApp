@@ -14,7 +14,8 @@ namespace MITSBusinessLib.GraphQL.Types
             Field(r => r.DataValue);
             Field(r => r.FirstName);
             Field(r => r.LastName);
-            Field(r => r.Title);
+            Field(r => r.RegistrationCode);
+            Field(r => r.Organization);
             Field(r => r.Email);
             Field(r => r.MemberId);
             Field(r => r.MemberExpirationDate);

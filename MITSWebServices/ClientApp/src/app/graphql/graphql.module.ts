@@ -55,7 +55,15 @@ export class GraphQLModule {
 
     apollo.create({
       link: from([auth, http]),
-      cache: new InMemoryCache()
+      cache: new InMemoryCache(),
+      defaultOptions: {
+        mutate: {
+          errorPolicy: 'all'
+        },
+        watchQuery: {
+          errorPolicy: 'all'
+        }
+      }
     });
   }
 }

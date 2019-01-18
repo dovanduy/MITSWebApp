@@ -238,7 +238,7 @@ namespace MITSBusinessLib.Repositories
                 FirstName = newRegistration.FirstName,
                 LastName = newRegistration.LastName,
                 Email = newRegistration.Email,
-                Organization = newRegistration.Title,
+                Organization = newRegistration.Organization,
                 Status = "Active",
                 RecreateInvoice = false
             };
@@ -316,7 +316,7 @@ namespace MITSBusinessLib.Repositories
                     new RegistrationField
                     {
                         FieldName = "Title",
-                        Value = newRegistration.Title,
+                        Value = newRegistration,
                         SystemCode = "Title"
                     },
                     new RegistrationField

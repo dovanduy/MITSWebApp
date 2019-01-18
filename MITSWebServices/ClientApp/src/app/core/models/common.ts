@@ -34,3 +34,23 @@ export interface AuthData {
   clientKey: string;
   apiLoginID: string;
 }
+
+export interface GraphQLProcessRegistrationResponse {
+  data: Data;
+  errors: GraphQlError[]
+}
+
+export interface Data {
+  processRegistration: ProcessRegistration
+}
+
+export interface ProcessRegistration {
+  qrCode: string;
+  eventRegistrationId: number;
+}
+
+export interface GraphQlError {
+  locations: any[];
+  message: string;
+  path: any[]
+}

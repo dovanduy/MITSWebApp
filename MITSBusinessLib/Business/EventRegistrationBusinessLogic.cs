@@ -47,6 +47,22 @@ namespace MITSBusinessLib.Business
                 Console.WriteLine("Audit was not created");
             }
 
+            bool isFreeEvent = string.IsNullOrEmpty(newRegistration.DataDescriptor) &&
+                               string.IsNullOrEmpty(newRegistration.DataValue) &&
+                               !string.IsNullOrEmpty(newRegistration.RegistrationCode);
+
+            var registrationTypeDetails =
+                await _eventsRepository.GetEventTypeById(newRegistration.RegistrationTypeId);
+
+            if (!newRegistration.RegistrationCode.IsEmpty())
+            {
+                if (newRegistration.RegistrationCode != registrationTypeDetails.RegistrationCode)
+                {
+                    throw new ExecutionError("Invalid Registration Code");
+                }
+            }
+
+
             //Retrieve Contact from WildApricot
             //Create Contact if needed
             var contact = await _waRepo.GetContact(newRegistration.Email) ?? await _waRepo.CreateContact(newRegistration);
@@ -58,84 +74,96 @@ namespace MITSBusinessLib.Business
             var eventRegistrationId = await _waRepo.AddEventRegistration(newRegistration, contact.Id);
             await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit, $"Event Registration Created - {eventRegistrationId}");
 
-            //Create Invoice
+            
 
-            var invoiceId = await _waRepo.GenerateEventRegistrationInvoice(eventRegistrationId);
-            await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit, $"Event Invoice Created - {invoiceId}");
+            
 
-            //Process Payment... What happens if the payment fails? Will the user be able to register again? What happens to their other event registration?
 
-            var registrationTypeDetails = await _eventsRepository.GetEventTypeById(newRegistration.RegistrationTypeId);
-
-            var processTransaction = new ProcessTransaction
+            if (!isFreeEvent)
             {
-                CreateTransactionRequest = new CreateTransactionRequest
-                {
-                    MerchantAuthentication = new MerchantAuthentication
-                    {
-                        Name = _name,
-                        TransactionKey = _transactionKey
-                    },
-                    TransactionRequest = new TransactionRequest
-                    {
-                        TransactionType = "authCaptureTransaction",
-                        Amount = registrationTypeDetails.BasePrice.ToString(CultureInfo.InvariantCulture),
-                        Payment = new Payment
-                        {
-                            OpaqueData = new OpaqueData
-                            {
-                                DataDescriptor = newRegistration.DataDescriptor,
-                                DataValue = newRegistration.DataValue
-                            }
-                        },
-                        Order = new Order
-                        {
-                            InvoiceNumber = $"{invoiceId}",
-                            Description = $"Registration for {registrationTypeDetails.Name}"
+                //Create Invoice
 
-                        },
-                        LineItems = new LineItems
+                var invoiceId = await _waRepo.GenerateEventRegistrationInvoice(eventRegistrationId);
+                await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit,
+                    $"Event Invoice Created - {invoiceId}");
+
+                //Process Payment... What happens if the payment fails? Will the user be able to register again? What happens to their other event registration?
+
+                
+
+                var processTransaction = new ProcessTransaction
+                {
+                    CreateTransactionRequest = new CreateTransactionRequest
+                    {
+                        MerchantAuthentication = new MerchantAuthentication
                         {
-                            LineItem = new LineItem
+                            Name = _name,
+                            TransactionKey = _transactionKey
+                        },
+                        TransactionRequest = new TransactionRequest
+                        {
+                            TransactionType = "authCaptureTransaction",
+                            Amount = registrationTypeDetails.BasePrice.ToString(CultureInfo.InvariantCulture),
+                            Payment = new Payment
                             {
-                                ItemId = $"{invoiceId}",
-                                Name = $"Invoice #{invoiceId}",
-                                Description = $"Registration for {registrationTypeDetails.Name}",
-                                Quantity = "1",
-                                UnitPrice = registrationTypeDetails.BasePrice.ToString(CultureInfo.InvariantCulture)
+                                OpaqueData = new OpaqueData
+                                {
+                                    DataDescriptor = newRegistration.DataDescriptor,
+                                    DataValue = newRegistration.DataValue
+                                }
+                            },
+                            Order = new Order
+                            {
+                                InvoiceNumber = $"{invoiceId}",
+                                Description = $"Registration for {registrationTypeDetails.Name}"
+
+                            },
+                            LineItems = new LineItems
+                            {
+                                LineItem = new LineItem
+                                {
+                                    ItemId = $"{invoiceId}",
+                                    Name = $"Invoice #{invoiceId}",
+                                    Description = $"Registration for {registrationTypeDetails.Name}",
+                                    Quantity = "1",
+                                    UnitPrice = registrationTypeDetails.BasePrice.ToString(CultureInfo.InvariantCulture)
+                                }
                             }
                         }
                     }
-                }
-            };
+                };
 
-            var transactionResponse = await AuthorizeOps.CreateTransaction(processTransaction);
+                var transactionResponse = await AuthorizeOps.CreateTransaction(processTransaction);
 
-            var transactionResponseContent = await transactionResponse.Content.ReadAsStringAsync();
+                var transactionResponseContent = await transactionResponse.Content.ReadAsStringAsync();
 
-            var transactionResponseResult =
-                Newtonsoft.Json.JsonConvert.DeserializeObject<CreateTransactionResponse>(transactionResponseContent);
+                var transactionResponseResult =
+                    Newtonsoft.Json.JsonConvert
+                        .DeserializeObject<CreateTransactionResponse>(transactionResponseContent);
 
-            //handle all the errors in the transactionResponseresult
+                //handle all the errors in the transactionResponseresult
 
-            if (transactionResponseResult != null)
-            {
-                if (transactionResponseResult.TransactionResponse.Messages != null)
+                if (transactionResponseResult != null)
                 {
-                    await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit, "Event Payment Processed");
-                    Console.WriteLine("The transaction was successful");
+                    if (transactionResponseResult.TransactionResponse.Messages != null)
+                    {
+                        await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit,
+                            "Event Payment Processed");
+                        Console.WriteLine("The transaction was successful");
+                    }
                 }
-            }
-            else
-            {
-                //throw error
+                else
+                {
+                    //throw error
+                }
+
+                //Create payment for invoice
+                var paymentId = await _waRepo.MarkInvoiceAsPaid(registrationTypeDetails, invoiceId, contact.Id);
+                await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit,
+                    $"Invoice Marked as Paid - {paymentId}");
             }
 
-            //Create payment for invoice
-            var paymentId = await _waRepo.MarkInvoiceAsPaid(registrationTypeDetails, invoiceId, contact.Id);
-            await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit, $"Invoice Marked as Paid - {paymentId}");
 
-          
             //Generate HTML Ticket/QR Code and store on server in WWWRoot           
             var registrantGuid = TicketOps.GenerateTicket(eventRegistrationId);
 

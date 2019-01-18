@@ -33,13 +33,15 @@ export interface RegistrationInput {
 
   lastName: string;
 
-  title: string;
+  organization: string;
 
   email: string;
 
   memberId?: string | null;
 
   memberExpirationDate?: string | null;
+
+  registrationCode?: string | null;
 
   isLifeMember?: boolean | null;
 

@@ -38,7 +38,7 @@
         <h2 style="margin-top: 15px;">{{ type.basePrice | currency }}</h2>
         <div style="padding-right: 10px; padding-left: 10px">-</div>
         <button
-          (click)="register(type, mainEvent?.mainEventId)"
+          (click)="registerMain(type, mainEvent?.mainEventId)"
           style="padding-left: 10px;"
           [disabled]="!type.isEnabled"
           mat-stroked-button
@@ -68,7 +68,7 @@
         <h2 style="margin-top: 15px;">{{ type.basePrice | currency }}</h2>
         <div style="padding-right: 10px; padding-left: 10px">-</div>
         <button
-          (click)="register(type, golfEvent?.mainEventId)"
+          (click)="registerGolf(type, golfEvent?.mainEventId)"
           style="padding-left: 10px;"
           [disabled]="!type.isEnabled"
           mat-stroked-button
@@ -80,8 +80,38 @@
       </mat-list-item>
     </mat-list>
   </div>
-  <div class="golf_reg" fxLayout="column">Golf registration list</div>
-  <div class="luncheon_reg">Luncheon</div>
+ 
+  <h1>{{ (luncheonEvent?.waEvent)[0]?.name }}</h1>
+
+  <div>
+    <p
+      style="padding-left: 20px; padding-right: 20px;"
+      innerHtml="{{ (luncheonEvent?.waEvent)[0]?.description }}"
+    ></p>
+    <mat-list style="background-color: white;">
+      <mat-list-item
+        [class.disabled]="!type.isEnabled"
+        *ngFor="let type of (luncheonEvent?.waEvent)[0]?.types"
+      >
+        <h3 matLine>{{ type.name }}</h3>
+
+        <h5 matLine>{{ type.description }}</h5>
+        <div fxFlex></div>
+        <h2 style="margin-top: 15px;">{{ type.basePrice | currency }}</h2>
+        <div style="padding-right: 10px; padding-left: 10px">-</div>
+        <button
+          (click)="registerLuncheon(type, luncheonEvent?.mainEventId)"
+          style="padding-left: 10px;"
+          [disabled]="!type.isEnabled"
+          mat-stroked-button
+        >
+          Register
+        </button>
+
+        <mat-divider></mat-divider>
+      </mat-list-item>
+    </mat-list>
+  </div>
 </div>
 
 

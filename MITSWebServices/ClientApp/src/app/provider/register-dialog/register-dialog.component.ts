@@ -1,8 +1,9 @@
-import { Component, OnInit, Inject, ViewChild } from "@angular/core";
+import { Component, OnInit, Inject, ViewChild, OnDestroy } from "@angular/core";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { MatStepper } from "@angular/material/stepper";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { TdDialogService, TdLoadingService } from "@covalent/core";
+
 
 import {
   CreditCardValidator,
@@ -24,13 +25,15 @@ import {
   AuthorizeResponse
 } from "../../core/models";
 import { AllEvents } from "src/app/graphql/generated/graphql";
+import { Observable, Observer, of, zip, Subject } from "rxjs";
+import { takeUntil } from "rxjs/Operators";
 
 @Component({
   selector: "register-dialog",
   templateUrl: "./register-dialog.component.html",
   styleUrls: ["./register-dialog.component.scss"]
 })
-export class RegisterDialogComponent implements OnInit {
+export class RegisterDialogComponent implements OnInit, OnDestroy {
   constructor(
     private dialogRef: MatDialogRef<RegisterDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -56,6 +59,9 @@ export class RegisterDialogComponent implements OnInit {
   codeRequired: boolean;
   qrCode: string;
   registrationComplete: boolean = false;
+  tuesdayRegistration$: Observable<any>;
+  mainRegistration$: Observable<any>;
+  ngUnsubscribe: Subject<any> = new Subject<any>();
 
   get udForm() {
     return this.userDetailsForm.controls;
@@ -80,8 +86,21 @@ export class RegisterDialogComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   ngOnInit() {
     console.log(this.data);
+
+    // zip(this.mainRegistration$, this.tuesdayRegistration$)
+    // .pipe(takeUntil(this.ngUnsubscribe))
+    // .subscribe(result => {
+    //   this.tdLoading.resolve('overLayForm');
+    //   console.log(result);
+    // });
+  
 
     this.dialogRef.backdropClick().subscribe(data => {
       if (!this.isProcessingRegistration) {
@@ -113,7 +132,7 @@ export class RegisterDialogComponent implements OnInit {
       firstName: ["", Validators.required],
       lastName: ["", Validators.required],
       email: ["", [Validators.required, Validators.email]],
-      title: ["", Validators.required]
+      organization: ["", Validators.required]
     });
     this.afceaDetailsForm = this._formBuilder.group({
       memberId: [""],
@@ -142,67 +161,47 @@ export class RegisterDialogComponent implements OnInit {
     this.isAddingTuesdayLuncheon = !this.isAddingTuesdayLuncheon;
   }
 
+  
+
   processRegistration(): void {
     //transfer this to an environment variable
     this.tdLoading.register("overLayForm");
     this.isProcessingRegistration = true;
-    
-    let authData: AuthData = {
-      clientKey: environment.clientKey,
-      apiLoginID: environment.apiLoginID
-    };
 
-    var ccNumber = this.paymentDetailsForm.controls.cardNumber.value;
-    var ccCcv = this.paymentDetailsForm.controls.cardCode.value;
-    var ccDetails = this.paymentDetailsForm.controls.expirationDate.value.split(
-      "/"
-    );
-    var ccMonth = ccDetails[0].trim();
-    var ccYear = ccDetails[1].trim();
-    if (ccYear.length > 2) {
-      ccYear = ccYear.substring(2);
+    
+    
+
+    //If this is a Government Registration don't process a credit card
+    if (this.isFree) {
+
+      of(this.mainRegistration$);
+
+      var newFreeRegistration = this.createNewFreeRegistration()
+      console.log(newFreeRegistration);
+      //this.mainRegistration$ = this.sendRegistrationToServer(newFreeRegistration);
+    } 
+    
+    else {
+      //var secureData = this.createSecureData();
+      if (this.isAddingTuesdayLuncheon) {
+        //Accept.dispatchData(secureData, this.responseTuesdayHandler.bind(this));
+      }
+      //.bind(this) allows the use of this in the response handler function.
+      //Accept.dispatchData(secureData, this.responseMainHandler.bind(this));
     }
 
-    // let cardData: CardData = {
-    //   cardNumber: "5424000000000015",
-    //   month: "01",
-    //   year: "19",
-    //   cardCode: "454"
-    // };
-
-    let cardData: CardData = {
-      cardNumber: ccNumber,
-      month: ccMonth,
-      year: ccYear,
-      cardCode: ccCcv
-    };
-
-    let secureData: SecureData = {
-      authData: authData,
-      cardData: cardData
-    };
-
-    //.bind(this) allows the use of this in the response handler function.
-    Accept.dispatchData(secureData, this.responseHandler.bind(this));
+    
   }
 
-  responseHandler(response: AuthorizeResponse) {
-    console.log(response);
-
-    if (response.messages.resultCode === "Error") {
-      var errorMessage = response.messages.message[0].text;
-      this.tdDialog.openAlert({
-        message: "Error processing Credit Card, please try again",
-        title: "Error"
-      });
-    }
-
-    var newRegistration: RegistrationInput = {
+  createNewTuesdayLuncheonRegistration(
+    response: AuthorizeResponse
+  ): RegistrationInput {
+    var newLuncheonRegistration: RegistrationInput = {
       dataDescriptor: response.opaqueData.dataDescriptor,
       dataValue: response.opaqueData.dataValue,
       firstName: this.userDetailsForm.controls.firstName.value,
       lastName: this.userDetailsForm.controls.lastName.value,
-      title: this.userDetailsForm.controls.title.value,
+      organization: this.userDetailsForm.controls.organization.value,
       email: this.userDetailsForm.controls.email.value,
       memberId: this.afceaDetailsForm.controls.memberId.value,
       memberExpirationDate: this.afceaDetailsForm.controls.memberExpireDate
@@ -213,17 +212,89 @@ export class RegisterDialogComponent implements OnInit {
       eventId: this.mainEventId
     };
 
-    console.log(newRegistration);
+    return newLuncheonRegistration;
+  }
 
-    // this.processRegistrationGQL
-    //   .mutate({
-    //     registration: newRegistration
-    //   })
-    //   .subscribe(result => {
-    //     this.registrationComplete = true;
-    //     console.log(result);
-    //     this.qrCode = result.data.processRegistration.qrCode;
-    //     console.log(this.qrCode);
-    //   });
+  createNewFreeRegistration(): RegistrationInput {
+    var newFreeRegistration: RegistrationInput = {
+      dataDescriptor: "",
+      dataValue: "",
+      registrationCode: this.registrationCodeForm.controls.registrationCode.value,
+      firstName: this.userDetailsForm.controls.firstName.value,
+      lastName: this.userDetailsForm.controls.lastName.value,
+      organization: this.userDetailsForm.controls.organization.value,
+      email: this.userDetailsForm.controls.email.value,
+      memberId: this.afceaDetailsForm.controls.memberId.value,
+      memberExpirationDate: this.afceaDetailsForm.controls.memberExpireDate
+        .value,
+      isLifeMember: this.afceaDetailsForm.controls.isLifeTimeMember.value || false,
+      isLocal: this.afceaDetailsForm.controls.isLocal.value || false,
+      registrationTypeId: this.eventRegistrationType.registrationTypeId,
+      eventId: this.mainEventId
+    };
+
+    return newFreeRegistration;
+  }
+
+  createNewMainRegistration(response: AuthorizeResponse): RegistrationInput {
+    var newMainRegistration: RegistrationInput = {
+      dataDescriptor: response.opaqueData.dataDescriptor,
+      dataValue: response.opaqueData.dataValue,
+      firstName: this.userDetailsForm.controls.firstName.value,
+      lastName: this.userDetailsForm.controls.lastName.value,
+      organization: this.userDetailsForm.controls.organization.value,
+      email: this.userDetailsForm.controls.email.value,
+      memberId: this.afceaDetailsForm.controls.memberId.value,
+      memberExpirationDate: this.afceaDetailsForm.controls.memberExpireDate
+        .value,
+      isLifeMember: this.afceaDetailsForm.controls.isLifeTimeMember.value,
+      isLocal: this.afceaDetailsForm.controls.isLocal.value,
+      registrationTypeId: this.eventRegistrationType.registrationTypeId,
+      eventId: this.mainEventId
+    };
+
+    return newMainRegistration;
+  }
+
+ 
+
+  responseTuesdayHandler(response: AuthorizeResponse) {
+    console.log('Tuesday Authorize Response');
+    console.log(response);
+
+    if (response.messages.resultCode === "Error") {
+      var errorMessage = response.messages.message[0].text;
+      this.tdDialog.openAlert({
+        message: "Error processing Credit Card, please try again",
+        title: "Error"
+      });
+    } else {
+      
+      var newTuesdayRegistration = this.createNewTuesdayLuncheonRegistration(response);
+      //this.tuesdayRegistration$ = this.sendRegistrationToServer(newTuesdayRegistration);
+      //var secureData = this.createSecureData();
+      //Accept.dispatchData(secureData, this.responseMainHandler.bind(this));
+      
+    }
+  }
+
+  responseMainHandler(response: AuthorizeResponse) {
+    console.log('Main authorize response');
+    console.log(response);
+
+    if (response.messages.resultCode === "Error") {
+      var errorMessage = response.messages.message[0].text;
+      this.tdDialog.openAlert({
+        message: "Error processing Credit Card, please try again",
+        title: "Error"
+      });
+    }
+    if (!this.isAddingTuesdayLuncheon) {
+      of(this.tuesdayRegistration$);
+    }
+
+    var newMainRegistration = this.createNewMainRegistration(response);
+    //this.mainRegistration$ = this.sendRegistrationToServer(newMainRegistration);
+    
   }
 }

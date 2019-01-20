@@ -7,10 +7,13 @@ import {
   CreditCard
 } from "angular-cc-library";
 
+
+declare var Accept: any;
+
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { TdDialogService, TdLoadingService } from "@covalent/core";
 import { RegisterService } from "../services/register.service";
-import { GraphQLProcessRegistrationResponse } from "../../core/models";
+import { GraphQLProcessRegistrationResponse, AuthorizeResponse } from "../../core/models";
 
 @Component({
   selector: 'app-industry-register-dialog',
@@ -25,11 +28,12 @@ export class IndustryRegisterDialogComponent implements OnInit {
     private tdDialog: TdDialogService,
     private tdLoading: TdLoadingService,
     private registerService: RegisterService) {
-      dialogRef.disableClose = true;
-     }
+    dialogRef.disableClose = true;
+  }
 
   userDetailsForm: FormGroup;
   paymentDetailsForm: FormGroup;
+  afceaDetailsForm: FormGroup;
   registrationComplete: boolean = false;
   isProcessingRegistration: boolean = false;
   qrCode: string;
@@ -92,46 +96,91 @@ export class IndustryRegisterDialogComponent implements OnInit {
     this.paymentDetailsForm = this.registerService.createPaymentDetailsFormGroup();
     console.log(this.paymentDetailsForm);
 
+    if (this.data.isAfcean) {
+      this.afceaDetailsForm = this.registerService.createAfceaDetailsFormGroup();
+    }
+
   }
 
-  processRegistration() {
+  dispatchCCData(secureData): void {
+    Accept.dispatchData(secureData, this.responseCCHandler.bind(this));
+  }
+
+  responseCCHandler(response: AuthorizeResponse): void {
+    console.log(response);
+
+    if (response.messages.resultCode === "Error") {
+      var errorMessage = response.messages.message[0].text;
+      this.tdDialog.openAlert({
+        message: "Error processing Credit Card, please try again",
+        title: "Error"
+      });
+    }
+
+    this.finishRegistration(response);
+
+  }
+
+  startRegistration() {
     this.tdLoading.register("overLayForm");
     this.isProcessingRegistration = true;
 
-    var secureDate = this.registerService.createSecureData(this.paymentDetailsForm);
-    var ccAuthData = this.registerService.dispatchCCData(secureDate)
+    var secureData = this.registerService.createSecureData(this.paymentDetailsForm);
 
-    var newReg = this.registerService.createNewPaymentRegistration(
-      ccAuthData,
-      this.userDetailsForm,
-      this.data.eventType,
-      this.data.mainEventId
-    );
+    this.dispatchCCData(secureData);
+
+
+  }
+
+  finishRegistration(ccAuthData: AuthorizeResponse): void {
+
+    var newReg = {};
+
+
+
+    if (this.data.isAfcean) {
+      newReg = this.registerService.createNewPaymentAfceanRegistration(
+        ccAuthData,
+        this.userDetailsForm,
+        this.data.eventType,
+        this.data.mainEventId,
+        this.afceaDetailsForm
+      )
+
+    } else {
+      newReg = this.registerService.createNewPaymentRegistration(
+        ccAuthData,
+        this.userDetailsForm,
+        this.data.eventType,
+        this.data.mainEventId
+      );
+    }
 
     console.log(newReg);
+    this.tdLoading.resolve('overLayForm');
 
-  //   this.registerService
-  //     .sendRegistrationToServer(newReg)
-  //     .subscribe((result: GraphQLProcessRegistrationResponse) => {
-  //       console.log(result);
-  //       this.tdLoading.resolve("overLayForm");
-  //       this.isProcessingRegistration = false;
+    //   this.registerService
+    //     .sendRegistrationToServer(newReg)
+    //     .subscribe((result: GraphQLProcessRegistrationResponse) => {
+    //       console.log(result);
+    //       this.tdLoading.resolve("overLayForm");
+    //       this.isProcessingRegistration = false;
 
-  //       if (result.errors === undefined) {
-  //         this.qrCode = result.data.processRegistration.qrCode;
-  //         this.eventRegistrationId =
-  //           result.data.processRegistration.eventRegistrationId;
+    //       if (result.errors === undefined) {
+    //         this.qrCode = result.data.processRegistration.qrCode;
+    //         this.eventRegistrationId =
+    //           result.data.processRegistration.eventRegistrationId;
 
-  //         this.registrationComplete = true;
-  //       } else {
-  //         console.log(result.errors[0].message);
-  //         var message = result.errors[0].message;
-  //         this.tdDialog.openAlert({
-  //           title: "Sorry, there was a problem processing your registration.",
-  //           message: message
-  //         });
-  //       }
-  //     });
+    //         this.registrationComplete = true;
+    //       } else {
+    //         console.log(result.errors[0].message);
+    //         var message = result.errors[0].message;
+    //         this.tdDialog.openAlert({
+    //           title: "Sorry, there was a problem processing your registration.",
+    //           message: message
+    //         });
+    //       }
+    //     });
   }
 
 }

@@ -60,6 +60,56 @@
           <div><button mat-stroked-button matStepperNext>Next</button></div>
         </form>
       </mat-step>
+      <mat-step [stepControl]="afceaDetailsForm" *ngIf="data.isAfcean">
+        <form [formGroup]="afceaDetailsForm">
+          <ng-template matStepLabel>Your AFCEA Details</ng-template>
+          <div fxLayout="row" fxLayoutGap="10px">
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="AFCEA Member ID#"
+                formControlName="memberId"
+                required
+              />
+            </mat-form-field>
+            <mat-form-field>
+              <input
+                formControlName="memberExpireDate"
+                matInput
+                [matDatepicker]="myDatepicker"
+                placeholder="AFCEA Expiration Date"
+                required
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="myDatepicker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #myDatepicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div fxLayout="column" fxLayoutGap="5px">
+            <mat-checkbox
+              id="isLifeTimeMember"
+              formControlName="isLifeTimeMember"
+              >AFCEA Lifetime Member</mat-checkbox
+            >
+
+            <mat-checkbox formControlName="isLocal">Local</mat-checkbox>
+          </div>
+
+          <div fxLayout="row" fxLayoutGap="2px" style="padding-top: 5px;">
+            <button mat-stroked-button matStepperPrevious>Back</button>
+            <button
+              *ngIf="!isFree || codeRequired || !isAddingTuesdayLuncheon"
+              color="primary"
+              mat-stroked-button
+              matStepperNext
+            >
+              Next
+            </button>
+          </div>
+        </form>
+      </mat-step>
       <mat-step [stepControl]="paymentDetailsForm">
         <form [formGroup]="paymentDetailsForm">
           <ng-template matStepLabel>Payment</ng-template>
@@ -133,7 +183,7 @@
               [disabled]="!paymentDetailsForm.valid"
               mat-raised-button
               color="primary"
-              (click)="processRegistration()"
+              (click)="startRegistration()"
             >
               Register
             </button>

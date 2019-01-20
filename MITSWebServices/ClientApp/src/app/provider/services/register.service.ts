@@ -7,7 +7,7 @@ import {
   CreditCard
 } from "angular-cc-library";
 
-declare var Accept: any;
+
 import {
   AllEvents,
   ProcessRegistrationGQL,
@@ -74,31 +74,9 @@ export class RegisterService {
     return this.processRegistrationGQL.mutate({
       registration: registration
     });
-    //     .subscribe(result => {
-    //       this.registrationComplete = true;
-    //       console.log(result);
-    //       this.qrCode = result.data.processRegistration.qrCode;
-    //       console.log(this.qrCode);
-    //     });
   }
 
-  dispatchCCData(secureData): AuthorizeResponse {
-   return Accept.dispatchData(secureData, this.responseCCHandler.bind(this));
-  }
-
-  responseCCHandler(response: AuthorizeResponse): AuthorizeResponse {
-    console.log(response);
-
-    if (response.messages.resultCode === "Error") {
-      var errorMessage = response.messages.message[0].text;
-      this.tdDialog.openAlert({
-        message: "Error processing Credit Card, please try again",
-        title: "Error"
-      });
-    }
-
-    return response;
-  }
+ 
 
   createUserDetailsFormGroup(): FormGroup {
     return this.formBuilder.group({
@@ -111,8 +89,8 @@ export class RegisterService {
 
   createAfceaDetailsFormGroup(): FormGroup {
     return this.formBuilder.group({
-      memberId: [""],
-      memberExpireDate: [""],
+      memberId: ["", Validators.required],
+      memberExpireDate: ["", Validators.required],
       isLifeTimeMember: [""],
       isLocal: [""]
     });
@@ -179,12 +157,12 @@ export class RegisterService {
     return newFreeRegistration;
   }
 
-  createNewPaymentRegistration(
+  createNewPaymentAfceanRegistration(
     response: AuthorizeResponse,
     userDetailsForm: FormGroup,
     eventRegistrationType: AllEvents.Types,
     mainEventId: number,
-    afceaDetailsForm?: FormGroup,
+    afceaDetailsForm: FormGroup,
   ): RegistrationInput {
     var newMainRegistration: RegistrationInput = {
       dataDescriptor: response.opaqueData.dataDescriptor,
@@ -195,8 +173,32 @@ export class RegisterService {
       email: userDetailsForm.controls.email.value,
       memberId: afceaDetailsForm.controls.memberId.value,
       memberExpirationDate: afceaDetailsForm.controls.memberExpireDate.value,
-      isLifeMember: afceaDetailsForm.controls.isLifeTimeMember.value,
-      isLocal: afceaDetailsForm.controls.isLocal.value,
+      isLifeMember: afceaDetailsForm.controls.isLifeTimeMember.value || false,
+      isLocal: afceaDetailsForm.controls.isLocal.value || false,
+      registrationTypeId: eventRegistrationType.registrationTypeId,
+      eventId: mainEventId
+    };
+
+    return newMainRegistration;
+  }
+
+  createNewPaymentRegistration(
+    response: AuthorizeResponse,
+    userDetailsForm: FormGroup,
+    eventRegistrationType: AllEvents.Types,
+    mainEventId: number,
+  ): RegistrationInput {
+    var newMainRegistration: RegistrationInput = {
+      dataDescriptor: response.opaqueData.dataDescriptor,
+      dataValue: response.opaqueData.dataValue,
+      firstName: userDetailsForm.controls.firstName.value,
+      lastName: userDetailsForm.controls.lastName.value,
+      organization: userDetailsForm.controls.organization.value,
+      email: userDetailsForm.controls.email.value,
+      memberId: "",
+      memberExpirationDate: "",
+      isLifeMember: false,
+      isLocal: false,
       registrationTypeId: eventRegistrationType.registrationTypeId,
       eventId: mainEventId
     };

@@ -82,8 +82,8 @@ export class RegisterService {
     //     });
   }
 
-  dispatchCCData(secureData) {
-    Accept.dispatchData(secureData, this.responseCCHandler.bind(this));
+  dispatchCCData(secureData): AuthorizeResponse {
+   return Accept.dispatchData(secureData, this.responseCCHandler.bind(this));
   }
 
   responseCCHandler(response: AuthorizeResponse): AuthorizeResponse {
@@ -182,9 +182,9 @@ export class RegisterService {
   createNewPaymentRegistration(
     response: AuthorizeResponse,
     userDetailsForm: FormGroup,
-    afceaDetailsForm: FormGroup,
     eventRegistrationType: AllEvents.Types,
-    mainEventId: number
+    mainEventId: number,
+    afceaDetailsForm?: FormGroup,
   ): RegistrationInput {
     var newMainRegistration: RegistrationInput = {
       dataDescriptor: response.opaqueData.dataDescriptor,

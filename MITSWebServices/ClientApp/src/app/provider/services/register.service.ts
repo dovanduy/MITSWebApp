@@ -128,7 +128,6 @@ export class RegisterService {
   createNewTuesdayLuncheonRegistration(
     response: AuthorizeResponse,
     userDetailsForm: FormGroup,
-    afceaDetailsForm: FormGroup,
     eventRegistrationType: AllEvents.Types,
     mainEventId: number
   ): RegistrationInput {
@@ -139,10 +138,6 @@ export class RegisterService {
       lastName: userDetailsForm.controls.lastName.value,
       organization: userDetailsForm.controls.organization.value,
       email: userDetailsForm.controls.email.value,
-      memberId: afceaDetailsForm.controls.memberId.value,
-      memberExpirationDate: afceaDetailsForm.controls.memberExpireDate.value,
-      isLifeMember: afceaDetailsForm.controls.isLifeTimeMember.value,
-      isLocal: afceaDetailsForm.controls.isLocal.value,
       registrationTypeId: eventRegistrationType.registrationTypeId,
       eventId: mainEventId
     };
@@ -156,7 +151,7 @@ export class RegisterService {
     eventRegistrationType: AllEvents.Types,
     mainEventId: number
   ): RegistrationInput {
-    var newFreeRegistration: RegistrationInput = {
+    var newCommiteeRegistration: RegistrationInput = {
       dataDescriptor: "",
       dataValue: "",
       registrationCode: registrationCodeForm.controls.registrationCode.value,
@@ -168,7 +163,30 @@ export class RegisterService {
       eventId: mainEventId
     };
 
-    return newFreeRegistration;
+    return newCommiteeRegistration;
+  }
+
+  createNewGovernmentRegistration(
+    userDetailsForm: FormGroup,
+    eventRegistrationType: AllEvents.Types,
+    mainEventId: number,
+    afceaDetailsForm: FormGroup
+  ): RegistrationInput {
+    var newGovernmentRegistration: RegistrationInput = {
+      dataDescriptor: "",
+      dataValue: "",
+      firstName: userDetailsForm.controls.firstName.value,
+      lastName: userDetailsForm.controls.lastName.value,
+      organization: userDetailsForm.controls.organization.value,
+      email: userDetailsForm.controls.email.value,
+      memberId: afceaDetailsForm.controls.memberId.value || "",
+      memberExpirationDate: afceaDetailsForm.controls.memberExpireDate.value.toString() || "",
+      isLifeMember: afceaDetailsForm.controls.isLifeTimeMember.value || false,
+      registrationTypeId: eventRegistrationType.registrationTypeId,
+      eventId: mainEventId
+    };
+
+    return newGovernmentRegistration;
   }
 
   createNewPaymentAfceanRegistration(

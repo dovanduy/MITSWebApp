@@ -47,9 +47,8 @@ namespace MITSBusinessLib.Business
                 Console.WriteLine("Audit was not created");
             }
 
-            bool isFreeEvent = string.IsNullOrEmpty(newRegistration.DataDescriptor) &&
-                               string.IsNullOrEmpty(newRegistration.DataValue) &&
-                               !string.IsNullOrEmpty(newRegistration.RegistrationCode);
+            bool isPaidEvent = !string.IsNullOrEmpty(newRegistration.DataDescriptor) &&
+                               !string.IsNullOrEmpty(newRegistration.DataValue);
 
             var registrationTypeDetails =
                 await _eventsRepository.GetEventTypeById(newRegistration.RegistrationTypeId);
@@ -73,7 +72,7 @@ namespace MITSBusinessLib.Business
             var eventRegistrationId = await _waRepo.AddEventRegistration(newRegistration, contact.Id);
             await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit, $"Event Registration Created - {eventRegistrationId}");
 
-            if (!isFreeEvent)
+            if (isPaidEvent)
             {
                 //Create Invoice
 

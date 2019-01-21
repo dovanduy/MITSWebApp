@@ -68,7 +68,7 @@
           <div><button mat-stroked-button matStepperNext>Next</button></div>
         </form>
       </mat-step>
-      <mat-step [stepControl]="afceaDetailsForm" [optional]="true">
+      <mat-step [stepControl]="afceaDetailsForm" [optional]="!afceaDetailsForm.invalid">
         <form [formGroup]="afceaDetailsForm">
           <ng-template matStepLabel>Your AFCEA Details</ng-template>
           <div fxLayout="row" fxLayoutGap="10px">
@@ -106,7 +106,8 @@
 
           <div fxLayout="row" fxLayoutGap="2px" style="padding-top: 5px;">
             <button mat-stroked-button matStepperPrevious>Back</button>
-            <button color="primary" mat-stroked-button matStepperNext>
+            <button color="primary" mat-stroked-button matStepperNext
+            > 
               Next
             </button>
           </div>
@@ -132,6 +133,7 @@
             *ngIf="!isAddingLuncheon"
             color="primary"
             mat-raised-button
+            (click)="startRegistration()"
           >
             Register
           </button>
@@ -213,7 +215,7 @@
               [disabled]="!paymentDetailsForm.valid"
               mat-raised-button
               color="primary"
-              (click)="processRegistration()"
+              (click)="startTuesdayRegistration()"
             >
               Pay {{luncheonCost | currency}}
             </button>
@@ -232,4 +234,14 @@
     width="200px"
     src="http://localhost:50000/tickets/{{ qrCode }}/code.png"
   />
+</div>
+
+<div *ngIf="luncheonRegistrationComplete">
+    <h2>Event Registration Id - {{ luncheonEventId }}</h2>
+    <img
+      alt="Embedded QR Code"
+      height="200px"
+      width="200px"
+      src="http://localhost:50000/tickets/{{ luncheonQrCode }}/code.png"
+    />
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild } from "@angular/core";
+import { Component, OnInit, Inject, ViewChild, OnDestroy } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA, MatStepper } from "@angular/material";
 
 import {
@@ -17,13 +17,15 @@ import {
   AuthorizeResponse
 } from "../../core/models";
 import { RegistrationInput } from "src/app/graphql/generated/graphql";
+import { Observable, Subject, zip } from "rxjs";
+import { takeUntil } from "rxjs/Operators";
 
 @Component({
   selector: "app-government-register-dialog",
   templateUrl: "./government-register-dialog.component.html",
   styleUrls: ["./government-register-dialog.component.scss"]
 })
-export class GovernmentRegisterDialogComponent implements OnInit {
+export class GovernmentRegisterDialogComponent implements OnInit, OnDestroy {
   constructor(
     private dialogRef: MatDialogRef<GovernmentRegisterDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -39,11 +41,17 @@ export class GovernmentRegisterDialogComponent implements OnInit {
   afceaDetailsForm: FormGroup;
   paymentDetailsForm: FormGroup;
   registrationComplete: boolean = false;
+  luncheonRegistrationComplete: boolean = false;
   isProcessingRegistration: boolean = false;
+  afceaDetailsValid: boolean = true;
   isAddingLuncheon: boolean = false;
   qrCode: string;
   eventRegistrationId: number;
-
+  luncheonRegistationId: number;
+  luncheonQrCode: string;
+  mainRegistration$: Observable<GraphQLProcessRegistrationResponse>;
+  tuesdayRegistration$: Observable<GraphQLProcessRegistrationResponse>;
+  ngUnsubscribe: Subject<any> = new Subject<any>();
 
   luncheonName: string;
   luncheonEventId: number;
@@ -75,6 +83,12 @@ export class GovernmentRegisterDialogComponent implements OnInit {
         }
       }
     }
+  }
+
+  ngOnDestroy() {
+    //Clean up the drop subscription to prevent errors.
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   ngOnInit() {
@@ -109,26 +123,145 @@ export class GovernmentRegisterDialogComponent implements OnInit {
     this.luncheonDate = this.data.luncheonEvent.waEvent[0].startDate;
     this.luncheonCost = this.data.luncheonEvent.waEvent[0].types[0].basePrice;
     this.luncheonEventId = this.data.luncheonEvent.mainEventId;
-    
+
     console.log(this.luncheonName);
     console.log(this.luncheonDate);
     console.log(this.luncheonCost);
     console.log(this.luncheonEventId);
 
-
     this.userDetailsForm = this.registerService.createUserDetailsFormGroup();
     console.log(this.userDetailsForm);
-    this.afceaDetailsForm = this.registerService.createAfceaDetailsFormGroup(true);
+    this.afceaDetailsForm = this.registerService.createAfceaDetailsFormGroup(
+      true
+    );
     console.log(this.afceaDetailsForm);
     this.paymentDetailsForm = this.registerService.createPaymentDetailsFormGroup();
     console.log(this.paymentDetailsForm);
-    
-    
+
+    this.afceaDetailsForm.get("memberId").valueChanges.subscribe(data => {
+      console.log(data);
+      if (this.afceaDetailsForm.get("memberId").value == "") {
+        this.afceaDetailsForm.get("memberExpireDate").setValidators([]);
+        this.afceaDetailsForm.get("memberExpireDate").updateValueAndValidity();
+      } else {
+        this.afceaDetailsForm
+          .get("memberExpireDate")
+          .setValidators([Validators.required]);
+        this.afceaDetailsForm.get("memberExpireDate").updateValueAndValidity();
+      }
+    });
   }
 
   changeLuncheonOption(stepper: MatStepper) {
     this.isAddingLuncheon = !this.isAddingLuncheon;
   }
 
-  processRegistration() {}
+  startRegistration() {
+    console.log("Registration witout tuesday luncheon");
+    this.tdLoading.register("overLayForm");
+    this.isProcessingRegistration = true;
+    var newReg = this.registerService.createNewGovernmentRegistration(
+      this.userDetailsForm,
+      this.data.eventType,
+      this.data.mainEventId,
+      this.afceaDetailsForm
+    );
+
+    console.log(newReg);
+
+    this.registerService
+      .sendRegistrationToServer(newReg)
+      .subscribe((result: GraphQLProcessRegistrationResponse) => {
+        console.log(result);
+        this.tdLoading.resolve("overLayForm");
+        this.isProcessingRegistration = false;
+
+        if (result.errors === undefined) {
+          this.qrCode = result.data.processRegistration.qrCode;
+          this.eventRegistrationId =
+            result.data.processRegistration.eventRegistrationId;
+
+          this.registrationComplete = true;
+        } else {
+          console.log(result.errors[0].message);
+          var message = result.errors[0].message;
+          this.tdDialog.openAlert({
+            title: "Sorry, there was a problem processing your registration.",
+            message: message
+          });
+        }
+      });
+  }
+
+  startTuesdayRegistration() {
+    console.log("Registration with tuesdaey luncheon");
+    this.tdLoading.register("overLayForm");
+    this.isProcessingRegistration = true;
+    var newMainReg = this.registerService.createNewGovernmentRegistration(
+      this.userDetailsForm,
+      this.data.eventType,
+      this.data.mainEventId,
+      this.afceaDetailsForm
+    );
+
+    this.mainRegistration$ = this.registerService.sendRegistrationToServer(
+      newMainReg
+    );
+
+    var secureData = this.registerService.createSecureData(
+      this.paymentDetailsForm
+    );
+
+    this.dispatchCCData(secureData);
+  }
+
+  dispatchCCData(secureData): void {
+    Accept.dispatchData(secureData, this.responseCCHandler.bind(this));
+  }
+
+  responseCCHandler(response: AuthorizeResponse): void {
+    console.log(response);
+
+    if (response.messages.resultCode === "Error") {
+      var errorMessage = response.messages.message[0].text;
+      this.tdDialog.openAlert({
+        message: "Error processing Credit Card, please try again",
+        title: "Error"
+      });
+    }
+
+    this.finishTuesdayRegistration(response);
+  }
+
+  finishTuesdayRegistration(ccAuthData: AuthorizeResponse) {
+    var newTuesdayRegistration = this.registerService.createNewTuesdayLuncheonRegistration(
+      ccAuthData,
+      this.userDetailsForm,
+      this.data.luncheonEvent.waEvent[0].types[0],
+      this.luncheonEventId
+    );
+
+    this.tuesdayRegistration$ = this.registerService.sendRegistrationToServer(
+      newTuesdayRegistration
+    );
+
+    zip(this.mainRegistration$, this.tuesdayRegistration$)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((result: GraphQLProcessRegistrationResponse[]) => {
+        console.log(result);
+        this.tdLoading.resolve("overLayForm");
+        this.isProcessingRegistration = false;
+        this.registrationComplete = true;
+        this.luncheonRegistrationComplete = true;
+        this.eventRegistrationId =
+            result[0].data.processRegistration.eventRegistrationId;
+        this.qrCode = result[0].data.processRegistration.qrCode;
+
+        this.luncheonEventId =
+            result[1].data.processRegistration.eventRegistrationId;
+        this.luncheonQrCode = result[1].data.processRegistration.qrCode;
+
+
+      });
+  }
 }

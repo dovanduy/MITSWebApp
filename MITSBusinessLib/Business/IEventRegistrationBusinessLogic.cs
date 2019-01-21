@@ -11,5 +11,6 @@ namespace MITSBusinessLib.Business
     {
         Task<Registration> RegisterAttendee(Registration newRegistration);
         Task<CheckInAttendee> CheckInAttendee(CheckInAttendee attendee);
+        Task<Sponsor> RegisterSponsor(Sponsor newSponsorRegistration);
     }
 }

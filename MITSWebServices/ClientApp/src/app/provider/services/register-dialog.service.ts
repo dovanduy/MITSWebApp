@@ -6,6 +6,7 @@ import { RegisterDialogComponent } from "../register-dialog/register-dialog.comp
 import { CommitteeRegisterDialogComponent } from "../committee-register-dialog/committee-register-dialog.component";
 import { GovernmentRegisterDialogComponent } from "../government-register-dialog/government-register-dialog.component";
 import { IndustryRegisterDialogComponent } from "../industry-register-dialog/industry-register-dialog.component";
+import { SponsorRegisterDialogComponent } from '../sponsor-register-dialog/sponsor-register-dialog.component';
 
 import {
   AllEvents,
@@ -96,6 +97,23 @@ export class RegisterDialogService {
       })
       .afterClosed();
   }
+
+  openSponsorRegistrationDialog(
+    eventType: AllEvents.Types,
+    sponsorEventId: number
+  ): Observable<MatDialogRef<SponsorRegisterDialogComponent>> {
+    return this.dialog
+      .open(SponsorRegisterDialogComponent, {
+        height: "auto",
+        width: "500px",
+        data: {
+          eventType: eventType,
+          sponsorEventId: sponsorEventId,
+        }
+      })
+      .afterClosed();
+  }
+
 
   
   

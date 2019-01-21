@@ -9,6 +9,7 @@ namespace MITSBusinessLib.Repositories.Interfaces
     public interface IAuditRepository
     {
         Task<EventRegistrationAudit> CreateEventRegistrationAudit(Registration newEventRegistrationAudit);
+        Task<EventRegistrationAudit> CreateEventRegistrationAudit(Sponsor newEventRegistration);
         Task<EventRegistrationAudit> UpdateEventRegistrationAudit(EventRegistrationAudit eventRegistrationAudit,
             string status);
 

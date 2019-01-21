@@ -52,6 +52,24 @@ export interface RegistrationInput {
   eventId: number;
 }
 
+export interface SponsorInput {
+  dataDescriptor: string;
+
+  dataValue: string;
+
+  firstName: string;
+
+  lastName: string;
+
+  organization: string;
+
+  email: string;
+
+  registrationTypeId: number;
+
+  eventId: number;
+}
+
 /** The `Date` scalar type represents a year, month and day in accordance with the[ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard. */
 export type Date = any;
 
@@ -337,6 +355,24 @@ export namespace ProcessRegistration {
   };
 }
 
+export namespace ProcessSponsorRegistration {
+  export type Variables = {
+    sponsor: SponsorInput;
+  };
+
+  export type Mutation = {
+    __typename?: "Mutation";
+
+    processSponsorRegistration: ProcessSponsorRegistration | null;
+  };
+
+  export type ProcessSponsorRegistration = {
+    __typename?: "SponsorType";
+
+    eventRegistrationId: number;
+  };
+}
+
 export namespace UpdateSpeaker {
   export type Variables = {
     speaker: SpeakerInput;
@@ -559,6 +595,21 @@ export class ProcessRegistrationGQL extends Apollo.Mutation<
       processRegistration(registration: $registration) {
         eventRegistrationId
         qrCode
+      }
+    }
+  `;
+}
+@Injectable({
+  providedIn: "root"
+})
+export class ProcessSponsorRegistrationGQL extends Apollo.Mutation<
+  ProcessSponsorRegistration.Mutation,
+  ProcessSponsorRegistration.Variables
+> {
+  document: any = gql`
+    mutation ProcessSponsorRegistration($sponsor: SponsorInput!) {
+      processSponsorRegistration(sponsor: $sponsor) {
+        eventRegistrationId
       }
     }
   `;

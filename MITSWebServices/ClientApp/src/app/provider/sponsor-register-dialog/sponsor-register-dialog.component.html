@@ -1,0 +1,152 @@
+<div *ngIf="!registrationComplete">
+    <div *tdLoading="'overLayForm'; mode:'indeterminate'; type:'circle'; strategy:'overlay'; color:'accent'">
+      <div
+        style="border-bottom: 1px solid lightgrey;"
+        fxLayoutAlign="center center"
+      >
+        <h2>{{ data.eventType?.name }}</h2>
+      </div>
+  
+      <mat-vertical-stepper [linear]="true" #stepper>
+        <mat-step [stepControl]="userDetailsForm">
+          <form [formGroup]="userDetailsForm">
+            <ng-template matStepLabel>Your Details</ng-template>
+            <div
+              fxLayout="column"
+              fxLayoutAlign="space-between center"
+              fxLayoutGap="5px"
+            >
+              <div fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field>
+                  <input
+                    matInput
+                    placeholder="First Name"
+                    formControlName="firstName"
+                    required
+                  />
+                </mat-form-field>
+                <mat-form-field>
+                  <input
+                    matInput
+                    placeholder="Last name"
+                    formControlName="lastName"
+                    required
+                  />
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field>
+                  <input
+                    matInput
+                    placeholder="Organization"
+                    formControlName="organization"
+                    required
+                  />
+                </mat-form-field>
+                <mat-form-field>
+                  <input
+                    id="email"
+                    matInput
+                    placeholder="Email"
+                    formControlName="email"
+                    required
+                  />
+                  <mat-error *ngIf="udForm.email.errors?.email"
+                    >Please provide a valid email</mat-error
+                  >
+                </mat-form-field>
+              </div>
+            </div>
+            <div><button mat-stroked-button matStepperNext>Next</button></div>
+          </form>
+        </mat-step>
+        <mat-step [stepControl]="paymentDetailsForm">
+          <form [formGroup]="paymentDetailsForm">
+            <ng-template matStepLabel>Payment</ng-template>
+            <div fxLayout="column">
+              <mat-form-field>
+                <input
+                  id="cc-number"
+                  type="tel"
+                  autocomplete="cc-number"
+                  ccNumber
+                  matInput
+                  placeholder="Card Number"
+                  formControlName="cardNumber"
+                  required
+                />
+              </mat-form-field>
+              <div fxLayout="row" fxLayoutGap="5px">
+                <mat-form-field style="width: 100px">
+                  <input
+                    id="cc-exp-date"
+                    type="tel"
+                    autocomplete="cc-exp"
+                    ccExp
+                    matInput
+                    placeholder="mm/yyyy"
+                    formControlName="expirationDate"
+                    required
+                  />
+                </mat-form-field>
+                <div style="padding-right: 10px;"></div>
+  
+                <mat-form-field style="width: 50px">
+                  <input
+                    #cc
+                    id="cc-cvc"
+                    type="tel"
+                    autocomplete="off"
+                    ccCvc
+                    matInput
+                    placeholder="cvv"
+                    formControlName="cardCode"
+                    required
+                  />
+                </mat-form-field>
+                <div fxFlex></div>
+                <div>
+                  <img
+                    [class.deactivate]="
+                      cardBrand === 'mastercard' || cardBrand === 'amex'
+                    "
+                    src="../../../assets/icons8-visa-filled-48.png"
+                  />
+                  <img
+                    [class.deactivate]="
+                      cardBrand === 'visa' || cardBrand === 'amex'
+                    "
+                    src="../../../assets/icons8-mastercard-48.png"
+                  />
+                  <img
+                    [class.deactivate]="
+                      cardBrand === 'visa' || cardBrand === 'mastercard'
+                    "
+                    src="../../../assets/icons8-american-express-48.png"
+                  />
+                </div>
+              </div>
+            </div>
+            <div style="padding-top: 5px;" fxLayout="row" fxLayoutGap="2px">
+              <button mat-stroked-button matStepperPrevious>Back</button>
+              <button
+                [disabled]="!paymentDetailsForm.valid"
+                mat-raised-button
+                color="primary"
+                (click)="startRegistration()"
+              >
+                Pay {{eventCost | currency}}
+              </button>
+            </div>
+          </form>
+        </mat-step>
+  
+  
+      </mat-vertical-stepper>
+    </div>
+  </div>
+  
+  <div *ngIf="registrationComplete">
+    <h2>Event Registration Id - {{eventRegistrationId}}</h2>
+  </div>
+  

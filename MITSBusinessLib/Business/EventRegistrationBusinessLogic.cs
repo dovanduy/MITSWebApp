@@ -266,5 +266,184 @@ namespace MITSBusinessLib.Business
             return newCheckInAttendee;
         }
 
+        public async Task<Sponsor> RegisterSponsor(Sponsor newSponsorRegistration)
+        {
+            var eventRegistrationAudit = await _registrationRepo.CreateEventRegistrationAudit(newSponsorRegistration);
+
+            if (eventRegistrationAudit == null)
+            {
+                Console.WriteLine("Audit was not created");
+            }
+
+            var registrationTypeDetails =
+                await _eventsRepository.GetEventTypeById(newSponsorRegistration.RegistrationTypeId);
+
+
+            //Retrieve Contact from WildApricot
+            //Create Contact if needed
+            var contact = await _waRepo.GetContact(newSponsorRegistration.Email) ?? await _waRepo.CreateContact(new Registration
+            {
+                FirstName = newSponsorRegistration.FirstName,
+                LastName = newSponsorRegistration.LastName,
+                Email =  newSponsorRegistration.Email,
+                Organization =  newSponsorRegistration.Organization
+
+            });
+
+            await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit, $"Contact Created - {contact.Id}");
+
+            //Check if sponsor registration should be disabled
+
+
+
+
+
+            //Create Event Registration
+
+            var eventRegistrationId = await _waRepo.AddSponsorRegistration(newSponsorRegistration, contact.Id);
+            await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit, $"Event Registration Created - {eventRegistrationId}");
+
+            //Create Invoice
+
+            var invoiceId = await _waRepo.GenerateEventRegistrationInvoice(eventRegistrationId);
+            await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit,
+                $"Event Invoice Created - {invoiceId}");
+
+            //Process Payment... What happens if the payment fails? Will the user be able to register again? What happens to their other event registration?
+
+            var processTransaction = new ProcessTransaction
+            {
+                CreateTransactionRequest = new CreateTransactionRequest
+                {
+                    MerchantAuthentication = new MerchantAuthentication
+                    {
+                        Name = _name,
+                        TransactionKey = _transactionKey
+                    },
+                    TransactionRequest = new TransactionRequest
+                    {
+                        TransactionType = "authCaptureTransaction",
+                        Amount = registrationTypeDetails.BasePrice.ToString(CultureInfo.InvariantCulture),
+                        Payment = new Payment
+                        {
+                            OpaqueData = new OpaqueData
+                            {
+                                DataDescriptor = newSponsorRegistration.DataDescriptor,
+                                DataValue = newSponsorRegistration.DataValue
+                            }
+                        },
+                        Order = new Order
+                        {
+                            InvoiceNumber = $"{invoiceId}",
+                            Description = $"Registration for {registrationTypeDetails.Name}"
+
+                        },
+                        LineItems = new LineItems
+                        {
+                            LineItem = new LineItem
+                            {
+                                ItemId = $"{invoiceId}",
+                                Name = $"Invoice #{invoiceId}",
+                                Description = $"Registration for {registrationTypeDetails.Name}",
+                                Quantity = "1",
+                                UnitPrice = registrationTypeDetails.BasePrice.ToString(CultureInfo.InvariantCulture)
+                            }
+                        }
+                        //Use if we have Address Authentication turned on
+                        //,
+                        //BillTo = new BillTo
+                        //{
+                        //    FirstName = "Bob",
+                        //    LastName = "Anderson",
+                        //    Company = "Bob Anderson",
+                        //    Address = "35 Testing Rd.",
+                        //    City = "Montgomery",
+                        //    Country = "USA",
+                        //    State = "AL",
+                        //    //Can be used to generate errors in testing
+                        //    Zip = "46203"
+
+                        //}
+                    }
+                }
+            };
+
+            var transactionResponse = await AuthorizeOps.CreateTransaction(processTransaction);
+
+            var transactionResponseContent = await transactionResponse.Content.ReadAsStringAsync();
+
+            var transactionResponseResult =
+                Newtonsoft.Json.JsonConvert
+                    .DeserializeObject<CreateTransactionResponse>(transactionResponseContent);
+
+            //handle all the errors in the transactionResponseResult
+
+            if (transactionResponseResult != null)
+            {
+
+                if (transactionResponseResult.Messages.ResultCode == "Ok")
+                {
+                    if (transactionResponseResult.TransactionResponse.Messages != null)
+                    {
+                        await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit,
+                            "Event Payment Processed");
+                    }
+                    else
+                    {
+
+                        if (transactionResponseResult.TransactionResponse.Errors != null)
+                        {
+
+                            await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit,
+                                "Event Payment Failed " + transactionResponseResult.TransactionResponse.Errors[0].ErrorCode);
+
+                            if (!await _waRepo.DeleteEventRegistration(eventRegistrationId))
+                            {
+                                throw new ExecutionError(
+                                    "Transaction Failed and event Registration Cleanup Failed. Please contact our Help Desk to complete your registration");
+                            }
+
+                            throw new ExecutionError(transactionResponseResult.TransactionResponse.Errors[0].ErrorText);
+                        }
+
+
+                    }
+                }
+                else
+                {
+                    await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit,
+                        "Event Payment Failed " + transactionResponseResult.Messages.Message[0].Code);
+
+                    if (!await _waRepo.DeleteEventRegistration(eventRegistrationId))
+                    {
+                        throw new ExecutionError(
+                            "Transaction Failed and event Registration Cleanup Failed. Please contact our Help Desk to complete your registration");
+                    }
+
+                    if (transactionResponseResult.TransactionResponse != null && transactionResponseResult.TransactionResponse.Errors != null)
+                    {
+                        await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit,
+                            "Event Payment Failed " + transactionResponseResult.TransactionResponse.Errors[0].ErrorCode);
+                        throw new ExecutionError(transactionResponseResult.TransactionResponse.Errors[0].ErrorText);
+                    }
+
+
+                    throw new ExecutionError(transactionResponseResult.Messages.Message[0].Text);
+                }
+            }
+
+            //Create payment for invoice
+            var paymentId = await _waRepo.MarkInvoiceAsPaid(registrationTypeDetails, invoiceId, contact.Id);
+            await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit,
+                $"Invoice Marked as Paid - {paymentId}");
+
+            await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit, $"Registration Complete - {eventRegistrationId}");
+
+            //Return Event Registration Id and QR Code Bitmap
+            return new Sponsor()
+            {
+                EventRegistrationId = eventRegistrationId,
+            };
+        }
     }
 }

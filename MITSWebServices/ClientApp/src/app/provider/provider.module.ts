@@ -8,6 +8,7 @@ import { GovernmentRegisterDialogComponent } from "./government-register-dialog/
 import { IndustryRegisterDialogComponent } from "./industry-register-dialog/industry-register-dialog.component";
 import { RegisterDialogService } from "./services/register-dialog.service";
 import { RegisterService } from "./services/register.service";
+import { SponsorRegisterDialogComponent } from './sponsor-register-dialog/sponsor-register-dialog.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { RegisterService } from "./services/register.service";
     RegisterDialogComponent,
     CommitteeRegisterDialogComponent,
     GovernmentRegisterDialogComponent,
-    IndustryRegisterDialogComponent
+    IndustryRegisterDialogComponent,
+    SponsorRegisterDialogComponent
   ],
   imports: [SharedModule, ReactiveFormsModule],
   providers: [RegisterDialogService, RegisterService],
@@ -23,7 +25,8 @@ import { RegisterService } from "./services/register.service";
     RegisterDialogComponent,
     CommitteeRegisterDialogComponent,
     GovernmentRegisterDialogComponent,
-    IndustryRegisterDialogComponent
+    IndustryRegisterDialogComponent,
+    SponsorRegisterDialogComponent
   ]
 })
 export class ProviderModule {}

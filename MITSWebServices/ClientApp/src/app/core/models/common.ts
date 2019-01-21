@@ -35,13 +35,26 @@ export interface AuthData {
   apiLoginID: string;
 }
 
-export interface GraphQLProcessRegistrationResponse {
-  data: Data;
+export interface GraphQLProcessSponsorResponse {
+  data: SponsorData;
   errors: GraphQlError[]
 }
 
-export interface Data {
+export interface GraphQLProcessRegistrationResponse {
+  data: RegistrationData;
+  errors: GraphQlError[]
+}
+
+export interface RegistrationData {
   processRegistration: ProcessRegistration
+}
+
+export interface SponsorData {
+  processSponsorRegistration: ProcessSponsorRegistration
+}
+
+export interface ProcessSponsorRegistration {
+  eventRegistrationId: number;
 }
 
 export interface ProcessRegistration {

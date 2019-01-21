@@ -147,6 +147,7 @@ namespace MITSBusinessLib.Repositories
                 StartDate = eventDetailsResponse.StartDate,
                 EndDate = eventDetailsResponse.EndDate,
                 IsEnabled = eventDetailsResponse.RegistrationEnabled,
+                RegistrationsLimit = eventDetailsResponse.RegistrationsLimit ?? 0,
                 Event = eventAddedToDB,
                 WaRegistrationTypes = newRegistrationTypes
 
@@ -355,6 +356,89 @@ namespace MITSBusinessLib.Repositories
                         FieldName = "AFCEA Member ID#",
                         Value = newRegistration.MemberId,
                         SystemCode = "custom-10687532"
+                    }
+                },
+                Memo = "Event Registration Created by MITS Web App"
+
+            };
+
+            var contractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            };
+
+            var newRegistrationString = JsonConvert.SerializeObject(newRegistrationData, new JsonSerializerSettings
+            {
+                ContractResolver = contractResolver,
+            });
+
+            var encodedRegistration = new StringContent(newRegistrationString, Encoding.UTF8, "application/json");
+
+            var apiEventResource = $"accounts/{_accountId}/eventregistrations";
+            HttpResponseMessage response;
+            var token = await GetTokenAsync();
+
+            try
+            {
+                response = await WildApricotOps.PostRequest(apiEventResource, token, encodedRegistration);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception(e.Message);
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<EventRegistrationResponse>(content);
+
+            return result.Id;
+        }
+
+        public async Task<int> AddSponsorRegistration(Sponsor newSponsor, int contactId)
+        {
+            var newRegistrationData = new NewEventRegistration
+            {
+                Event = new WaEvent
+                {
+                    Id = newSponsor.EventId
+                },
+                Contact = new WaContact
+                {
+                    Id = contactId
+                },
+                RegistrationTypeId = newSponsor.RegistrationTypeId,
+                IsCheckedIn = false,
+                RegistrationFields = new List<RegistrationField>
+                {
+                    new RegistrationField
+                    {
+                        FieldName = "First name",
+                        Value = newSponsor.FirstName,
+                        SystemCode = "FirstName"
+                    },
+                    new RegistrationField
+                    {
+                        FieldName = "Last name",
+                        Value = newSponsor.LastName,
+                        SystemCode = "LastName"
+                    },
+                    new RegistrationField
+                    {
+                        FieldName = "Title",
+                        Value = newSponsor,
+                        SystemCode = "Title"
+                    },
+                    new RegistrationField
+                    {
+                        FieldName = "e-mail",
+                        Value = newSponsor.Email,
+                        SystemCode = "Email"
+                    },
+                    new RegistrationField
+                    {
+                        FieldName = "Registration Terms and Conditions",
+                        Value = true,
+                        SystemCode = "custom-10687529"
                     }
                 },
                 Memo = "Event Registration Created by MITS Web App"

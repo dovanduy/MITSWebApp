@@ -13,6 +13,7 @@ namespace MITSBusinessLib.Models
         public DateTime EndDate { get; set; }
         public string  Location { get; set; }
         public bool RegistrationEnabled { get; set; }
+        public int? RegistrationsLimit { get; set; }
         public EventDetailsResponse Details { get; set; }
   
     }

@@ -202,6 +202,8 @@ namespace MITSWebServices
             services.AddScoped<EventInputType>();
             services.AddScoped<RegistrationType>();
             services.AddScoped<RegistrationInputType>();
+            services.AddScoped<SponsorType>();
+            services.AddScoped<SponsorInputType>();
             services.AddScoped<CheckInAttendeeInputType>();
             services.AddScoped<CheckInAttendeeType>();
             services.AddScoped<DayType>();

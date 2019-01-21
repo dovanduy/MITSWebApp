@@ -35,6 +35,25 @@ namespace MITSBusinessLib.Repositories
             return newRegistrationAudit;
         }
 
+        public async Task<EventRegistrationAudit> CreateEventRegistrationAudit(Sponsor newEventRegistration)
+        {
+            var newRegistrationAudit = new EventRegistrationAudit
+            {
+                EventId = newEventRegistration.EventId.ToString(),
+                RegistrationTypeId = newEventRegistration.RegistrationTypeId.ToString(),
+                FirstName = newEventRegistration.FirstName,
+                LastName = newEventRegistration.LastName,
+                Email = newEventRegistration.Email,
+                Modified = DateTime.Now,
+                Status = "Starting"
+
+            };
+
+            await _context.AddAsync(newRegistrationAudit);
+            await _context.SaveChangesAsync();
+            return newRegistrationAudit;
+        }
+
         public async Task<EventRegistrationAudit> UpdateEventRegistrationAudit(
             EventRegistrationAudit eventRegistrationAudit, string status)
         {

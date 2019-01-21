@@ -1,0 +1,5 @@
+mutation ProcessSponsorRegistration($sponsor: SponsorInput!) {
+  processSponsorRegistration(sponsor: $sponsor) {
+    eventRegistrationId,
+  }
+}

@@ -36,6 +36,7 @@ namespace MITSBusinessLib.GraphQL
 
             #endregion
 
+
             #region Registration
 
             //mutation ProcessRegistration($registration: RegistrationInput!) {
@@ -76,6 +77,21 @@ namespace MITSBusinessLib.GraphQL
                     //{
                     //    EventRegistrationId = 324234,
                     //    QrCode = "324j2o3kj423ijd23n23ij923jd923jd2938jd2398du2398du2398dj2398"
+                    //};
+                });
+
+
+            Field<SponsorType, Sponsor>()
+                .Name("processSponsorRegistration")
+                .Argument<NonNullGraphType<SponsorInputType>>("sponsor",
+                    "Details to process a new registration")
+                .ResolveAsync(async context =>
+                {
+                    var newSponsorRegistration = context.GetArgument<Sponsor>("sponsor");
+                    return await eventRegistrationBusinessLogic.RegisterSponsor(newSponsorRegistration);
+                    //return new Sponsor()
+                    //{
+                    //    EventRegistrationId = 324234,
                     //};
                 });
 

@@ -29,6 +29,6 @@ export class SponsorsComponent implements OnInit {
   }
 
   register(type: AllEvents.Types, eventId: number) {
-   //this.provider.openRegisterDialog(type, eventId);
+   this.registerDialogService.openSponsorRegistrationDialog(type, eventId);
   }
 }

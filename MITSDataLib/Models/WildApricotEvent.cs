@@ -15,6 +15,7 @@ namespace MITSDataLib.Models
         public DateTime EndDate { get; set; }
         public bool IsEnabled { get; set; }
         public string Description { get; set; }
+        public int RegistrationsLimit { get; set; }
 
         public int EventId { get; set; }
         public Event Event { get; set; }

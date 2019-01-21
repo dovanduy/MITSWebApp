@@ -6,7 +6,9 @@ import { CreditCardValidator } from "angular-cc-library";
 import {
   AllEvents,
   ProcessRegistrationGQL,
-  RegistrationInput
+  ProcessSponsorRegistrationGQL,
+  RegistrationInput,
+  SponsorInput
 } from "src/app/graphql/generated/graphql";
 import {
   AuthData,
@@ -24,6 +26,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 export class RegisterService {
   constructor(
     private processRegistrationGQL: ProcessRegistrationGQL,
+    private processSponsorRegistrationGQL: ProcessSponsorRegistrationGQL,
     private formBuilder: FormBuilder
   ) {}
 
@@ -65,6 +68,12 @@ export class RegisterService {
   sendRegistrationToServer(registration: RegistrationInput): Observable<any> {
     return this.processRegistrationGQL.mutate({
       registration: registration
+    });
+  }
+
+  sendSponsorRegistrationToServer(sponsor: SponsorInput): Observable<any> {
+    return this.processSponsorRegistrationGQL.mutate({
+      sponsor : sponsor
     });
   }
 
@@ -143,6 +152,24 @@ export class RegisterService {
     };
 
     return newLuncheonRegistration;
+  }
+
+  createNewSponsorRegistration(response: AuthorizeResponse,
+    userDetailsForm: FormGroup,
+    eventRegistrationType: AllEvents.Types,
+    mainEventId: number): SponsorInput {
+    var newSponsorRegistration: SponsorInput = {
+      dataDescriptor: response.opaqueData.dataDescriptor,
+      dataValue: response.opaqueData.dataValue,
+      firstName: userDetailsForm.controls.firstName.value,
+      lastName: userDetailsForm.controls.lastName.value,
+      organization: userDetailsForm.controls.organization.value,
+      email: userDetailsForm.controls.email.value,
+      registrationTypeId: eventRegistrationType.registrationTypeId,
+      eventId: mainEventId
+    }
+
+    return newSponsorRegistration;
   }
 
   createNewCommitteeRegistration(

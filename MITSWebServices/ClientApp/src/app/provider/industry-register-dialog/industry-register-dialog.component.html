@@ -71,6 +71,9 @@
                 formControlName="memberId"
                 required
               />
+              <mat-error *ngIf="adForm.memberId.errors"
+                  >Please provide a valid 8 Digit Id</mat-error
+                >
             </mat-form-field>
             <mat-form-field>
               <input
@@ -93,14 +96,11 @@
               formControlName="isLifeTimeMember"
               >AFCEA Lifetime Member</mat-checkbox
             >
-
-            <mat-checkbox formControlName="isLocal">Local</mat-checkbox>
           </div>
 
           <div fxLayout="row" fxLayoutGap="2px" style="padding-top: 5px;">
             <button mat-stroked-button matStepperPrevious>Back</button>
             <button
-              *ngIf="!isFree || codeRequired || !isAddingTuesdayLuncheon"
               color="primary"
               mat-stroked-button
               matStepperNext
@@ -185,7 +185,7 @@
               color="primary"
               (click)="startRegistration()"
             >
-              Register
+              Pay {{eventCost | currency}}
             </button>
           </div>
         </form>

@@ -59,7 +59,8 @@ export class RegisterComponent implements OnInit {
       console.log("This is registration for Government member");
       this.registerDialogService.openGovernmentRegistrationDialog(
         type,
-        eventId
+        eventId,
+        this.luncheonEvent
       );
     }
 

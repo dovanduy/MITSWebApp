@@ -12,7 +12,8 @@ namespace MITSBusinessLib.ResponseModels.Authorize
         public Order Order { get; set; }
         public LineItems LineItems { get; set; }
 
-        //public BillTo BillTo { get; set; }
+
+        public BillTo BillTo { get; set; }
 
     }
 }

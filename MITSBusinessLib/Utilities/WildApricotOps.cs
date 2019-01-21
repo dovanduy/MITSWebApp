@@ -121,7 +121,29 @@ namespace MITSBusinessLib.Utilities
 
         }
 
+        public static async Task<HttpResponseMessage> DeleteRequest(string apiResource, WildApricotToken token)
+        {
 
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+
+            var apiAddr = new UriBuilder(WildApricotApiUrl + apiResource);
+
+            try
+            {
+
+                return await client.DeleteAsync(apiAddr.ToString());
+            }
+
+            catch (Exception e)
+            {
+                var message = e.Message + " " + e.InnerException;
+                throw new Exception(message);
+            }
+
+        }
 
     }
 }

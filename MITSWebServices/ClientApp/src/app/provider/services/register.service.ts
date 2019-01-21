@@ -1,12 +1,7 @@
 import { Injectable } from "@angular/core";
-import { Observable, BehaviorSubject } from "rxjs";
+import { Observable } from "rxjs";
 
-import {
-  CreditCardValidator,
-  CreditCardFormatDirective,
-  CreditCard
-} from "angular-cc-library";
-
+import { CreditCardValidator } from "angular-cc-library";
 
 import {
   AllEvents,
@@ -22,8 +17,6 @@ import {
 
 import { environment } from "../../../environments/environment";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { TdDialogService } from "@covalent/core";
-import { MatDialog } from "@angular/material";
 
 @Injectable({
   providedIn: "root"
@@ -31,7 +24,6 @@ import { MatDialog } from "@angular/material";
 export class RegisterService {
   constructor(
     private processRegistrationGQL: ProcessRegistrationGQL,
-    private tdDialog: TdDialogService,
     private formBuilder: FormBuilder
   ) {}
 
@@ -76,8 +68,6 @@ export class RegisterService {
     });
   }
 
- 
-
   createUserDetailsFormGroup(): FormGroup {
     return this.formBuilder.group({
       firstName: ["", Validators.required],
@@ -87,12 +77,36 @@ export class RegisterService {
     });
   }
 
-  createAfceaDetailsFormGroup(): FormGroup {
+  createAfceaDetailsFormGroup(optional: boolean): FormGroup {
+    
+
+    if (optional) {
+      return this.formBuilder.group({
+        memberId: [
+          "",
+          [
+            Validators.pattern("^[0-9]*$"),
+            Validators.minLength(8),
+            Validators.maxLength(8)
+          ]
+        ],
+        memberExpireDate: [""],
+        isLifeTimeMember: [""]
+      });
+    }
+
     return this.formBuilder.group({
-      memberId: ["", Validators.required],
+      memberId: [
+        "",
+        [
+          Validators.required,
+          Validators.pattern("^[0-9]*$"),
+          Validators.minLength(8),
+          Validators.maxLength(8)
+        ]
+      ],
       memberExpireDate: ["", Validators.required],
-      isLifeTimeMember: [""],
-      isLocal: [""]
+      isLifeTimeMember: [""]
     });
   }
 
@@ -162,7 +176,7 @@ export class RegisterService {
     userDetailsForm: FormGroup,
     eventRegistrationType: AllEvents.Types,
     mainEventId: number,
-    afceaDetailsForm: FormGroup,
+    afceaDetailsForm: FormGroup
   ): RegistrationInput {
     var newMainRegistration: RegistrationInput = {
       dataDescriptor: response.opaqueData.dataDescriptor,
@@ -172,9 +186,8 @@ export class RegisterService {
       organization: userDetailsForm.controls.organization.value,
       email: userDetailsForm.controls.email.value,
       memberId: afceaDetailsForm.controls.memberId.value,
-      memberExpirationDate: afceaDetailsForm.controls.memberExpireDate.value,
+      memberExpirationDate: afceaDetailsForm.controls.memberExpireDate.value.toString(),
       isLifeMember: afceaDetailsForm.controls.isLifeTimeMember.value || false,
-      isLocal: afceaDetailsForm.controls.isLocal.value || false,
       registrationTypeId: eventRegistrationType.registrationTypeId,
       eventId: mainEventId
     };
@@ -186,7 +199,7 @@ export class RegisterService {
     response: AuthorizeResponse,
     userDetailsForm: FormGroup,
     eventRegistrationType: AllEvents.Types,
-    mainEventId: number,
+    mainEventId: number
   ): RegistrationInput {
     var newMainRegistration: RegistrationInput = {
       dataDescriptor: response.opaqueData.dataDescriptor,
@@ -198,7 +211,6 @@ export class RegisterService {
       memberId: "",
       memberExpirationDate: "",
       isLifeMember: false,
-      isLocal: false,
       registrationTypeId: eventRegistrationType.registrationTypeId,
       eventId: mainEventId
     };

@@ -63,7 +63,8 @@ export class RegisterDialogService {
 
   openGovernmentRegistrationDialog(
     eventType: AllEvents.Types,
-    mainEventId: number
+    mainEventId: number,
+    luncheonEvent: AllEvents.Events
   ): Observable<MatDialogRef<GovernmentRegisterDialogComponent>> {
     return this.dialog
       .open(GovernmentRegisterDialogComponent, {
@@ -71,7 +72,8 @@ export class RegisterDialogService {
         width: "500px",
         data: {
           eventType: eventType,
-          mainEventId: mainEventId
+          mainEventId: mainEventId,
+          luncheonEvent: luncheonEvent
         }
       })
       .afterClosed();

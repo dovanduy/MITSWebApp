@@ -14,6 +14,7 @@ namespace MITSBusinessLib.Utilities
     public static class AuthorizeOps
     {
 
+        //Production https://api.authorize.net/xml/v1/request.api
         private static readonly string AuthorizeUrl = "https://apitest.authorize.net/xml/v1/request.api";
 
         public static async Task<HttpResponseMessage> CreateTransaction(ProcessTransaction processTransaction)

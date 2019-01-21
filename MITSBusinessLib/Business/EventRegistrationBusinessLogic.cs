@@ -62,7 +62,6 @@ namespace MITSBusinessLib.Business
                 }
             }
 
-
             //Retrieve Contact from WildApricot
             //Create Contact if needed
             var contact = await _waRepo.GetContact(newRegistration.Email) ?? await _waRepo.CreateContact(newRegistration);
@@ -74,11 +73,6 @@ namespace MITSBusinessLib.Business
             var eventRegistrationId = await _waRepo.AddEventRegistration(newRegistration, contact.Id);
             await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit, $"Event Registration Created - {eventRegistrationId}");
 
-            
-
-            
-
-
             if (!isFreeEvent)
             {
                 //Create Invoice
@@ -88,9 +82,7 @@ namespace MITSBusinessLib.Business
                     $"Event Invoice Created - {invoiceId}");
 
                 //Process Payment... What happens if the payment fails? Will the user be able to register again? What happens to their other event registration?
-
-                
-
+            
                 var processTransaction = new ProcessTransaction
                 {
                     CreateTransactionRequest = new CreateTransactionRequest
@@ -129,6 +121,21 @@ namespace MITSBusinessLib.Business
                                     UnitPrice = registrationTypeDetails.BasePrice.ToString(CultureInfo.InvariantCulture)
                                 }
                             }
+                            //Use if we have Address Authentication turned on
+                            //,
+                            //BillTo = new BillTo
+                            //{
+                            //    FirstName = "Bob",
+                            //    LastName = "Anderson",
+                            //    Company = "Bob Anderson",
+                            //    Address = "35 Testing Rd.",
+                            //    City = "Montgomery",
+                            //    Country = "USA",
+                            //    State = "AL",
+                            //    //Can be used to generate errors in testing
+                            //    Zip = "46203"
+
+                            //}
                         }
                     }
                 };
@@ -141,20 +148,60 @@ namespace MITSBusinessLib.Business
                     Newtonsoft.Json.JsonConvert
                         .DeserializeObject<CreateTransactionResponse>(transactionResponseContent);
 
-                //handle all the errors in the transactionResponseresult
+                //handle all the errors in the transactionResponseResult
 
                 if (transactionResponseResult != null)
                 {
-                    if (transactionResponseResult.TransactionResponse.Messages != null)
+
+                    if (transactionResponseResult.Messages.ResultCode == "Ok")
+                    {
+                        if (transactionResponseResult.TransactionResponse.Messages != null)
+                        {
+                            await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit,
+                                "Event Payment Processed");
+                        }
+                        else
+                        {
+                           
+                            if (transactionResponseResult.TransactionResponse.Errors != null)
+                            {
+
+                                await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit,
+                                    "Event Payment Failed " + transactionResponseResult.TransactionResponse.Errors[0].ErrorCode);
+
+                                if (!await _waRepo.DeleteEventRegistration(eventRegistrationId))
+                                {
+                                    throw new ExecutionError(
+                                        "Transaction Failed and event Registration Cleanup Failed. Please contact our Help Desk to complete your registration");
+                                }
+
+                                throw new ExecutionError(transactionResponseResult.TransactionResponse.Errors[0].ErrorText);
+                            }
+
+                            
+                        }
+                    }
+                    else
                     {
                         await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit,
-                            "Event Payment Processed");
-                        Console.WriteLine("The transaction was successful");
+                            "Event Payment Failed " + transactionResponseResult.Messages.Message[0].Code);
+
+                        if (!await _waRepo.DeleteEventRegistration(eventRegistrationId))
+                        {
+                            throw new ExecutionError(
+                                "Transaction Failed and event Registration Cleanup Failed. Please contact our Help Desk to complete your registration");
+                        }
+
+                        if (transactionResponseResult.TransactionResponse != null && transactionResponseResult.TransactionResponse.Errors != null)
+                        {
+                            await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit,
+                                "Event Payment Failed " + transactionResponseResult.TransactionResponse.Errors[0].ErrorCode);
+                            throw new ExecutionError(transactionResponseResult.TransactionResponse.Errors[0].ErrorText);
+                        }
+
+                        
+                        throw new ExecutionError(transactionResponseResult.Messages.Message[0].Text);
                     }
-                }
-                else
-                {
-                    //throw error
                 }
 
                 //Create payment for invoice

@@ -17,9 +17,12 @@ namespace MITSBusinessLib.ResponseModels.Authorize
         public string AccountNumber { get; set; }
         public string AccountType { get; set; }
         public TransactionResponseMessage[] Messages { get; set; }
+        public TransactionResponseErrors[] Errors { get; set; }
         public string TransHashSha2 { get; set; }
         public string SupplementalDataQualificationIndicator { get; set; }
 
 
     }
+
+    
 }

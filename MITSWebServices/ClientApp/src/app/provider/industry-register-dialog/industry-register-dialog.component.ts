@@ -14,6 +14,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { TdDialogService, TdLoadingService } from "@covalent/core";
 import { RegisterService } from "../services/register.service";
 import { GraphQLProcessRegistrationResponse, AuthorizeResponse } from "../../core/models";
+import { RegistrationInput } from "src/app/graphql/generated/graphql";
 
 @Component({
   selector: 'app-industry-register-dialog',
@@ -38,9 +39,14 @@ export class IndustryRegisterDialogComponent implements OnInit {
   isProcessingRegistration: boolean = false;
   qrCode: string;
   eventRegistrationId: number;
+  eventCost: number;
 
   get udForm() {
     return this.userDetailsForm.controls;
+  }
+
+  get adForm() {
+    return this.afceaDetailsForm.controls;
   }
 
   @ViewChild(CreditCardFormatDirective) ccCardInput: CreditCardFormatDirective;
@@ -89,6 +95,7 @@ export class IndustryRegisterDialogComponent implements OnInit {
     });
 
     console.log(this.data);
+    this.eventCost = this.data.eventType.basePrice;
 
     this.userDetailsForm = this.registerService.createUserDetailsFormGroup();
     console.log(this.userDetailsForm);
@@ -97,7 +104,7 @@ export class IndustryRegisterDialogComponent implements OnInit {
     console.log(this.paymentDetailsForm);
 
     if (this.data.isAfcean) {
-      this.afceaDetailsForm = this.registerService.createAfceaDetailsFormGroup();
+      this.afceaDetailsForm = this.registerService.createAfceaDetailsFormGroup(false);
     }
 
   }
@@ -134,9 +141,7 @@ export class IndustryRegisterDialogComponent implements OnInit {
 
   finishRegistration(ccAuthData: AuthorizeResponse): void {
 
-    var newReg = {};
-
-
+    var newReg = {} as RegistrationInput;
 
     if (this.data.isAfcean) {
       newReg = this.registerService.createNewPaymentAfceanRegistration(
@@ -157,30 +162,29 @@ export class IndustryRegisterDialogComponent implements OnInit {
     }
 
     console.log(newReg);
-    this.tdLoading.resolve('overLayForm');
 
-    //   this.registerService
-    //     .sendRegistrationToServer(newReg)
-    //     .subscribe((result: GraphQLProcessRegistrationResponse) => {
-    //       console.log(result);
-    //       this.tdLoading.resolve("overLayForm");
-    //       this.isProcessingRegistration = false;
+      this.registerService
+        .sendRegistrationToServer(newReg)
+        .subscribe((result: GraphQLProcessRegistrationResponse) => {
+          console.log(result);
+          this.tdLoading.resolve("overLayForm");
+          this.isProcessingRegistration = false;
 
-    //       if (result.errors === undefined) {
-    //         this.qrCode = result.data.processRegistration.qrCode;
-    //         this.eventRegistrationId =
-    //           result.data.processRegistration.eventRegistrationId;
+          if (result.errors === undefined) {
+            this.qrCode = result.data.processRegistration.qrCode;
+            this.eventRegistrationId =
+              result.data.processRegistration.eventRegistrationId;
 
-    //         this.registrationComplete = true;
-    //       } else {
-    //         console.log(result.errors[0].message);
-    //         var message = result.errors[0].message;
-    //         this.tdDialog.openAlert({
-    //           title: "Sorry, there was a problem processing your registration.",
-    //           message: message
-    //         });
-    //       }
-    //     });
+            this.registrationComplete = true;
+          } else {
+            console.log(result.errors[0].message);
+            var message = result.errors[0].message;
+            this.tdDialog.openAlert({
+              title: "Sorry, there was a problem processing your registration.",
+              message: message
+            });
+          }
+        });
   }
 
 }

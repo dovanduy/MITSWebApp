@@ -285,6 +285,25 @@ namespace MITSBusinessLib.Repositories
 
         }
 
+        public async Task<bool> DeleteEventRegistration(int registrationId)
+        {
+            var apiEventResource = $"accounts/{_accountId}/eventregistrations/{registrationId}";
+            HttpResponseMessage response;
+            var token = await GetTokenAsync();
+
+            try
+            {
+                response = await WildApricotOps.PostRequest(apiEventResource, token);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception(e.Message);
+            }
+
+            return response.IsSuccessStatusCode;
+        }
+
         public async Task<int> AddEventRegistration(Registration newRegistration, int contactId)
         {
             var newRegistrationData = new NewEventRegistration

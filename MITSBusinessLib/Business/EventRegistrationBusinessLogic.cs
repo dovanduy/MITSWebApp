@@ -278,6 +278,23 @@ namespace MITSBusinessLib.Business
             var registrationTypeDetails =
                 await _eventsRepository.GetEventTypeById(newSponsorRegistration.RegistrationTypeId);
 
+            //Check if sponsor registration should be disabled
+            var eventDetails = await _waRepo.GetWaEventDetails(newSponsorRegistration.EventId);
+
+            var confirmedRegistrationCount = eventDetails.ConfirmedRegistrationsCount;
+            var registrationLimit = eventDetails.RegistrationsLimit ?? 0;
+
+            if (registrationLimit > 0)
+            {
+                if (confirmedRegistrationCount >= registrationLimit)
+                {
+                    //Mark event as disabled
+
+                    await _eventsRepository.MarkEventAsDisabled(newSponsorRegistration.EventId);
+                    throw new ExecutionError("The registration limit for this event has been reached.");
+                }
+
+            }
 
             //Retrieve Contact from WildApricot
             //Create Contact if needed
@@ -285,18 +302,11 @@ namespace MITSBusinessLib.Business
             {
                 FirstName = newSponsorRegistration.FirstName,
                 LastName = newSponsorRegistration.LastName,
-                Email =  newSponsorRegistration.Email,
-                Organization =  newSponsorRegistration.Organization
+                Email = newSponsorRegistration.Email,
+                Organization = newSponsorRegistration.Organization
 
             });
-
             await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit, $"Contact Created - {contact.Id}");
-
-            //Check if sponsor registration should be disabled
-
-
-
-
 
             //Create Event Registration
 

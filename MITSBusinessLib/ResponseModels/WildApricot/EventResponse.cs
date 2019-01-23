@@ -14,6 +14,7 @@ namespace MITSBusinessLib.Models
         public string  Location { get; set; }
         public bool RegistrationEnabled { get; set; }
         public int? RegistrationsLimit { get; set; }
+        public int? ConfirmedRegistrationsCount { get; set; }
         public EventDetailsResponse Details { get; set; }
   
     }

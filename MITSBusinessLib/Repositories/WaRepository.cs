@@ -91,10 +91,10 @@ namespace MITSBusinessLib.Repositories
 
         }
 
-        public async Task<EventResponse> GetWaEventDetails(Event eventAddedToDB)
+        public async Task<EventResponse> GetWaEventDetails(int eventId)
         {
 
-            var apiEventResource = $"accounts/{_accountId}/events/{eventAddedToDB.MainEventId}";
+            var apiEventResource = $"accounts/{_accountId}/events/{eventId}";
 
             var response = new HttpResponseMessage();
             var token = await GetTokenAsync();
@@ -125,7 +125,7 @@ namespace MITSBusinessLib.Repositories
         public async Task<Event> AddWildApricotEvent(Event eventAddedToDB)
         {
 
-            var eventDetailsResponse = await GetWaEventDetails(eventAddedToDB);
+            var eventDetailsResponse = await GetWaEventDetails(eventAddedToDB.MainEventId);
 
             if (eventDetailsResponse == null)
             {

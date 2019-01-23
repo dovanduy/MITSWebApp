@@ -12,5 +12,6 @@ namespace MITSBusinessLib.Repositories.Interfaces
         Task<List<WildApricotEvent>> GetWaEventByEventId(int id);
         Task<List<WildApricotRegistrationType>> GetWaRegistrationTypesByWaEventId(int id);
         Task<WildApricotRegistrationType> GetEventTypeById(int registrationTypeId);
+        Task<int> MarkEventAsDisabled(int eventId);
     }
 }

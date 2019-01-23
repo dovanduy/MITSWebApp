@@ -1,8 +1,6 @@
 <div class="container" fxLayout="column">
   <div><h1 class="title">Sponsorships</h1></div>
 
-  <button mat-raised-button color="primary">WANT TO BE A SPONSOR?</button>
-
   <div style="padding-top: 10px; padding-bottom: 5px;" *ngFor="let event of sponsorEvents">
     <h2 style="padding-left: 15px;">{{event.waEvent[0].name}}</h2>
       <p
@@ -11,7 +9,6 @@
       ></p>
       <mat-list style="background-color: white;">
         <mat-list-item
-          [class.disabled]="!type.isEnabled"
           *ngFor="let type of (event?.waEvent)[0]?.types"
         >
           
@@ -23,7 +20,6 @@
           <button
             (click)="register(type, event?.mainEventId)"
             style="padding-left: 10px;"
-            [disabled]="!type.isEnabled"
             mat-stroked-button
           >
             Sponsor

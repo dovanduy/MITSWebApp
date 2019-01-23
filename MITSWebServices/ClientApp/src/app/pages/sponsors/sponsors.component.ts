@@ -22,13 +22,24 @@ export class SponsorsComponent implements OnInit {
       this.activate();
 
     });
+
+    
   }
 
   activate() {
-    this.sponsorEvents = this.events.filter(event => event.eventRegistrationType == "sponsor");
+    this.sponsorEvents = this.events.filter(event => event.eventRegistrationType == "sponsor" && event.waEvent[0].isEnabled);
   }
 
   register(type: AllEvents.Types, eventId: number) {
-   this.registerDialogService.openSponsorRegistrationDialog(type, eventId);
+   this.registerDialogService.openSponsorRegistrationDialog(type, eventId).subscribe(data => {
+     var eventId = data as unknown;
+     console.log(data);
+     console.log(eventId);
+     if (eventId != null) {
+       this.sponsorEvents = this.sponsorEvents.filter(e => e.mainEventId != eventId);
+
+     }
+    
+   });
   }
 }

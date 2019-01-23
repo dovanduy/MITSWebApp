@@ -155,10 +155,25 @@ export class SponsorRegisterDialogComponent implements OnInit {
         } else {
           console.log(result.errors[0].message);
           var message = result.errors[0].message;
-          this.tdDialog.openAlert({
-            title: "Sorry, there was a problem processing your registration.",
-            message: message
-          });
+
+          if (
+            message == "The registration limit for this event has been reached."
+          ) {
+            this.tdDialog
+              .openAlert({
+                title: "Sorry, You just missed it",
+                message: message
+              })
+              .afterClosed()
+              .subscribe(data => {
+                this.dialogRef.close(this.data.sponsorEventId);
+              });
+          } else {
+            this.tdDialog.openAlert({
+              title: "Sorry, there was a problem processing your registration.",
+              message: message
+            });
+          }
         }
       });
   }

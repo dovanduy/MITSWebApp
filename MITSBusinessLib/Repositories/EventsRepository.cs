@@ -53,6 +53,18 @@ namespace MITSBusinessLib.Repositories
                 .ToListAsync();
         }
 
+        public async Task<int> MarkEventAsDisabled(int eventId)
+        {
+            var waEvent = await _context.Events
+                .Where(e => e.MainEventId == eventId)
+                .Select(mainEvent => mainEvent.WaEvent)
+                .FirstOrDefaultAsync();
+
+            waEvent.IsEnabled = false;
+
+            return await _context.SaveChangesAsync();
+        }
+
         public async Task<WildApricotRegistrationType> GetEventTypeById(int registrationTypeId)
         {
             return await _context.WaRegistrations

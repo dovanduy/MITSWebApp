@@ -10,7 +10,7 @@ namespace MITSBusinessLib.Repositories.Interfaces
     {
         Task<WildApricotToken> GetTokenAsync();
         Task<WildApricotToken> SetTokenAsync(WildApricotToken respToken, bool updateToken);
-        Task<EventResponse> GetWaEventDetails(Event newEvent);
+        Task<EventResponse> GetWaEventDetails(int eventId);
         Task<Event> AddWildApricotEvent(Event newEvent);
         Task<Contact> GetContact(string email);
         Task<Contact> CreateContact(Registration newRegistration);

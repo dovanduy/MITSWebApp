@@ -37,6 +37,18 @@ export class RegisterComponent implements OnInit {
     this.mainEvent = this.events.filter(
       event => event.eventRegistrationType === "main"
     )[0];
+
+    this.mainEvent.waEvent[0].types.sort((type1, type2) => {
+      if (type1.basePrice > type2.basePrice) {
+        return 1;
+      }
+
+      if (type1.basePrice < type2.basePrice) {
+        return -1
+      }
+
+      return 0;
+    });
     this.golfEvent = this.events.filter(
       event => event.eventRegistrationType === "golf"
     )[0];

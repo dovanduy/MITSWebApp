@@ -193,6 +193,25 @@ export class RegisterService {
     return newCommiteeRegistration;
   }
 
+  createNewFreeRegistration(
+    userDetailsForm: FormGroup,
+    eventRegistrationType: AllEvents.Types,
+    mainEventId: number
+  ): RegistrationInput {
+    var newCommiteeRegistration: RegistrationInput = {
+      dataDescriptor: "",
+      dataValue: "",
+      firstName: userDetailsForm.controls.firstName.value,
+      lastName: userDetailsForm.controls.lastName.value,
+      organization: userDetailsForm.controls.organization.value,
+      email: userDetailsForm.controls.email.value,
+      registrationTypeId: eventRegistrationType.registrationTypeId,
+      eventId: mainEventId
+    };
+
+    return newCommiteeRegistration;
+  }
+
   createNewGovernmentRegistration(
     userDetailsForm: FormGroup,
     eventRegistrationType: AllEvents.Types,

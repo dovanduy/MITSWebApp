@@ -14,7 +14,8 @@ import { TdDialogService, TdLoadingService } from "@covalent/core";
 import { RegisterService } from "../services/register.service";
 import {
   GraphQLProcessRegistrationResponse,
-  AuthorizeResponse
+  AuthorizeResponse,
+  Ticket
 } from "../../core/models";
 import { RegistrationInput } from "src/app/graphql/generated/graphql";
 import { Observable, Subject, zip } from "rxjs";
@@ -41,7 +42,6 @@ export class GovernmentRegisterDialogComponent implements OnInit, OnDestroy {
   afceaDetailsForm: FormGroup;
   paymentDetailsForm: FormGroup;
   registrationComplete: boolean = false;
-  luncheonRegistrationComplete: boolean = false;
   isProcessingRegistration: boolean = false;
   afceaDetailsValid: boolean = true;
   isAddingLuncheon: boolean = false;
@@ -52,6 +52,7 @@ export class GovernmentRegisterDialogComponent implements OnInit, OnDestroy {
   mainRegistration$: Observable<GraphQLProcessRegistrationResponse>;
   tuesdayRegistration$: Observable<GraphQLProcessRegistrationResponse>;
   ngUnsubscribe: Subject<any> = new Subject<any>();
+  tickets: Ticket[] = [];
 
   luncheonName: string;
   luncheonEventId: number;
@@ -177,11 +178,17 @@ export class GovernmentRegisterDialogComponent implements OnInit, OnDestroy {
         this.isProcessingRegistration = false;
 
         if (result.errors === undefined) {
-          this.qrCode = result.data.processRegistration.qrCode;
-          this.eventRegistrationId =
-            result.data.processRegistration.eventRegistrationId;
-
           this.registrationComplete = true;
+          // this.qrCode = result.data.processRegistration.qrCode;
+          // this.eventRegistrationId =
+          //   result.data.processRegistration.eventRegistrationId;
+          this.tickets.push( {
+            eventRegistrationId: result.data.processRegistration.eventRegistrationId,
+            qrCode: result.data.processRegistration.qrCode,
+            event: this.data.eventType
+
+          } as Ticket);
+          
         } else {
           console.log(result.errors[0].message);
           var message = result.errors[0].message;
@@ -247,20 +254,34 @@ export class GovernmentRegisterDialogComponent implements OnInit, OnDestroy {
 
     zip(this.mainRegistration$, this.tuesdayRegistration$)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((result: GraphQLProcessRegistrationResponse[]) => {
-        console.log(result);
+      .subscribe((results: GraphQLProcessRegistrationResponse[]) => {
+        console.log(results);
         this.tdLoading.resolve("overLayForm");
         this.isProcessingRegistration = false;
         this.registrationComplete = true;
-        this.luncheonRegistrationComplete = true;
-        this.eventRegistrationId =
-            result[0].data.processRegistration.eventRegistrationId;
-        this.qrCode = result[0].data.processRegistration.qrCode;
+        // this.eventRegistrationId =
+        //     result[0].data.processRegistration.eventRegistrationId;
+        // this.qrCode = result[0].data.processRegistration.qrCode;
 
-        this.luncheonEventId =
-            result[1].data.processRegistration.eventRegistrationId;
-        this.luncheonQrCode = result[1].data.processRegistration.qrCode;
+        // this.luncheonEventId =
+        //     result[1].data.processRegistration.eventRegistrationId;
+        // this.luncheonQrCode = result[1].data.processRegistration.qrCode;
 
+        this.tickets.push( {
+          eventRegistrationId: results[0].data.processRegistration.eventRegistrationId,
+          qrCode: results[0].data.processRegistration.qrCode,
+          event: this.data.eventType
+
+        } as Ticket);
+
+        this.tickets.push( {
+          eventRegistrationId: results[1].data.processRegistration.eventRegistrationId,
+          qrCode: results[1].data.processRegistration.qrCode,
+          event: this.data.luncheonEvent.waEvent[0].types[0]
+
+        } as Ticket);
+
+        
 
       });
   }

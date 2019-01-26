@@ -1,3 +1,5 @@
+import { AllEvents } from "src/app/graphql/generated/graphql";
+
 export interface AuthorizeResponse {
   messages: AuthorizeMessages;
   opaqueData: AuthorizeOpaqueData;
@@ -66,4 +68,10 @@ export interface GraphQlError {
   locations: any[];
   message: string;
   path: any[]
+}
+
+export interface Ticket {
+  eventRegistrationId: number;
+  qrCode: string;
+  event: AllEvents.Types;
 }

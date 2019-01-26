@@ -83,7 +83,8 @@ export class RegisterDialogService {
   openIndustryRegistrationDialog(
     eventType: AllEvents.Types,
     mainEventId: number,
-    isAfcean: boolean
+    isAfcean: boolean,
+    isFree: boolean
   ): Observable<MatDialogRef<IndustryRegisterDialogComponent>> {
     return this.dialog
       .open(IndustryRegisterDialogComponent, {
@@ -92,7 +93,8 @@ export class RegisterDialogService {
         data: {
           eventType: eventType,
           mainEventId: mainEventId,
-          isAfcean: isAfcean
+          isAfcean: isAfcean,
+          isFree: isFree
         }
       })
       .afterClosed();

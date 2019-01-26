@@ -227,21 +227,6 @@
 </div>
 
 <div *ngIf="registrationComplete">
-  <h2>Event Registration Id - {{ eventRegistrationId }}</h2>
-  <img
-    alt="Embedded QR Code"
-    height="200px"
-    width="200px"
-    src="http://localhost:50000/tickets/{{ qrCode }}/code.png"
-  />
+  <showtickets [tickets]="tickets"></showtickets>
 </div>
 
-<div *ngIf="luncheonRegistrationComplete">
-    <h2>Event Registration Id - {{ luncheonEventId }}</h2>
-    <img
-      alt="Embedded QR Code"
-      height="200px"
-      width="200px"
-      src="http://localhost:50000/tickets/{{ luncheonQrCode }}/code.png"
-    />
-</div>

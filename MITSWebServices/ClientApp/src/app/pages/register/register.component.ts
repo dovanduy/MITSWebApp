@@ -86,7 +86,8 @@ export class RegisterComponent implements OnInit {
         this.registerDialogService.openIndustryRegistrationDialog(
           type,
           eventId,
-          true
+          true,
+          false
         );
         //Registration for Non-AFCEAN Member Industry Attendee
       } else {
@@ -94,6 +95,7 @@ export class RegisterComponent implements OnInit {
         this.registerDialogService.openIndustryRegistrationDialog(
           type,
           eventId,
+          false,
           false
         );
       }
@@ -103,12 +105,13 @@ export class RegisterComponent implements OnInit {
   registerGolf(type: AllEvents.Types, eventId: number) {
     console.log("This is a golf registration");
     console.log(type);
-    this.registerDialogService.openRegisterDialog(type, eventId, true);
+    var isFree = type.basePrice == 0;
+    this.registerDialogService.openIndustryRegistrationDialog(type, eventId, false, isFree);
   }
 
   registerLuncheon(type: AllEvents.Types, eventId: number) {
     console.log("This is a Luncheon registration");
     console.log(type);
-    this.registerDialogService.openRegisterDialog(type, eventId, false);
+    this.registerDialogService.openIndustryRegistrationDialog(type, eventId, false, false);
   }
 }

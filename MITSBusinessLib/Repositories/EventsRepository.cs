@@ -69,6 +69,7 @@ namespace MITSBusinessLib.Repositories
         {
             return await _context.WaRegistrations
                 .Where(war => war.RegistrationTypeId == registrationTypeId)
+                .Include(waType => waType.WaEvent)
                 .FirstOrDefaultAsync();
         }
     }

@@ -57,7 +57,8 @@
               </mat-form-field>
             </div>
           </div>
-          <div><button mat-stroked-button matStepperNext>Next</button></div>
+          <div *ngIf="!isFree"><button mat-stroked-button matStepperNext>Next</button></div>
+          <div *ngIf="isFree"><button [disabled]="!userDetailsForm.valid" (click)="processFreeRegistration()" mat-stroked-button>Register</button></div>
         </form>
       </mat-step>
       <mat-step [stepControl]="afceaDetailsForm" *ngIf="data.isAfcean">
@@ -110,7 +111,7 @@
           </div>
         </form>
       </mat-step>
-      <mat-step [stepControl]="paymentDetailsForm">
+      <mat-step [stepControl]="paymentDetailsForm" *ngIf="!isFree">
         <form [formGroup]="paymentDetailsForm">
           <ng-template matStepLabel>Payment</ng-template>
           <div fxLayout="column">
@@ -197,11 +198,5 @@
 </div>
 
 <div *ngIf="registrationComplete">
-  <h2>Event Registration Id - {{eventRegistrationId}}</h2>
-  <img
-    alt="Embedded QR Code"
-    height="200px"
-    width="200px"
-    src="http://localhost:50000/tickets/{{ qrCode }}/code.png"
-  />
+  <showtickets [tickets]="tickets" ></showtickets>
 </div>

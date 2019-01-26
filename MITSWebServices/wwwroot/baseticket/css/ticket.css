@@ -1,0 +1,47 @@
+﻿.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    max-width: 700px;
+    background-color: #13191e;
+}
+.ticket {
+    font-family: "Titillium Web", sans-serif;
+    color: white;
+    background-color: #13191e;
+    width: 520px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    height: 130px;
+}
+.h3 {
+}
+.names {
+    font-style: italic;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    border-bottom: 1px solid #1c2329;
+    border-right: 1px solid #1c2329;
+    font-size: 20px;
+}
+.event {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    border-right: 1px solid #1c2329;
+}
+.top {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    border-bottom: 1px solid #1c2329;
+}
+.qr {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}

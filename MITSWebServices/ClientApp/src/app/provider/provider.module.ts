@@ -9,6 +9,7 @@ import { IndustryRegisterDialogComponent } from "./industry-register-dialog/indu
 import { RegisterDialogService } from "./services/register-dialog.service";
 import { RegisterService } from "./services/register.service";
 import { SponsorRegisterDialogComponent } from './sponsor-register-dialog/sponsor-register-dialog.component';
+import { ShowticketsComponent } from './showtickets/showtickets.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { SponsorRegisterDialogComponent } from './sponsor-register-dialog/sponso
     CommitteeRegisterDialogComponent,
     GovernmentRegisterDialogComponent,
     IndustryRegisterDialogComponent,
-    SponsorRegisterDialogComponent
+    SponsorRegisterDialogComponent,
+    ShowticketsComponent
   ],
   imports: [SharedModule, ReactiveFormsModule],
   providers: [RegisterDialogService, RegisterService],

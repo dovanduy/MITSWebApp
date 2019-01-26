@@ -6,6 +6,7 @@ using System.IO;
 using System.Net.Mail;
 using System.Text;
 using MimeKit.Utils;
+using MITSDataLib.Models;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace MITSBusinessLib.Utilities
@@ -13,7 +14,8 @@ namespace MITSBusinessLib.Utilities
 
     public interface IMailOps
     {
-       void Send(string toAddress, int registrationId, string registrantGuid);
+        void Send(int registrationId, string registrantGuid, Registration registration,
+            WildApricotRegistrationType waRegistrationType, string registrationGuid);
     }
 
     public class MailOps : IMailOps
@@ -31,28 +33,34 @@ namespace MITSBusinessLib.Utilities
            _pasword = config.GetSection("EmailConfiguration:Password").Value;
         }
 
-        public void Send(string toAddress, int registrationId, string registrantGuid)
+        public void Send(int registrationId, string registrantGuid, Registration registration, WildApricotRegistrationType waRegistrationType, string registrationGuid)
         {
 
-       
+            var ticketRef = $"https://test.com/tickets/{registrantGuid}/ticket.html";
 
             var message = new MimeMessage();
-            message.To.Add(new MailboxAddress("John Smith", toAddress));
+            message.To.Add(new MailboxAddress("John Smith", registration.Email));
             message.From.Add(new MailboxAddress("MITS 2019", "AFCEAMITS2019@gmail.com"));
-            message.Subject = "This is the subject";
+            message.Subject = $"Your {waRegistrationType.Name} Ticket";
             
+
 
             var builder = new BodyBuilder();
+            const string ticketFileName = "email.html";
+            var baseTicketDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "baseticket");
+            var content = File.ReadAllText(baseTicketDirectory + "\\" + ticketFileName);
 
-            builder.HtmlBody = string.Format(@"
-            Hello,
+            content = content.Replace("{registration_id}", registrationId.ToString());
+            content = content.Replace("{event_name}", waRegistrationType.Name);
+            content = content.Replace("{event_cost}", waRegistrationType.BasePrice.ToString());
+            content = content.Replace("{ticket_href}", ticketRef);
+           
 
-You have successfully registered
+            builder.HtmlBody = content;
+
+ 
 
 
-                ");
-
-            
             message.Body = builder.ToMessageBody();
 
             using (var client = new SmtpClient())

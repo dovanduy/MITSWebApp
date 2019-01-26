@@ -211,10 +211,10 @@ namespace MITSBusinessLib.Business
 
 
             //Generate HTML Ticket/QR Code and store on server in WWWRoot           
-            var registrantGuid = TicketOps.GenerateTicket(eventRegistrationId);
+            var registrantGuid = TicketOps.GenerateTicket(eventRegistrationId, newRegistration, registrationTypeDetails);
 
             //Send email with Confirmation and QR code
-            _mailOps.Send(newRegistration.Email, eventRegistrationId, registrantGuid);
+            _mailOps.Send(eventRegistrationId, registrantGuid, newRegistration, registrationTypeDetails, registrantGuid);
 
             await _registrationRepo.UpdateEventRegistrationAudit(eventRegistrationAudit, $"Registration Complete - {eventRegistrationId}");
 

@@ -19,6 +19,24 @@ namespace MITSBusinessLib.GraphQL
         {
             Name = "Mutation";
 
+
+            #region PrintBadge
+            Field<PrintBadgeType, int>()
+                .Name("printAttendeesBadge")
+                //.AuthorizeWith("AdminPolicy")
+                .Argument<NonNullGraphType<ListGraphType<PrintBadgeInputType>>>("printBadge",
+                    "Print Attendees Badge")
+                .ResolveAsync(async context =>
+                {
+                    var registrationIds = context.GetArgument<PrintBadge>("printBadge");
+
+                    return 12;
+
+                    //return await eventRegistrationBusinessLogic.CheckInAttendee(newCheckIn);
+
+                });
+            #endregion
+
             #region Checkin
 
             Field<CheckInAttendeeType, CheckInAttendee>()

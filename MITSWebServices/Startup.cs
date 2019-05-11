@@ -172,7 +172,7 @@ namespace MITSWebServices
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientApp/dist";
+                configuration.RootPath = "ClientApp/dist/MITSClientApp";
             });
 
             
@@ -195,6 +195,7 @@ namespace MITSWebServices
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IWaRepository, WaRepository>();
             services.AddScoped<IEventRegistrationBusinessLogic, EventRegistrationBusinessLogic>();
+            services.AddScoped<IBadgePrintBusinessLogic, BadgePrintBusinessLogic>();
             services.AddScoped<IMailOps, MailOps>();
             services.AddScoped<MITSQuery>();
             services.AddScoped<MITSMutation>();
@@ -202,12 +203,14 @@ namespace MITSWebServices
             services.AddScoped<EventInputType>();
             services.AddScoped<RegistrationType>();
             services.AddScoped<RegistrationInputType>();
+            services.AddScoped<PrintBadgeInputType>();
             services.AddScoped<SponsorType>();
             services.AddScoped<SponsorInputType>();
             services.AddScoped<CheckInAttendeeInputType>();
             services.AddScoped<CheckInAttendeeType>();
             services.AddScoped<DayType>();
             services.AddScoped<DayInputType>();
+            services.AddScoped<PrintBadgeType>();
             services.AddScoped<SectionType>();
             services.AddScoped<SpeakerType>();
             services.AddScoped<SpeakerInputType>();
@@ -252,12 +255,12 @@ namespace MITSWebServices
             app.UseCors("CorsPolicy");
 
             app.UseMvc(
-            //routes =>
-            //{
-            //    routes.MapRoute(
-            //        name: "default",
-            //        template: "{controller}/{action=Index}/{id?}");
-            //}
+            routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller}/{action=Index}/{id?}");
+            }
             );
 
             app.UseSpa(spa =>
